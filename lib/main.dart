@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  const SizedBox(height: 70),
+                  const SizedBox(height: 50),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,

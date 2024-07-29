@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() {
-  runApp(const LoginPage());
-}
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LandingPage extends StatelessWidget {
+  const LandingPage({super.key});
+
   @override
    Widget build(BuildContext context) {
     // Forzar orientación vertical al entrar a la vista
@@ -14,13 +12,13 @@ class LoginPage extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    
+
     return Scaffold(
         body: SafeArea(
           child: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/bg.jpg'), 
+                image: AssetImage('assets/bg.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -29,7 +27,12 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  const SizedBox(height: 50, width: 50,),
+                  Container(
+                    width: 100.0, 
+                    height: 100.0, 
+                    child: Image.asset('assets/logoo.png'),
+                  ),
+                  const SizedBox(height: 50),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -38,51 +41,43 @@ class LoginPage extends StatelessWidget {
                     padding: const EdgeInsets.all(20), 
                     child: Column(
                       children: <Widget>[
-                        const Text("Iniciar Sesión",
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Container(
+                          child: Image.asset('assets/logoo.png'),
+                          width:  200.0, 
+                          height: 200.0, 
                         ),
-                        const SizedBox(height: 20),
-                        const Text("Nombre de Usuario"),
-                        const TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Tú Nomdre de Usuario',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        const Text("Contraseña"),
-                        const TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Tú Contraseña',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
+                        
                         ElevatedButton(
-                           onPressed: () {
-                            Navigator.pushNamed(context, '/leccion');
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/login');
                           },
                           
                           style: ElevatedButton.styleFrom(
                               minimumSize: const Size(200, 50),
-                              backgroundColor: Colors.black,
+                              backgroundColor: Colors.black, 
                             ),
                             child: const Text('Entrar',
                             style: TextStyle(
                               fontSize: 20,
                             )),
                         ),
+                        const SizedBox(height: 40),
                         Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                            },
-                            child: const Text('Olvidé mi contraseña'),
-                          ),
+                          alignment: Alignment.center,
+                          child: ElevatedButton(
+                          onPressed: () {
+                          },
+                          
+                          style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(200, 50),
+                              backgroundColor: Colors.white, 
+                            ),
+                            child: const Text('Crear Cuenta',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                            )),
+                        ),
                         ),
                       ],
                     ),

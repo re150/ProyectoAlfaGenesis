@@ -1,0 +1,12 @@
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\BackAgApplication.java
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\config\SecurityConfiguration.java
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\controller\AuthController.java
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\controller\AuthResponse.java
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\controller\LoginRequest.java
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\controller\SingUpRequest.java
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\controller\WindosController.java
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\firabase\FirabaseInitialization.java
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\jwt\JwtAuthenticationFilter.java
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\jwt\JwtService.java
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\model\User.java
+C:\Users\angel\Documents\ProyectoAlfagenesis\backend\BackAG\src\main\java\com\alfagenesi\com\BackAG\service\AuthService.java

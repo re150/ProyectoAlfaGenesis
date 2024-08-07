@@ -44,4 +44,11 @@ app.*.map.json
 /android/app/release
 
 servicesAccounKey.json
+<<<<<<< HEAD
 spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+=======
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+/env.properties
+env.properties
+.env
+>>>>>>> b2104b2 (Se agrego el metodo de crear perfil y solucion de las key)

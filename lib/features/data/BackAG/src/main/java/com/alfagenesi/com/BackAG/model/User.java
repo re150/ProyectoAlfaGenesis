@@ -14,42 +14,10 @@ import java.util.Collection;
 @Builder // para construir despues los objetos
 @AllArgsConstructor
 @NoArgsConstructor
-public class User /*implements UserDetails*/ {
+public class User {
      @NotNull(message = "El campo password no puede ser nulo")
-     int grade;
-     String group;
-     String name;
+     String id;
      String email;
-     String password;
-     Role role;
-     /*
-     @Override
-     public Collection<? extends GrantedAuthority> getAuthorities() {
-          return null;
-     }
-
-     @Override
-     public String getUsername() {
-          return getName();
-     }
-
-     @Override
-     public boolean isAccountNonExpired() {
-          return UserDetails.super.isAccountNonExpired();
-     }
-
-     @Override
-     public boolean isAccountNonLocked() {
-          return UserDetails.super.isAccountNonLocked();
-     }
-
-     @Override
-     public boolean isCredentialsNonExpired() {
-          return UserDetails.super.isCredentialsNonExpired();
-     }
-
-     @Override
-     public boolean isEnabled() {
-          return UserDetails.super.isEnabled();
-     }*/
+     Long noProfile;
+     //Role role;
 }

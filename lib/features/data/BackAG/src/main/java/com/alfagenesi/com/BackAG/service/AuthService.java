@@ -1,14 +1,15 @@
 package com.alfagenesi.com.BackAG.service;
 
 
-import com.alfagenesi.com.BackAG.model.Role;
+import com.alfagenesi.com.BackAG.model.Login;
+import com.alfagenesi.com.BackAG.model.Profile;
+import com.alfagenesi.com.BackAG.model.TemplateProfile;
 import com.alfagenesi.com.BackAG.model.User;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
@@ -17,24 +18,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
-    private static final String COLLECTION_NAME = "user";
 
-    public UserRecord add (User  user) throws FirebaseAuthException {
+    @Value("${apiKey}")
+    private String apiKey;
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
+    private Long noProfile;
+    private static final String COLLECTION_NAME = "user";
+    private static final String COLLECTION_PROFILE = "profile";
+    private static final String NUM_PROFILE = "noProfile";
+
+
+    public UserRecord add(Login user) throws FirebaseAuthException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = dbFirestore.collection("user")
+        ApiFuture<QuerySnapshot> future = dbFirestore.collection(COLLECTION_NAME)
                 .whereEqualTo("email", user.getEmail())
                 .get();
 
@@ -46,40 +56,93 @@ public class AuthService {
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException("Error al verificar la existencia del usuario", e);
         }
+        String id = UUID.randomUUID().toString();
+
         User data = User.builder()
-                .name(user.getName())
+                .id(id)
                 .email(user.getEmail())
-                .password(user.getPassword())
-                .grade(user.getGrade())
-                .group(user.getGroup())
-                .role(Role.USER)
+                .noProfile(0L)
                 .build();
 
-        String id = UUID.randomUUID().toString();
-        ApiFuture<WriteResult> collectionApiFuture = dbFirestore.collection("user")
+        ApiFuture<WriteResult> collectionApiFuture = dbFirestore.collection(COLLECTION_NAME)
                 .document(id).set(data);
 
         try {
-            // Esperar a que la escritura en Firestore se complete
             collectionApiFuture.get();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-
-       UserRecord.CreateRequest request =  new UserRecord.CreateRequest()
-               .setEmail(user.getEmail())
-               .setPassword(user.getPassword());
+        UserRecord.CreateRequest request = new UserRecord.CreateRequest()
+                .setEmail(user.getEmail())
+                .setPassword(user.getPassword());
         return FirebaseAuth.getInstance().createUser(request);
     }
 
-    public ResponseEntity<?> login( User request ) {
-        try {
-            UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(request.getEmail());
-            String customToken = String.valueOf(FirebaseAuth.getInstance().verifyIdToken(userRecord.getUid()));
-            return ResponseEntity.ok().body(customToken);
-        } catch (FirebaseAuthException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: " + e.getMessage());
-        }
-    }
+    public String login(Login request) throws JsonProcessingException {
+        String url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + apiKey;
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("email", request.getEmail());
+        payload.put("password", request.getPassword());
+        payload.put("returnSecureToken", true);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(payload, headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> responseMap = mapper.readValue(response.getBody(), Map.class);
+      //  String idToken = (String) responseMap.get("idToken");
+        return responseMap.toString();
+    }
+    public String createProfile(TemplateProfile request) {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = dbFirestore.collection(COLLECTION_NAME)
+                .whereEqualTo("email", request.getEmail())
+                .get();
+        try {
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            if (!documents.isEmpty()) {
+                QueryDocumentSnapshot document = documents.get(0);
+                request.setId(document.getId());
+
+                noProfile = document.getLong(NUM_PROFILE);
+
+                /*if (noProfile == null) {
+                    noProfile = 0L;
+                }*/
+                logger.info("num of profile",noProfile);
+                if(noProfile <= 5 ){
+                    noProfile +=1;
+                    ApiFuture<WriteResult> result = dbFirestore.collection(COLLECTION_NAME)
+                            .document(request.getId())
+                            .update(NUM_PROFILE,noProfile);
+                }
+                else {
+                    throw new RuntimeException("Excede el numero de perfiles");
+                }
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Error al verificar la existencia del usuario", e);
+        }
+
+        Profile data = new Profile();
+                data.setName(request.getName());
+                data.setGrado(request.getGrado());
+                data.setGrupo(request.getGrupo());
+                data.setImgUrl(request.getImgUrl());
+                data.setLevel(request.getLevel());
+             //   data.setNoProfile(noProfile);
+
+
+        dbFirestore.collection(COLLECTION_NAME).document(request.getId())
+                .collection(COLLECTION_PROFILE).document(data.getName()).set(data);
+
+        dbFirestore.collection(COLLECTION_NAME)
+                .document(request.getId())
+                .update("noProfile",noProfile);
+
+        return "Nuevo perfil";
+    }
 }

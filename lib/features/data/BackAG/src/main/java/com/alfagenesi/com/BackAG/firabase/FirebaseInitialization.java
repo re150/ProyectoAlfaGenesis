@@ -10,8 +10,8 @@ import com.google.firebase.FirebaseOptions;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class FirabaseInitialization {
-    public FirabaseInitialization() {
+public class FirebaseInitialization {
+    public FirebaseInitialization() {
     }
 
     @PostConstruct

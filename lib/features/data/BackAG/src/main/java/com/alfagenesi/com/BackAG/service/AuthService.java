@@ -93,8 +93,12 @@ public class AuthService {
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> responseMap = mapper.readValue(response.getBody(), Map.class);
-      //  String idToken = (String) responseMap.get("idToken");
-        return responseMap.toString();
+        Map<String, Object> responseEnd = new HashMap<>();
+
+        responseEnd.put("idToken",responseMap.get("idToken"));
+        responseEnd.put("email",responseMap.get("email"));
+
+        return responseEnd.toString();
     }
     public String createProfile(TemplateProfile request) {
         Firestore dbFirestore = FirestoreClient.getFirestore();
@@ -109,9 +113,6 @@ public class AuthService {
 
                 noProfile = document.getLong(NUM_PROFILE);
 
-                /*if (noProfile == null) {
-                    noProfile = 0L;
-                }*/
                 logger.info("num of profile",noProfile);
                 if(noProfile <= 5 ){
                     noProfile +=1;
@@ -133,7 +134,6 @@ public class AuthService {
                 data.setGrupo(request.getGrupo());
                 data.setImgUrl(request.getImgUrl());
                 data.setLevel(request.getLevel());
-             //   data.setNoProfile(noProfile);
 
 
         dbFirestore.collection(COLLECTION_NAME).document(request.getId())

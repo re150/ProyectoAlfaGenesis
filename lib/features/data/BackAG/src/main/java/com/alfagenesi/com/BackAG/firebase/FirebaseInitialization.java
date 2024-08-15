@@ -1,4 +1,4 @@
-package com.alfagenesi.com.BackAG.firabase;
+package com.alfagenesi.com.BackAG.firebase;
 
 import java.io.FileInputStream;
 import java.io.IOException;

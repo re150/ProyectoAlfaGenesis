@@ -1,6 +1,6 @@
 package com.alfagenesi.com.BackAG.config;
 
-import com.alfagenesi.com.BackAG.firabase.FirebaseTokenFilter;
+import com.alfagenesi.com.BackAG.firebase.FirebaseTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

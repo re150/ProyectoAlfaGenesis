@@ -4,8 +4,7 @@ import 'package:flutter/services.dart';
 
 
 class LeccionBubbles extends StatefulWidget {
-  final String backgroundImage;
-  const LeccionBubbles({super.key, required this.backgroundImage});
+  const LeccionBubbles({super.key});
 
   @override
   State<LeccionBubbles> createState() => _LeccionBubblesState();
@@ -42,6 +41,9 @@ class _LeccionBubblesState extends State<LeccionBubbles> with SingleTickerProvid
   @override
   void dispose() {
     _controller.dispose();
+    SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
     super.dispose();
   }
 
@@ -50,7 +52,7 @@ class _LeccionBubblesState extends State<LeccionBubbles> with SingleTickerProvid
     return Stack(
       children: [
         Positioned.fill(
-          child: Image.asset(widget.backgroundImage, fit: BoxFit.cover),
+          child: Image.asset("assets/OceanBG.jpg", fit: BoxFit.cover),
         ),
         ...List.generate(5, (index) {
           return AnimatedPositioned(

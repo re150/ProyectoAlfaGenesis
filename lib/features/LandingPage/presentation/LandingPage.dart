@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
+
 
 
 class LandingPage extends StatelessWidget {
@@ -49,39 +51,24 @@ class LandingPage extends StatelessWidget {
                       width: 200.0,
                       height: 200.0,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
+
+                    MyButton(
+                      text: "Entrar", 
+                      onTap: (){
                         Navigator.pushNamed(context, '/login');
                       },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(200, 50),
-                        backgroundColor: Colors.black,
                       ),
-                      child: const Text(
-                        'Entrar',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
+                    
                     const SizedBox(height: 40),
+
                     Align(
                       alignment: Alignment.center,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(200, 50),
-                          backgroundColor: Colors.white,
-                        ),
-                        child: const Text(
-                          'Crear Cuenta',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
+                      child: MyButton(
+                        text: "Crear Cuenta", 
+                        onTap: (){
+                          Navigator.pushNamed(context, 'accountCreation');
+                        }),
+                    ),   
                   ],
                 ),
               ),

@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionBricks.dart';
+import 'package:proyecto/features/LectionTemplate/presentation/LeccionBubbles.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class MyAccountCreationPage extends StatefulWidget {
+  const MyAccountCreationPage({super.key});
+
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<MyAccountCreationPage> createState() => _MyAccountCreationPageState();
 }
-class _LoginPageState extends State<LoginPage> {
+
+class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final int ruta = 0;
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-
     return Scaffold(
       body: SafeArea(
         
@@ -48,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           const SizedBox(height: 50),
 
-                          const Text("Iniciar Sesión",
+                          const Text("Crear Cuenta",
                             style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
@@ -77,21 +72,26 @@ class _LoginPageState extends State<LoginPage> {
 
                           const SizedBox(height: 20),
 
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {
-                              },
-                              child: const Text('Olvidé mi contraseña'),
+
+                          MyTextField(
+
+                            controller: passwordController, 
+                            hintText: "Confirmar Contraseña", 
+                            obscureText: true
+
                             ),
-                          ),
+
+                          const SizedBox(height: 20),
 
                           Align(
                             alignment: Alignment.center,
                             child: MyButton(
-                              text: "Entrar", 
+                              text: "Crear Cuenta", 
                               onTap: (){
-                                  Navigator.pushNamed(context, '/leccion', arguments: LeccionBricks()); //AQUI VA LA FUNCIONALIDAD DE LA DB GERA
+                                  Navigator.pushNamed(
+                                    context, '/leccion',
+                                    arguments: LeccionBubbles()
+                                    ); //AQUI VA LA FUNCIONALIDAD DE LA DB YAHIR
                                 },
                               ),
                           ),

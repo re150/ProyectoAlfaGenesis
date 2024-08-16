@@ -1,7 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionBricks.dart';
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionBubbles.dart';
 
 class LeccionDemo extends StatelessWidget {
   const LeccionDemo({
@@ -10,6 +7,7 @@ class LeccionDemo extends StatelessWidget {
 
  @override
 Widget build(BuildContext context) {
+  final Widget? leccion = ModalRoute.of(context)!.settings.arguments as Widget;
   return Scaffold(
     appBar: AppBar(
       title: const Text('Hola'),
@@ -24,10 +22,9 @@ Widget build(BuildContext context) {
         ),
       ],
     ),
-   body: Center(
-    child: LeccionBricks(
-      backgroundImage: 'assets/WallBricks.jpg',
-    )),
+    body: Center(
+      child: leccion,
+   ),
   );
   }
 }

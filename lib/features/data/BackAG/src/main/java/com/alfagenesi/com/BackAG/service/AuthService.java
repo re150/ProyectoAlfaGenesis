@@ -42,7 +42,7 @@ public class AuthService {
     private static final String NUM_PROFILE = "noProfile";
 
 
-    public UserRecord add(Login user) throws FirebaseAuthException {
+    public String add(Login user) throws FirebaseAuthException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = dbFirestore.collection(COLLECTION_NAME)
                 .whereEqualTo("email", user.getEmail())
@@ -75,7 +75,8 @@ public class AuthService {
         UserRecord.CreateRequest request = new UserRecord.CreateRequest()
                 .setEmail(user.getEmail())
                 .setPassword(user.getPassword());
-        return FirebaseAuth.getInstance().createUser(request);
+         FirebaseAuth.getInstance().createUser(request);
+         return "ok";
     }
 
     public String login(Login request) throws JsonProcessingException {
@@ -96,9 +97,8 @@ public class AuthService {
         Map<String, Object> responseEnd = new HashMap<>();
 
         responseEnd.put("idToken",responseMap.get("idToken"));
-        responseEnd.put("email",responseMap.get("email"));
-
-        return responseEnd.toString();
+        //responseEnd.put("email",responseMap.get("email"));
+        return mapper.writeValueAsString(responseEnd);
     }
     public String createProfile(TemplateProfile request) {
         Firestore dbFirestore = FirestoreClient.getFirestore();

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 
 class LeccionBricks extends StatefulWidget {
-  final String backgroundImage;
+
 
   const LeccionBricks({
     super.key, 
-    required this.backgroundImage,
   });
 
   @override
@@ -33,14 +33,14 @@ class _LeccionBricksState extends State<LeccionBricks> {
     ]);
   }
 
-  @override
+ @override
   void dispose() {
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeRight,
+    DeviceOrientation.landscapeLeft
+  ]);
     super.dispose();
   }
   @override
@@ -49,7 +49,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
       children: [
         Positioned.fill(
           child: Image.asset(
-            widget.backgroundImage,
+            'assets/WallBricks.jpg',
             fit: BoxFit.cover,
           ),
         ),
@@ -98,9 +98,9 @@ class _LeccionBricksState extends State<LeccionBricks> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(colors.length, (index) {
                 return DragTarget<String>(
-                  onAccept: (receivedItem){
+                  onAcceptWithDetails: (receivedItem){
                     setState(() {
-                      draggedOrder[index] = receivedItem;
+                      draggedOrder[index] = receivedItem.data;
                     });
                   },
                   builder: (context, acceptedItems, rejectedData) {
@@ -122,8 +122,11 @@ class _LeccionBricksState extends State<LeccionBricks> {
             ),
           ),
 
-          ElevatedButton(
-            onPressed: () {
+          MyButton(
+            text: 'Verificar',
+            colorB: Colors.blue,
+            colorT: Colors.white,
+            onTap: () {
               bool isCorerct = true;
               for(int i = 0; i<correctOrder.length; i++){
                 if(draggedOrder[i] != correctOrder[i]){
@@ -141,7 +144,6 @@ class _LeccionBricksState extends State<LeccionBricks> {
                 );
               }
             },
-            child: const Text('Verificar'),
           ),
         ],
       ),

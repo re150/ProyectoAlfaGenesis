@@ -16,7 +16,6 @@ public class FirebaseInitialization {
 
     @PostConstruct
     public void inicializtion() {
-
         try {
             FileInputStream serviceAccount = new FileInputStream("./servicesAccounKey.json");
             // serviceAccount = new FileInputStream("./servicesAccounKey.json");

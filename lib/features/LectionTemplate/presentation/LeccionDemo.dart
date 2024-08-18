@@ -1,17 +1,30 @@
-
 import 'package:flutter/material.dart';
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionBricks.dart';
 
 class LeccionDemo extends StatelessWidget {
-  const LeccionDemo({super.key});
+  const LeccionDemo({
+    super.key,
+  });
 
  @override
 Widget build(BuildContext context) {
-  return const Scaffold(
-   body: Center(
-    child: LeccionBricks(
-      backgroundImage: 'assets/Bricks.png',
-    )),
+  final Widget? leccion = ModalRoute.of(context)!.settings.arguments as Widget;
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Hola'),
+      backgroundColor: Colors.blue.withOpacity(0.8),
+      automaticallyImplyLeading: false,
+      centerTitle: true,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.volume_up),
+          onPressed: () {
+          },
+        ),
+      ],
+    ),
+    body: Center(
+      child: leccion,
+   ),
   );
   }
 }

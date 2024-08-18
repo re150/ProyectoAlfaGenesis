@@ -9,10 +9,7 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+ 
 
     return Scaffold(
       body: SafeArea(
@@ -54,6 +51,8 @@ class LandingPage extends StatelessWidget {
 
                     MyButton(
                       text: "Entrar", 
+                      colorB: Colors.black,
+                      colorT: Colors.white,
                       onTap: (){
                         Navigator.pushNamed(context, '/login');
                       },
@@ -65,8 +64,10 @@ class LandingPage extends StatelessWidget {
                       alignment: Alignment.center,
                       child: MyButton(
                         text: "Crear Cuenta", 
+                        colorB: Colors.black,
+                        colorT: Colors.white,
                         onTap: (){
-                          Navigator.pushNamed(context, 'accountCreation');
+                          Navigator.pushNamed(context, '/accountCreation');
                         }),
                     ),   
                   ],

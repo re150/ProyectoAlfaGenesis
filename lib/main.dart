@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:proyecto/features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
+import 'package:proyecto/features/ProfileCreation/presentation/MyProfileCreationPage.dart';
 import 'features/LectionTemplate/presentation/LeccionDemo.dart';
 import 'features/LoginPage/presentation/pages/LoginPage.dart';
 import 'features/LandingPage/presentation/LandingPage.dart';
 
 void main() {
-    WidgetsFlutterBinding.ensureInitialized();
-    SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]).then((_) {
     runApp(const MyApp());
-  });
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +21,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => const LandingPage(),
         '/login': (context) => const LoginPage(),
         '/leccion': (context) => LeccionDemo(),
-        'accountCreation': (context) => const MyAccountCreationPage(),
+        '/accountCreation': (context) => const MyAccountCreationPage(),
+        '/profileCreation': (context) => const MyProfilecreationpage(),
       },
       debugShowCheckedModeBanner: false,
     );

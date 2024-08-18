@@ -10,6 +10,7 @@ class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
+
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -17,83 +18,84 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-
+  
     return Scaffold(
       body: SafeArea(
-        
-        child: Container(
-
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/bg.jpg'), 
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+        child: Center(
+          child: ListView(
+            children: [
+              Row(
                 children: [
                   Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height / 2,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(100)),
+                      image: DecorationImage(
+                        image: AssetImage('assets/bg.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                     
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height / 2,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8), 
-                      borderRadius: BorderRadius.circular(10), 
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(18.0),
-                      child: Column(
+                      child: ListView(
                         children: [
                           const SizedBox(height: 50),
-
-                          const Text("Iniciar Sesión",
+                          const Text(
+                            "Iniciar Sesión",
                             style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-
                           const SizedBox(height: 50),
-                          
                           MyTextField(
-
-                            controller: emailController, 
-                            hintText: "Ingresar Correo", 
-                            obscureText: false
-                            
-                            ),
-
+                              controller: emailController,
+                              hintText: "Ingresar Correo",
+                              obscureText: false),
                           const SizedBox(height: 20),
-
                           MyTextField(
-
-                            controller: passwordController, 
-                            hintText: "Ingresar Contraseña", 
-                            obscureText: true
-
-                            ),
-
+                              controller: passwordController,
+                              hintText: "Ingresar Contraseña",
+                              obscureText: true),
                           const SizedBox(height: 20),
-
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  "/profileCreation",
+                                );
                               },
                               child: const Text('Olvidé mi contraseña'),
                             ),
                           ),
-
                           Align(
                             alignment: Alignment.center,
                             child: MyButton(
-                              text: "Entrar", 
-                              onTap: (){
-                                  Navigator.pushNamed(context, '/leccion', arguments: LeccionBricks()); //AQUI VA LA FUNCIONALIDAD DE LA DB GERA
-                                },
-                              ),
+                              text: "Entrar",
+                              colorB: Colors.black,
+                              colorT: Colors.white,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                context, '/leccion',
+                                arguments: LeccionBricks()); //AQUI VA LA FUNCIONALIDAD DE LA DB GERA
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -101,9 +103,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-            ),
+            ],
           ),
         ),
+      ),
     );
   }
 }

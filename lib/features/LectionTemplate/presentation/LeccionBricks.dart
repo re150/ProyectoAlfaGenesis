@@ -33,11 +33,14 @@ class _LeccionBricksState extends State<LeccionBricks> {
     ]);
   }
 
-  @override
+ @override
   void dispose() {
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeRight,
+    DeviceOrientation.landscapeLeft
+  ]);
     super.dispose();
   }
   @override
@@ -97,7 +100,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
                 return DragTarget<String>(
                   onAcceptWithDetails: (receivedItem){
                     setState(() {
-                      draggedOrder[index] = receivedItem as String;
+                      draggedOrder[index] = receivedItem.data;
                     });
                   },
                   builder: (context, acceptedItems, rejectedData) {
@@ -121,6 +124,8 @@ class _LeccionBricksState extends State<LeccionBricks> {
 
           MyButton(
             text: 'Verificar',
+            colorB: Colors.blue,
+            colorT: Colors.white,
             onTap: () {
               bool isCorerct = true;
               for(int i = 0; i<correctOrder.length; i++){

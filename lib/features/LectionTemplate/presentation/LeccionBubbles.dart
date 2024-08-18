@@ -43,6 +43,9 @@ class _LeccionBubblesState extends State<LeccionBubbles> with SingleTickerProvid
     _controller.dispose();
     SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeRight,
+    DeviceOrientation.landscapeLeft
   ]);
     super.dispose();
   }

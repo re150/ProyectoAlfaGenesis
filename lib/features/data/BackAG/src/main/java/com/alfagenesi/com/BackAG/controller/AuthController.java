@@ -25,7 +25,7 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/SignUp") // ResponseEntity representa todas las respuestas
+    @PostMapping("/signUp")
     public ResponseEntity<?> signup(@Valid @RequestBody Login request) throws FirebaseAuthException {
         return ResponseEntity.ok(authService.add(request));
     }

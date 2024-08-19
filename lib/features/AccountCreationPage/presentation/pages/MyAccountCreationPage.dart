@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/features/LectionTemplate/presentation/LeccionBubbles.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
@@ -27,7 +28,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
     }
 
    Future<void> newAccount(String email, String password, String confirmPassword) async {
-    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     if (!emailRegex.hasMatch(email)) {
       print('Correo no válido');
       clearFields();
@@ -50,7 +51,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
   
   try {
     final response = await http.post(
-      Uri.parse('http://192.168.100.7:8080/api/signUp'), 
+      Uri.parse('http://$ipAdress:$port/api/signUp'), 
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -62,7 +63,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
 
     if (response.statusCode == 200) {
       final login = await http.post(
-      Uri.parse('http://192.168.100.7:8080/api/login'), 
+      Uri.parse('http://$ipAdress:$port/api/login'), 
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -71,7 +72,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
             "password": password,
           }),
           );
-    if (response.statusCode == 200) {
+    if (login.statusCode == 200) {
       final responseBody = jsonDecode(login.body);
        data = responseBody;
        data['email'] = email;
@@ -157,8 +158,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
                               onTap: () {
                                 newAccount(emailController.text, passwordController.text, passwordAuthController.text);
                                 if(data.isNotEmpty){
-                                  Navigator.pushNamed(context, '/leccion',
-                                      arguments:MyProfilecreationpage());
+                                  Navigator.pushNamed(context, '/profileCreation');
                                   } else {                                
                                   clearFields();
                                 }

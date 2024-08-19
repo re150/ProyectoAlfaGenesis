@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/features/LectionTemplate/presentation/LeccionBricks.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,7 +17,44 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final int ruta = 0;
+
+  Map<String, dynamic> data = {};
+
+  Future<void> login(String email, String password) async {
+    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (!emailRegex.hasMatch(email)) {
+      print('Correo no válido');
+      return;
+    }
+
+    if (password.length < 8) {
+      print('La contraseña debe tener al menos 8 caracteres');
+      return;
+    }
+
+    try {
+      final response = await http.post(
+        Uri.parse('http://$ipAdress:$port/api/login'),
+        headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+            "email":email,
+            "password": password,
+          }),
+          );
+
+      if (response.statusCode == 200) {
+        data = jsonDecode(response.body);
+        data['email'] = email;
+      } else {
+        print('Error');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +131,13 @@ class _LoginPageState extends State<LoginPage> {
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
-                                Navigator.pushNamed(
-                                context, '/leccion',
-                                arguments: LeccionBricks()); //AQUI VA LA FUNCIONALIDAD DE LA DB GERA
+                                login(emailController.text, passwordController.text);
+                                if(data.isNotEmpty){
+                                  Navigator.pushNamed(context, '/profileCreation');
+                                } else {
+                                  emailController.clear();
+                                  passwordController.clear();
+                                }
                               },
                             ),
                           ),

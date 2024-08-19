@@ -47,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
       if (response.statusCode == 200) {
         data = jsonDecode(response.body);
         data['email'] = email;
+        Navigator.pushNamed(context, '/profileCreation');
       } else {
         print('Error');
       }
@@ -132,12 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                               colorT: Colors.white,
                               onTap: () {
                                 login(emailController.text, passwordController.text);
-                                if(data.isNotEmpty){
-                                  Navigator.pushNamed(context, '/profileCreation');
-                                } else {
-                                  emailController.clear();
-                                  passwordController.clear();
-                                }
+                                
                               },
                             ),
                           ),

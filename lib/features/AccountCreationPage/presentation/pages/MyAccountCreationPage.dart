@@ -76,7 +76,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
       final responseBody = jsonDecode(login.body);
        data = responseBody;
        data['email'] = email;
-       print(data);
+        Navigator.pushNamed(context, '/profileCreation');
     } else{
       print('Error al iniciar session: ${response.statusCode}');
       clearFields();
@@ -157,11 +157,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
                               colorT: Colors.white,
                               onTap: () {
                                 newAccount(emailController.text, passwordController.text, passwordAuthController.text);
-                                if(data.isNotEmpty){
-                                  Navigator.pushNamed(context, '/profileCreation');
-                                  } else {                                
-                                  clearFields();
-                                }
+
                               },
                             ),
                           ),

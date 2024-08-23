@@ -8,10 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/next/alfa")
@@ -26,6 +23,10 @@ public class WindosController {
     @PostMapping("/NewProfile")
     public ResponseEntity<?> newProfile (@RequestBody TemplateProfile request){
         return ResponseEntity.ok(authService.createProfile(request));
+    }
+    @GetMapping("/showProfile/{email}")
+    public  ResponseEntity<?> showProfile(@PathVariable String email) throws JsonProcessingException {
+        return ResponseEntity.ok(authService.showProfiles(email));
     }
 
 }

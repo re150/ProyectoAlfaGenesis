@@ -14,6 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.gson.Gson;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +25,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -97,7 +97,6 @@ public class AuthService {
         Map<String, Object> responseEnd = new HashMap<>();
 
         responseEnd.put("idToken",responseMap.get("idToken"));
-        //responseEnd.put("email",responseMap.get("email"));
         return mapper.writeValueAsString(responseEnd);
     }
     public String createProfile(TemplateProfile request) {
@@ -145,4 +144,49 @@ public class AuthService {
 
         return "Nuevo perfil";
     }
+
+    public String showProfiles(String request){
+        List<Profile> userProfiles = new ArrayList<>();
+        String userId = getProfileIdByEmail(request);
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+
+
+        ApiFuture<QuerySnapshot> future = dbFirestore.collection(COLLECTION_NAME)
+                .document(userId)
+                .collection(COLLECTION_PROFILE)
+                .get();
+
+        try {
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            for (QueryDocumentSnapshot document : documents) {
+                Profile profile = document.toObject(Profile.class);
+                userProfiles.add(profile);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Error al obtener los perfiles del usuario", e);
+        }
+
+        Gson gson = new Gson();
+        return gson.toJson(userProfiles);
+    }
+
+    private String getProfileIdByEmail(String email) {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        Query query = dbFirestore.collection(COLLECTION_NAME)
+                .whereEqualTo("email", email);
+
+        ApiFuture<QuerySnapshot> future = query.get();
+
+        try {
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            if (!documents.isEmpty()) {
+                return documents.get(0).getId();
+            } else {
+                throw new RuntimeException("No profile found with the given email.");
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Error fetching profile ID", e);
+        }
+    }
+
 }

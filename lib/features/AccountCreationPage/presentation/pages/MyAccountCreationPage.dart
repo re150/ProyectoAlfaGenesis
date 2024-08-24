@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionBubbles.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
 
@@ -80,9 +79,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
-                                Navigator.pushNamed(context, '/leccion',
-                                    arguments:
-                                        LeccionBubbles()); //AQUI VA LA FUNCIONALIDAD DE LA DB YAHIR
+                                Navigator.pushNamed(context, '/profileCreation'); 
                               },
                             ),
                           ),

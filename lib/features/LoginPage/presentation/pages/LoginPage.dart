@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:proyecto/features/LectionTemplate/presentation/LeccionBricks.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
@@ -78,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 Navigator.pushNamed(
                                   context,
-                                  "/profileCreation",
+                                  "/profileSelection",
                                 );
                               },
                               child: const Text('Olvidé mi contraseña'),

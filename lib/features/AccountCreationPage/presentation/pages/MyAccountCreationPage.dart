@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/features/LectionTemplate/presentation/LeccionBubbles.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
@@ -7,6 +8,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:proyecto/features/ProfileCreation/presentation/MyProfileCreationPage.dart';
+=======
+import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
+import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
+>>>>>>> visual
 
 class MyAccountCreationPage extends StatefulWidget {
   const MyAccountCreationPage({super.key});
@@ -18,6 +23,7 @@ class MyAccountCreationPage extends StatefulWidget {
 class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+<<<<<<< HEAD
   final TextEditingController passwordAuthController = TextEditingController();
    Map<String, dynamic> data = {};
   
@@ -89,6 +95,8 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
     clearFields();
   }
 }
+=======
+>>>>>>> visual
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +153,11 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
                               obscureText: true),
                           const SizedBox(height: 20),
                           MyTextField(
+<<<<<<< HEAD
                               controller: passwordAuthController,
+=======
+                              controller: passwordController,
+>>>>>>> visual
                               hintText: "Confirmar Contraseña",
                               obscureText: true),
                           const SizedBox(height: 20),
@@ -156,8 +168,12 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
+<<<<<<< HEAD
                                 newAccount(emailController.text, passwordController.text, passwordAuthController.text);
 
+=======
+                                Navigator.pushNamed(context, '/profileCreation'); 
+>>>>>>> visual
                               },
                             ),
                           ),

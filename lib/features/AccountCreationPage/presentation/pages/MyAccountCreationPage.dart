@@ -155,6 +155,10 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
                               colorT: Colors.white,
                               onTap: () {
                                 newAccount(emailController.text, passwordController.text, passwordAuthController.text);
+<<<<<<< HEAD
+=======
+
+>>>>>>> visual
                               },
                             ),
                           ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:proyecto/core/resources/constants.dart';
+=======
+>>>>>>> visual
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
 import 'package:proyecto/features/ProfileCreation/widgets/MyDropDownMenu.dart';
@@ -7,7 +10,18 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class MyProfileCreationPage extends StatefulWidget {
+<<<<<<< HEAD
    Map<String, dynamic>? user;
+=======
+  final Map<String, dynamic> user;
+  
+  const MyProfileCreationPage(
+    {
+      required this.user,
+      super.key
+    }
+    );
+>>>>>>> visual
 
    MyProfileCreationPage(
     {
@@ -170,7 +184,14 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
                                   _gradoSeleccionado != null 
                                 && _grupoSeleccionado != null 
                                 && nombreUsuariocontroller.text.isNotEmpty){
+<<<<<<< HEAD
                                   newProfile(nombreUsuariocontroller.text, _gradoSeleccionado!, _grupoSeleccionado!);
+=======
+                                  
+                                  print("Nombre de Usuario: ${nombreUsuariocontroller.text}");
+                                  print("Grado: $_gradoSeleccionado");
+                                  print("Grupo: $_grupoSeleccionado");
+>>>>>>> visual
                                 }
                               },
                               colorB: Colors.black,

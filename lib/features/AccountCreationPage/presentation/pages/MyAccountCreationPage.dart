@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:proyecto/provider/GlobalVariables.dart';
 
 
 class MyAccountCreationPage extends StatefulWidget {
@@ -90,6 +93,8 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final globalState = Provider.of<GlobalState>(context);
+
     return Scaffold(
       body: SafeArea(
         child: Center(

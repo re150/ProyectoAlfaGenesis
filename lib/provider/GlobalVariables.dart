@@ -6,7 +6,7 @@ class GlobalState with ChangeNotifier {
   Map<String, dynamic>? get globalValue => token;
 
   set globalValue(Map<String, dynamic>? value) {
-    token;
+    token = value;
     notifyListeners();
   }
 }

@@ -4,7 +4,14 @@ import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dar
 import 'package:proyecto/features/ProfileCreation/widgets/MyDropDownMenu.dart';
 
 class MyProfileCreationPage extends StatefulWidget {
-  const MyProfileCreationPage({super.key});
+  final Map<String, dynamic> user;
+  
+  const MyProfileCreationPage(
+    {
+      required this.user,
+      super.key
+    }
+    );
 
   @override
   State<MyProfileCreationPage> createState() => _MyProfileCreationPageState();
@@ -117,7 +124,11 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
                             child: MyButton(
                               text: "Crear Perfil",
                               onTap: (){                                //Aqui va la funcionalidad de la BD
-                                if(_gradoSeleccionado != null && _grupoSeleccionado != null && nombreUsuariocontroller.text.isNotEmpty){
+                                if(
+                                  _gradoSeleccionado != null 
+                                && _grupoSeleccionado != null 
+                                && nombreUsuariocontroller.text.isNotEmpty){
+                                  
                                   print("Nombre de Usuario: ${nombreUsuariocontroller.text}");
                                   print("Grado: $_gradoSeleccionado");
                                   print("Grupo: $_grupoSeleccionado");

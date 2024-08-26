@@ -4,9 +4,9 @@ import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dar
 import 'package:proyecto/features/ProfileCreation/widgets/MyDropDownMenu.dart';
 
 class MyProfileCreationPage extends StatefulWidget {
-  final Map<String, dynamic> user;
-  
-  const MyProfileCreationPage(
+   Map<String, dynamic>? user;
+
+   MyProfileCreationPage(
     {
       required this.user,
       super.key
@@ -21,8 +21,16 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
   final TextEditingController nombreUsuariocontroller = TextEditingController();
   final List<String> _grupos = ["A", "B", "C"];
   final List<String> _grados = ["1", "2", "3"];
+  
+
   String? _gradoSeleccionado;
   String? _grupoSeleccionado;
+
+   @override
+  void initState() {
+    super.initState();
+    widget.user = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  }
 
   @override
   Widget build(BuildContext context) {

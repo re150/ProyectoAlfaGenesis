@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/leccion': (context) => LeccionDemo(),
         '/accountCreation': (context) => const MyAccountCreationPage(),
-        '/profileCreation': (context) => const MyProfileCreationPage(),
+        '/profileCreation': (context) =>  MyProfileCreationPage(user: {}),
         '/profileSelection': (context) => const MyProfileSelectionPage(),
       },
       debugShowCheckedModeBanner: false,

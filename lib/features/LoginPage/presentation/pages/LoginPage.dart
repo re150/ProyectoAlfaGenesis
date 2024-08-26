@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:proyecto/core/resources/constants.dart';
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionBricks.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
 import 'package:http/http.dart' as http;
@@ -56,7 +54,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  final int ruta = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 Navigator.pushNamed(
                                   context,
-                                  "/profileSelection",
+                                  "/profileCreation",
                                 );
                               },
                               child: const Text('Olvidé mi contraseña'),
@@ -133,7 +130,8 @@ class _LoginPageState extends State<LoginPage> {
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
-                                login(emailController.text, passwordController.text);                      
+                                login(emailController.text, passwordController.text);
+                                
                               },
                             ),
                           ),

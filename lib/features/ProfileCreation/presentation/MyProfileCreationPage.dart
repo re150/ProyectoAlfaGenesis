@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
 import 'package:proyecto/features/ProfileCreation/widgets/MyDropDownMenu.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MyProfileCreationPage extends StatefulWidget {
-  const MyProfileCreationPage({super.key});
+   Map<String, dynamic>? user;
 
+   MyProfileCreationPage(
+    {
+      required this.user,
+      super.key
+    }
+    );
   @override
   State<MyProfileCreationPage> createState() => _MyProfileCreationPageState();
 }
@@ -16,6 +25,46 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
   final List<String> _grados = ["1", "2", "3"];
   String? _gradoSeleccionado;
   String? _grupoSeleccionado;
+  late String jwtToken;
+  late String email;
+
+  @override
+  void initState() {
+    super.initState();
+     widget.user = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  }
+ 
+ 
+  Future<void> newProfile(String name ,String grado, String grupo) async {
+         int parsedGrado = int.parse(grado);
+  
+      try {
+      final response = await http.post(
+        Uri.parse('http://$ipAdress:$port/next/alfa/NewProfile'),
+        headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+            "name": name,
+            "level" : 1,
+            "grado": parsedGrado,
+            "grupo": grupo,
+            "imgUrl" :" kml",
+            "email" : email,
+          }),
+          );
+
+      if (response.statusCode == 200) {
+        Navigator.pushNamed(context, '/profileSelection');
+      } else {
+        print('Error');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -117,10 +166,11 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
                             child: MyButton(
                               text: "Crear Perfil",
                               onTap: (){                                //Aqui va la funcionalidad de la BD
-                                if(_gradoSeleccionado != null && _grupoSeleccionado != null && nombreUsuariocontroller.text.isNotEmpty){
-                                  print("Nombre de Usuario: ${nombreUsuariocontroller.text}");
-                                  print("Grado: $_gradoSeleccionado");
-                                  print("Grupo: $_grupoSeleccionado");
+                                if(
+                                  _gradoSeleccionado != null 
+                                && _grupoSeleccionado != null 
+                                && nombreUsuariocontroller.text.isNotEmpty){
+                                  newProfile(nombreUsuariocontroller.text, _gradoSeleccionado!, _grupoSeleccionado!);
                                 }
                               },
                               colorB: Colors.black,

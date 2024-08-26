@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto/core/resources/constants.dart';
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionBubbles.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:proyecto/features/ProfileCreation/presentation/MyProfileCreationPage.dart';
 
 class MyAccountCreationPage extends StatefulWidget {
   const MyAccountCreationPage({super.key});
@@ -76,7 +74,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
       final responseBody = jsonDecode(login.body);
        data = responseBody;
        data['email'] = email;
-        Navigator.pushNamed(context, '/profileCreation');
+       Navigator.pushNamed(context, '/profileCreation', arguments: data);
     } else{
       print('Error al iniciar session: ${response.statusCode}');
       clearFields();

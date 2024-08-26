@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:flutter/services.dart';
 import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/features/LectionTemplate/presentation/LeccionBricks.dart';
@@ -7,11 +6,6 @@ import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-=======
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionBricks.dart';
-import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
-import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
->>>>>>> visual
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,7 +17,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-<<<<<<< HEAD
 
   Map<String, dynamic> data = {};
 
@@ -63,9 +56,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-=======
   final int ruta = 0;
->>>>>>> visual
 
   @override
   Widget build(BuildContext context) {
@@ -129,11 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 Navigator.pushNamed(
                                   context,
-<<<<<<< HEAD
-                                  "/profileCreation",
-=======
                                   "/profileSelection",
->>>>>>> visual
                                 );
                               },
                               child: const Text('Olvidé mi contraseña'),
@@ -146,14 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
-<<<<<<< HEAD
-                                login(emailController.text, passwordController.text);
-                                
-=======
-                                Navigator.pushNamed(
-                                context, '/leccion',
-                                arguments: LeccionBricks()); //AQUI VA LA FUNCIONALIDAD DE LA DB GERA
->>>>>>> visual
+                                login(emailController.text, passwordController.text);                      
                               },
                             ),
                           ),

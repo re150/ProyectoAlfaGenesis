@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class MyAccountCreationPage extends StatefulWidget {
   const MyAccountCreationPage({super.key});
@@ -12,6 +16,77 @@ class MyAccountCreationPage extends StatefulWidget {
 class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordAuthController = TextEditingController();
+   Map<String, dynamic> data = {};
+  
+    void clearFields() {
+      emailController.clear();
+      passwordController.clear();
+      passwordAuthController.clear();
+    }
+
+   Future<void> newAccount(String email, String password, String confirmPassword) async {
+    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (!emailRegex.hasMatch(email)) {
+      print('Correo no válido');
+      clearFields();
+      return;
+    }
+
+    
+    if (password.length < 8) {
+      print('La contraseña debe tener al menos 8 caracteres');
+      clearFields();
+      return;
+    }
+
+
+    if (password != confirmPassword) {
+      print('Las contraseñas no coinciden');
+      clearFields();
+      return;
+    }
+  
+  try {
+    final response = await http.post(
+      Uri.parse('http://$ipAdress:$port/api/signUp'), 
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+            "email":email,
+            "password": password,
+          }),
+          );
+
+    if (response.statusCode == 200) {
+      final login = await http.post(
+      Uri.parse('http://$ipAdress:$port/api/login'), 
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+            "email":email,
+            "password": password,
+          }),
+          );
+    if (login.statusCode == 200) {
+      final responseBody = jsonDecode(login.body);
+       data = responseBody;
+       data['email'] = email;
+        Navigator.pushNamed(context, '/profileCreation');
+    } else{
+      print('Error al iniciar session: ${response.statusCode}');
+      clearFields();
+    }   
+    } else {
+      print('Error al crear el usuario: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Ocurrió un error: $e');
+    clearFields();
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +143,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
                               obscureText: true),
                           const SizedBox(height: 20),
                           MyTextField(
-                              controller: passwordController,
+                              controller: passwordAuthController,
                               hintText: "Confirmar Contraseña",
                               obscureText: true),
                           const SizedBox(height: 20),
@@ -79,7 +154,8 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
-                                Navigator.pushNamed(context, '/profileCreation'); 
+                                newAccount(emailController.text, passwordController.text, passwordAuthController.text);
+
                               },
                             ),
                           ),

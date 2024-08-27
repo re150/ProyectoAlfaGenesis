@@ -130,7 +130,13 @@ class _LoginPageState extends State<LoginPage> {
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
-                                login(emailController.text, passwordController.text);
+                                //login(emailController.text, passwordController.text);
+                                if(emailController.text=="admin"){
+                                  Navigator.pushNamed(context, '/profileEdition');
+                                }
+                                else{
+                                  Navigator.pushNamed(context, '/profileSelection');
+                                }
                                 
                               },
                             ),

@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:proyecto/features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
 import 'package:proyecto/features/ProfileCreation/presentation/MyProfileCreationPage.dart';
-import 'package:proyecto/features/ProfileSelection/presentation/MyProfileSelectiontionPage.dart';
+import 'package:proyecto/features/ProfileEdition/presentation/MyProfileEditiontionPage.dart';
+import 'package:proyecto/features/ProfileSelection/presentation/MyPrrofileSelectionPage.dart';
+import 'package:proyecto/provider/GlobalVariables.dart';
 import 'features/LectionTemplate/presentation/LeccionDemo.dart';
 import 'features/LoginPage/presentation/pages/LoginPage.dart';
 import 'features/LandingPage/presentation/LandingPage.dart';
 
 void main() {
-    runApp(const MyApp());
+    runApp(
+    ChangeNotifierProvider(
+      create: (context) => GlobalState(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -23,7 +31,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/leccion': (context) => LeccionDemo(),
         '/accountCreation': (context) => const MyAccountCreationPage(),
-        '/profileCreation': (context) => MyProfileCreationPage(user: {}),
+        '/profileCreation': (context) => MyProfileCreationPage(/*user: {}*/),
+        '/profileEdition': (context) => const MyProfileEditionPage(),
         '/profileSelection': (context) => const MyProfileSelectionPage(),
       },
       debugShowCheckedModeBanner: false,

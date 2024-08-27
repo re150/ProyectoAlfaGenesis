@@ -4,11 +4,11 @@ import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dar
 import 'package:proyecto/features/ProfileCreation/widgets/MyDropDownMenu.dart';
 
 class MyProfileCreationPage extends StatefulWidget {
-   Map<String, dynamic>? user;
+   //Map<String, dynamic>? user;
 
    MyProfileCreationPage(
     {
-      required this.user,
+      //required this.user,
       super.key
     }
     );
@@ -29,7 +29,7 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
    @override
   void initState() {
     super.initState();
-    widget.user = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+   // widget.user = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
   }
 
   @override

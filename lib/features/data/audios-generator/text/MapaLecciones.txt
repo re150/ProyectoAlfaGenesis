@@ -1,0 +1,1 @@
+Mapa de lecciones. Toca el botón de comenzar para elegir las lecciones. Desliza hacia la izquierda en cada fila para ver más lecciones. También puedes deslizar hacia abajo para ver más lecciones.

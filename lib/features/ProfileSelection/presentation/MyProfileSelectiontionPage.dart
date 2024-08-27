@@ -31,7 +31,6 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
     'assets/WallBricks.jpg',
   ];
   String selectedImage = 'assets/cat.png';
-  
   @override
   void initState() {
     super.initState();

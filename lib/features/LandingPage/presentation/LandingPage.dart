@@ -1,11 +1,4 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-import 'package:flutter/services.dart';
->>>>>>> back-End
->>>>>>> visual
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 
 

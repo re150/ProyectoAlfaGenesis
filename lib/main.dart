@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:proyecto/features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
 import 'package:proyecto/features/ProfileCreation/presentation/MyProfileCreationPage.dart';
 import 'package:proyecto/features/ProfileSelection/presentation/MyProfileSelectiontionPage.dart';
+import 'package:proyecto/provider/AuthProvider.dart';
 import 'features/LectionTemplate/presentation/LeccionDemo.dart';
 import 'features/LoginPage/presentation/pages/LoginPage.dart';
 import 'features/LandingPage/presentation/LandingPage.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-    runApp(const MyApp());
+    runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -23,11 +32,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/leccion': (context) => LeccionDemo(),
         '/accountCreation': (context) => const MyAccountCreationPage(),
-<<<<<<< HEAD
-        '/profileCreation': (context) =>  MyProfileCreationPage(user: {}),
-=======
-        '/profileCreation': (context) => MyProfileCreationPage(user: {},),
->>>>>>> visual
+        '/profileCreation': (context) => MyProfileCreationPage(),
         '/profileSelection': (context) => const MyProfileSelectionPage(),
       },
       debugShowCheckedModeBanner: false,

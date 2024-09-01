@@ -9,6 +9,8 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..
 # Path to save audio files relative to the project root
 audio_dir = os.path.join(project_root, 'assets', 'audio')
 
+text_dir = os.path.join(project_root, 'lib', 'features', 'data', 'audios-generator', 'text')
+
 # Ensure the audio directory exists
 os.makedirs(audio_dir, exist_ok=True)
 
@@ -21,47 +23,52 @@ def convert_text_to_mp3(text):
     tts.save(os.path.join(audio_dir, f"{text}.mp3"))
     print("Audio file saved successfully for:", text)
 
-# Function to convert all text files in the "text" folder to MP3
 def convert_all_text_files():
-    # Assuming the 'text' directory is in the same location as the script
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    text_dir = os.path.join(script_dir, 'text')
+    # Initialize an empty list to store the paths of all text files
+    text_files = []
 
-    # Get the list of files in the "text" folder
-    text_files = os.listdir(text_dir)
+    # Recursively traverse all subdirectories of the text directory
+    for root, dirs, files in os.walk(text_dir):
+        # Iterate over each file in the current directory
+        for file in files:
+            # Check if the file has a .txt extension
+            if file.endswith('.txt'):
+                # Construct the full path of the text file
+                file_path = os.path.join(root, file)
+                # Append the file path to the list
+                text_files.append(file_path)
 
-    for text_file in text_files:
-        # Read the text file with proper encoding to handle accents
-        with open(os.path.join(text_dir, text_file), 'r', encoding='utf-8') as file:
-            text = file.read()
+    print(text_files)
+    
+    # Convert each text file to MP3 and save it in the audio directory
+    for file_path in text_files:
+        # Get the relative path of the text file
+        relative_path = os.path.relpath(file_path, text_dir)
+        print("Relative path:", file_path)
+        # Construct the destination path in the audio directory
+        destination_path = os.path.join(audio_dir, relative_path)
+        # Change the file extension to .mp3
+        destination_path = os.path.splitext(destination_path)[0] + '.mp3'
+        # Create the directory structure if it doesn't exist
+        os.makedirs(os.path.dirname(destination_path), exist_ok=True)
+        # Convert the text file to MP3 and save it in the destination path
+        convert_text_to_mp3(file_path, destination_path)
+        print("MP3 file created successfully for:", file_path)
 
-        # Remove the file extension from the text file name
-        output_file = os.path.splitext(text_file)[0]
+def convert_text_to_mp3(source_path, destination_path):
+    # Read the text from the source file
+    with open(source_path, 'r', encoding='utf-8') as file:
+        text = file.read()
 
-        # Create a gTTS object
-        tts = gTTS(text=text, lang=language, slow=False)
+    # Create a gTTS object
+    tts = gTTS(text=text, lang=language, slow=False)
 
-        # Save the audio as an .mp3 file in the specified directory
-        tts.save(os.path.join(audio_dir, f"{output_file}.mp3"))
-        print("Audio file saved successfully for:", text_file)
+    # Save the audio as an .mp3 file in the specified directory
+    tts.save(destination_path)
 
-def delete_audio_files():
-    # Delete all audio files in the audio directory
-    for file_name in os.listdir(audio_dir):
-        file_path = os.path.join(audio_dir, file_name)
-        if os.path.isfile(file_path) and file_name.endswith('.mp3'):
-            os.remove(file_path)
-    print("All audio files deleted successfully.")
+# Check if the audio directory exists and create it if it doesn't
+if not os.path.exists(audio_dir):
+    os.makedirs(audio_dir)
 
-# Prompt the user for their choice
-choice = input("Enter: \n'1' to convert a specific text to MP3\n'2' to convert all text files\n'3' Delete all audio files\n:")
-
-if choice == '1':
-    text = input("Enter the text you want to convert to MP3: ")
-    convert_text_to_mp3(text)
-elif choice == '2':
-    convert_all_text_files()
-elif choice == '3':
-    delete_audio_files()
-else:
-    print("Invalid choice. Please try again.")
+# Call the function to convert all text files to MP3
+convert_all_text_files()

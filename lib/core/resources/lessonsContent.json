@@ -5,7 +5,8 @@
                 "etapas": { 
                     "etapa1": {
                             "lessonType": "blocks",
-                            "audioInstructionsUrl": "assets/audio/lesson1/blocks.mp3",
+                            "audioInstructionsUrl": "assets/audio/VoiceHelp/LeccionBloques.mp3",
+                            "backgroundMusic": "assets/audio/music/blocks.mp3",
                             "Material": {
                                 "textWords": [
                                     "Mu",
@@ -13,14 +14,15 @@
                                     "Ca"
                                 ],
                                 "AudioTextWords": [
-                                    "assets/audio/lesson1/muñeca.mp3"
+                                    "assets/audio/lessons/lesson1/munieca.mp3"
                                 ],
-                                "AnswerImageUrl": "assets/images/lesson1/muñeca.jpg"
+                                "AnswerImageUrl": "assets/images/lesson1/munieca.jpg"
                             }
                     },
                     "etapa2": {
                         "lessonType": "blocks",
-                        "audioInstructionsUrl": "assets/audio/lesson1/blocks.mp3",
+                        "audioInstructionsUrl": "assets/audio/VoiceHelp/LeccionBloques.mp3",
+                        "backgroundMusic": "assets/audio/music/blocks.mp3",
                         "Material": {
                             "textWords": [
                                 "Mi",
@@ -29,28 +31,30 @@
                                 "No"
                             ],
                             "AudioTextWords": [
-                                "assets/audio/lesson1/microfono.mp3"
+                                "assets/audio/lessons/lesson1/microfono.mp3"
                             ],
                             "AnswerImageUrl": "assets/images/lesson1/microfono.jpg"
                         }
                     },
                     "etapa3": {
                         "lessonType": "blocks",
-                        "audioInstructionsUrl": "assets/audio/lesson1/blocks.mp3",
+                        "audioInstructionsUrl": "assets/audio/VoiceHelp/LeccionBloques.mp33",
+                        "backgroundMusic": "assets/audio/music/blocks.mp3",
                         "Material": {
                             "textWords": [
                                 "Me",
                                 "Sa"
                             ],
                             "AudioTextWords": [
-                                "assets/audio/lesson1/mesa.mp3"
+                                "assets/audio/lessons/lesson1/mesa.mp3"
                             ],
                             "AnswerImageUrl": "assets/images/lesson1/mesa.jpg"
                         }
                     },
                     "etapa4": {
                         "lessonType": "blocks",
-                        "audioInstructionsUrl": "assets/audio/lesson1/blocks.mp3",
+                        "audioInstructionsUrl": "assets/audio/VoiceHelp/LeccionBloques.mp3",
+                        "backgroundMusic": "assets/audio/music/blocks.mp3",
                         "Material": {
                             "textWords": [
                                 "Man",
@@ -58,23 +62,24 @@
                                 "Na"
                             ],
                             "AudioTextWords": [
-                                "assets/audio/lesson1/manzana.mp3"
+                                "assets/audio/lessons/lesson1/manzana.mp3"
                             ],
                             "AnswerImageUrl": "assets/images/lesson1/manzana.jpg"
                         }
                     },
                     "etapa5": {
                         "lessonType": "blocks",
-                        "audioInstructionsUrl": "assets/audio/lesson1/blocks.mp3",
+                        "audioInstructionsUrl": "assets/audio/VoiceHelp/LeccionBloques.mp3",
+                        "backgroundMusic": "assets/audio/music/blocks.mp3",
                         "Material": {
                             "textWords": [
                                 "Mo",
                                 "Ño"
                             ],
                             "AudioTextWords": [
-                                "assets/audio/lesson1/moño.mp3"
+                                "assets/audio/lessons/lesson1/manzana.mp3"
                             ],
-                            "AnswerImageUrl": "assets/images/lesson1/moño.jpg"
+                            "AnswerImageUrl": "assets/images/lesson1/monio.jpg"
                         }
                     }
             }

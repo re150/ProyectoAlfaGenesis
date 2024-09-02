@@ -18,7 +18,7 @@ class _LeccionBubblesState extends State<LeccionBubbles> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
-        SystemChrome.setPreferredOrientations([
+      SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
     ]);

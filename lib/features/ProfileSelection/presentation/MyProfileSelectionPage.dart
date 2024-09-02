@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:proyecto/features/ProfileSelection/widgets/MyProfileImage.dart';
+import 'package:proyecto/widgets/MyProfileImage.dart';
 
 class MyProfileSelectionPage extends StatefulWidget {
   const MyProfileSelectionPage({super.key});
@@ -76,11 +76,12 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
                 Expanded(
                   child: Container(
                     color: Colors.white,
-
                     child: Center(
                       child: CarouselView(
                         elevation: 2,
-                        onTap: null,
+                        onTap: (_) {
+                          Navigator.pushNamed(context, '/MainPage');
+                        },
                         padding: const EdgeInsets.all(20),  
                         itemExtent: MediaQuery.of(context).size.width/3,
                         itemSnapping: false, 

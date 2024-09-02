@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
-import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
+import 'package:proyecto/widgets/MyButton.dart';
+import 'package:proyecto/widgets/MyTextField.dart';
 
 class MyProfileEditionPage extends StatefulWidget {
   const MyProfileEditionPage({super.key});

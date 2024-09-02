@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
-import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
-import 'package:proyecto/features/ProfileCreation/widgets/MyDropDownMenu.dart';
+import 'package:proyecto/widgets/MyButton.dart';
+import 'package:proyecto/widgets/MyTextField.dart';
+import 'package:proyecto/widgets/MyDropDownMenu.dart';
 
 class MyProfileCreationPage extends StatefulWidget {
    //Map<String, dynamic>? user;

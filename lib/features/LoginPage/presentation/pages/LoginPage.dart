@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto/core/resources/constants.dart';
-import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
-import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
+import 'package:proyecto/widgets/MyButton.dart';
+import 'package:proyecto/widgets/MyTextField.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -133,6 +133,9 @@ class _LoginPageState extends State<LoginPage> {
                                 //login(emailController.text, passwordController.text);
                                 if(emailController.text=="admin"){
                                   Navigator.pushNamed(context, '/profileEdition');
+                                }
+                                else if(emailController.text=="user"){
+                                  Navigator.pushNamed(context, '/MainPage');
                                 }
                                 else{
                                   Navigator.pushNamed(context, '/profileSelection');

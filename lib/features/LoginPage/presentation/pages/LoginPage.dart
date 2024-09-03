@@ -19,7 +19,8 @@ class _LoginPageState extends State<LoginPage> {
   Map<String, dynamic> data = {};
 
   Future<void> login(String email, String password) async {
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     if (!emailRegex.hasMatch(email)) {
       print('Correo no válido');
       return;
@@ -34,13 +35,13 @@ class _LoginPageState extends State<LoginPage> {
       final response = await http.post(
         Uri.parse('http://$ipAdress:$port/api/login'),
         headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode({
-            "email":email,
-            "password": password,
-          }),
-          );
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          "email": email,
+          "password": password,
+        }),
+      );
 
       if (response.statusCode == 200) {
         data = jsonDecode(response.body);
@@ -54,10 +55,8 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -69,12 +68,12 @@ class _LoginPageState extends State<LoginPage> {
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 2,
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(100)),
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(100)),
                       image: DecorationImage(
                         image: AssetImage('assets/bg.jpg'),
                         fit: BoxFit.cover,
                       ),
-                     
                     ),
                   ),
                 ],
@@ -131,16 +130,19 @@ class _LoginPageState extends State<LoginPage> {
                               colorT: Colors.white,
                               onTap: () {
                                 //login(emailController.text, passwordController.text);
-                                if(emailController.text=="admin"){
+                                if (emailController.text == "admin" && passwordController.text == "admin") {
+
                                   Navigator.pushNamed(context, '/profileEdition');
-                                }
-                                else if(emailController.text=="user"){
+
+                                } else if (emailController.text == "admin" && passwordController.text.isEmpty) {
+                                  emailController.clear();
+                                  passwordController.clear();
                                   Navigator.pushNamed(context, '/MainPage');
+
+                                } else {
+                                  Navigator.pushNamed(
+                                      context, '/profileSelection');
                                 }
-                                else{
-                                  Navigator.pushNamed(context, '/profileSelection');
-                                }
-                                
                               },
                             ),
                           ),

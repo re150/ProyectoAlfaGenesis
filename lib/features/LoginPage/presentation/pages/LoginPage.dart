@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
 import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:proyecto/provider/AuthProvider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -45,7 +48,9 @@ class _LoginPageState extends State<LoginPage> {
       if (response.statusCode == 200) {
         data = jsonDecode(response.body);
         data['email'] = email;
-        Navigator.pushNamed(context, '/profileCreation');
+        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+        authProvider.setJwtToken(data['idToken'], data['email']);
+        Navigator.pushNamed(context, '/profileSelection');
       } else {
         print('Error');
       }
@@ -130,14 +135,8 @@ class _LoginPageState extends State<LoginPage> {
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
-                                //login(emailController.text, passwordController.text);
-                                if(emailController.text=="admin"){
-                                  Navigator.pushNamed(context, '/profileEdition');
-                                }
-                                else{
-                                  Navigator.pushNamed(context, '/profileSelection');
-                                }
-                                
+                                login(emailController.text, passwordController.text);
+                                // Navigator.pushNamed(context, '/profileSelection');
                               },
                             ),
                           ),

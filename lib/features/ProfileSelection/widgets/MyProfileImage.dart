@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class MyProfileImage extends StatelessWidget {
-  const MyProfileImage({super.key});
-
+  final String name;
+  final String imagePath;
+  //const MyProfileImage({super.key});
+ const MyProfileImage({super.key, required this.name, required this.imagePath});
+ 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -15,10 +18,10 @@ class MyProfileImage extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            const Align(
+            Align(
               alignment: Alignment.topCenter,
               child: Text(
-                "Nombre",
+                name,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -29,7 +32,7 @@ class MyProfileImage extends StatelessWidget {
             Center(
               child: ClipOval(
                 child: Image.asset(
-                  'assets/bee-kid.png',
+                  imagePath,
                   width: 150,
                   height: 150,
                   fit: BoxFit.cover,

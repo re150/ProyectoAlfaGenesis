@@ -31,7 +31,6 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
     // Acceder al JWT token
     final jwtToken = authProvider.jwtToken;
     final email = authProvider.email;
-    print(jwtToken);
   try {
     parsedGrado = int.parse(grado);
   } catch (e) {

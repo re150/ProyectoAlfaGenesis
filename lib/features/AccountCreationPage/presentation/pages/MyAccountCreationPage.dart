@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'dart:convert';
 
-import 'package:proyecto/provider/GlobalVariables.dart';
+import 'package:proyecto/provider/ProfileVariables.dart';
 
 
 class MyAccountCreationPage extends StatefulWidget {
@@ -79,10 +79,9 @@ Future<void> newAccount(String email, String password, String confirmPassword) a
         if (responseBody.containsKey('idToken')) {
           data = responseBody;
           data['email'] = email;
-          print(data);
           final authProvider = Provider.of<AuthProvider>(context, listen: false);
           authProvider.setJwtToken(data['idToken'], data['email']);
-          print('Token: ${authProvider.jwtToken}');
+         // print('Token: ${authProvider.jwtToken}');
           Navigator.pushNamed(context, '/profileCreation');
         } else {
           print('Error: La respuesta del servidor no contiene los datos esperados');

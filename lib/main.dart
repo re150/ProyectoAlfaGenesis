@@ -6,15 +6,19 @@ import 'package:proyecto/features/ProfileCreation/presentation/MyProfileCreation
 import 'package:proyecto/features/ProfileEdition/presentation/MyProfileEditiontionPage.dart';
 import 'package:proyecto/features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
 import 'package:proyecto/provider/GlobalVariables.dart';
+import 'package:proyecto/provider/AuthProvider.dart';
 import 'features/LectionTemplate/presentation/LeccionDemo.dart';
 import 'features/LoginPage/presentation/pages/LoginPage.dart';
 import 'features/LandingPage/presentation/LandingPage.dart';
+import 'package:provider/provider.dart';
 
 void main() {
     runApp(
-    ChangeNotifierProvider(
-      create: (context) => GlobalState(),
-      child: const MyApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: MyApp(),
     ),
   );
 }

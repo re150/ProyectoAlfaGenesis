@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:proyecto/widgets/MyBrick.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:proyecto/widgets/MyLectionBanner.dart';
 
 class LeccionBricks extends StatefulWidget {
   const LeccionBricks({
@@ -25,7 +26,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
 
   String titulo = "Titulo de leccion";
   int numTargets = 2;
-  List<String> correctOrder = ['red', 'green', 'blue'];
+  List<String> correctOrder = ['red', 'green'];
   List<String?> draggedOrder = [null, null, null];
   Set<String> draggingPalabras = {};
 
@@ -65,24 +66,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
       child: Column(
         children: [
           const SizedBox(height: 40),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.2,
-            color: Colors.white.withOpacity(0.5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  titulo,
-                  style: const TextStyle(
-                    fontSize: 30,
-                    color: Colors.black,
-                  ),
-                ),
-                Icon(Icons.star, color: Colors.yellow[700], size: 40),
-              ],
-            ),
-          ),
+         MyLectionBanner(titulo: titulo),
           Expanded(
             child: Row(
               children: [

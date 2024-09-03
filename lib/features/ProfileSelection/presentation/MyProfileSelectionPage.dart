@@ -85,7 +85,7 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
                         padding: const EdgeInsets.all(20),  
                         itemExtent: MediaQuery.of(context).size.width/3,
                         itemSnapping: false, 
-                        children: List.generate(6, (index) => MyProfileImage()),
+                        children: List.generate(6, (index) => const MyProfileImage()),
                         )
                     ),
                   ),

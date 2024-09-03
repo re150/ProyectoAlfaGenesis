@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/constants.dart';
-import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
-import 'package:proyecto/features/LoginPage/presentation/widgets/MyTextField.dart';
-import 'package:proyecto/features/ProfileCreation/widgets/MyDropDownMenu.dart';
 import 'package:http/http.dart' as http;
 import 'package:proyecto/provider/AuthProvider.dart';
+import 'package:proyecto/widgets/MyButton.dart';
+import 'package:proyecto/widgets/MyDropDownMenu.dart';
 import 'dart:convert';
+
+import 'package:proyecto/widgets/MyTextField.dart';
 
 class MyProfileCreationPage extends StatefulWidget {
   const MyProfileCreationPage({super.key});

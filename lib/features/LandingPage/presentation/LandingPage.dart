@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto/features/LoginPage/presentation/widgets/MyButton.dart';
+import 'package:proyecto/widgets/MyButton.dart';
 
 
 

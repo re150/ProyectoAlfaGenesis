@@ -6,6 +6,7 @@ import 'package:proyecto/features/ProfileCreation/presentation/MyProfileCreation
 import 'package:proyecto/features/ProfileEdition/presentation/MyProfileEditiontionPage.dart';
 import 'package:proyecto/features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
+import 'package:proyecto/provider/ProfileVariables.dart';
 import 'features/LectionTemplate/presentation/LeccionDemo.dart';
 import 'features/LoginPage/presentation/pages/LoginPage.dart';
 import 'features/LandingPage/presentation/LandingPage.dart';
@@ -15,6 +16,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileVariables()),
       ],
       child: MyApp(),
     ),

@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:proyecto/core/resources/constants.dart';
+import 'package:proyecto/provider/AuthProvider.dart';
+import 'package:proyecto/provider/ProfileVariables.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyTextField.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MyProfileEditionPage extends StatefulWidget {
   const MyProfileEditionPage({super.key});
@@ -50,6 +56,42 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
     ]);
     super.dispose();
   }
+
+  Future<void> newProfile(String Urlimg) async {
+  final authProvider = Provider.of<AuthProvider>(context, listen: false);
+  final dataProfile = Provider.of<ProfileVariables>(context,listen: false);
+
+  final jwtToken = authProvider.jwtToken;
+  final email = authProvider.email;
+
+  try {
+    final response = await http.post(
+      Uri.parse('http://$ipAdress:$port/next/alfa/NewProfile'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        "name": dataProfile.name,
+        "level": 1,
+        "grado": dataProfile.grado,
+        "grupo": dataProfile.grupo,
+        "imgUrl": Urlimg,
+        "email": email,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.pushNamed(context, '/profileSelection');
+    } else {
+      print('Error en la creación del perfil. Código de estado: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Ocurrió un error durante la solicitud: $e');
+  }
+  dataProfile.clearData();
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +172,9 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                 text: "Guardar",
                 colorB: Colors.blue,
                 colorT: Colors.white,
-                onTap: () {},
+                onTap: () {
+                    newProfile(selectedImage);
+                },
               ),
             ),
           ),

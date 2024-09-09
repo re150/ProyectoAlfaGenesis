@@ -101,8 +101,6 @@ Future<void> newAccount(String email, String password, String confirmPassword) a
 }
   @override
   Widget build(BuildContext context) {
-    final globalState = Provider.of<GlobalState>(context);
-
     return Scaffold(
       body: SafeArea(
         child: Center(

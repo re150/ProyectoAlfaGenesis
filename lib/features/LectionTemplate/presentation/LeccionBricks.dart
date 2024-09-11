@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:proyecto/widgets/MyBrick.dart';
@@ -20,7 +19,8 @@ class _LeccionBricksState extends State<LeccionBricks> {
   final ladrillo = AudioPlayer();
   final boton = AudioPlayer();
   final start = AudioPlayer();
-  final List<String> palabras = [
+  final bgMusic = AudioPlayer();
+  List<String> palabras = [
     "ME",
     "SA",
   ];
@@ -35,7 +35,9 @@ class _LeccionBricksState extends State<LeccionBricks> {
   @override
   void initState() {
     super.initState();
+    bgMusic.setReleaseMode(ReleaseMode.loop);
     start.play(AssetSource("game-start.mp3"));
+    bgMusic.play(AssetSource("Blocks.mp3"));
     shuffledPalabras = List<String>.from(palabras)..shuffle(Random());
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
@@ -54,6 +56,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
     ladrillo.dispose();
     boton.dispose();
     start.dispose();
+    bgMusic.dispose();
     super.dispose();
   }
 

@@ -11,11 +11,11 @@ class LeccionBeach extends StatefulWidget {
   State<LeccionBeach> createState() => _LeccionBeachState();
 }
 
-class _LeccionBeachState extends State<LeccionBeach>
-    with SingleTickerProviderStateMixin {
+class _LeccionBeachState extends State<LeccionBeach> with SingleTickerProviderStateMixin {
   final boton1 = AudioPlayer();
   final boton2 = AudioPlayer();
   final boton3 = AudioPlayer();
+  final bgMusic = AudioPlayer();
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -29,6 +29,8 @@ class _LeccionBeachState extends State<LeccionBeach>
   @override
   void initState() {
     super.initState();
+    bgMusic.setReleaseMode(ReleaseMode.loop);
+    bgMusic.play(AssetSource("Beach.mp3"));
 
     _controller = AnimationController(
       duration: const Duration(seconds: 4),
@@ -55,6 +57,7 @@ class _LeccionBeachState extends State<LeccionBeach>
     boton1.dispose();
     boton2.dispose();
     boton3.dispose();
+    bgMusic.dispose();
     super.dispose();
   }
 

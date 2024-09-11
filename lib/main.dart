@@ -16,7 +16,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/leccion': (context) => const LeccionDemo(),
         '/accountCreation': (context) => const MyAccountCreationPage(),
-        '/profileCreation': (context) => MyProfileCreationPage(/*user: {}*/),
+        '/profileCreation': (context) => const MyProfileCreationPage(/*user: {}*/),
         '/profileEdition': (context) => const MyProfileEditionPage(),
         '/profileSelection': (context) => const MyProfileSelectionPage(),
         '/MainPage': (context) => const MyMainPage(), 

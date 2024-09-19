@@ -173,12 +173,13 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
                             child: MyButton(
                               text: "Crear Perfil",
                               onTap: (){                                //Aqui va la funcionalidad de la BD
-                                if(
+                               /* if(
                                   _gradoSeleccionado != null 
                                 && _grupoSeleccionado != null 
                                 && nombreUsuariocontroller.text.isNotEmpty){
                                   newProfile(nombreUsuariocontroller.text, _gradoSeleccionado!, _grupoSeleccionado!);
-                                }
+                                }*/
+                                Navigator.pushNamed(context, '/profileSelection');
                               },
                               colorB: Colors.black,
                               colorT: Colors.white,

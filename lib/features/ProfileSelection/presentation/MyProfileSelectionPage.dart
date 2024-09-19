@@ -80,7 +80,7 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
                       child: CarouselView(
                         elevation: 2,
                         onTap: (_) {
-                          Navigator.pushNamed(context, '/MainPage');
+                          Navigator.pushNamed(context, '/profileEdition');
                         },
                         padding: const EdgeInsets.all(20),  
                         itemExtent: MediaQuery.of(context).size.width/3,

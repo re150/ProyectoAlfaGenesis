@@ -22,6 +22,7 @@ class DatabaseHelper {
       path,
       version: 1,
       onCreate: (db, version) async {
+        
         await db.execute('''
           CREATE TABLE Lecciones(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,7 +40,8 @@ class DatabaseHelper {
             FOREIGN KEY (id_leccion) REFERENCES Lecciones(id)
           )
         ''');
-//TOODO: CHECAR LAS ROWS EN LAS TABLAS
+
+//TODO: CHECAR LAS ROWS PARA LAS PALABRAS Y AUDIOS EN LAS TABLAS
 
         await db.execute('''
           CREATE TABLE Materiales(
@@ -53,6 +55,7 @@ class DatabaseHelper {
             FOREIGN KEY (id_etapa) REFERENCES Etapas(id)
           )
         ''');
+
         await _cargarDatos();
       },
     );
@@ -91,6 +94,7 @@ class DatabaseHelper {
           'audio_texto': materials['audio_texto'],
           'url_imagen': materials['url_imagen'],
           'url_imagen2': materials['url_imagen2'],
+          'url_imagen3': materials['url_imagen3'],
         },
       );
     }

@@ -31,7 +31,7 @@ class DatabaseHelper {
         ''');
 
         await db.execute('''
-          CREATE TABLE Etapas(
+          CREATE TABLE Etapa(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             id_leccion INTEGER,
             leccion_tipo TEXT,
@@ -40,19 +40,15 @@ class DatabaseHelper {
             FOREIGN KEY (id_leccion) REFERENCES Lecciones(id)
           )
         ''');
-
-//TODO: CHECAR LAS ROWS PARA LAS PALABRAS Y AUDIOS EN LAS TABLAS
+        //TOODO: CHECAR LAS ROWS EN LAS TABLAS
 
         await db.execute('''
-          CREATE TABLE Materiales(
+          CREATE TABLE Material(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             id_etapa INTEGER,
-            texto TEXT,
-            audio_texto TEXT,
-            url_imagen TEXT,
-            url_imagen2 TEXT,
-            url_imagen3 TEXT,
-            FOREIGN KEY (id_etapa) REFERENCES Etapas(id)
+            tipo_material TEXT,
+            valor_material TEXT,
+            FOREIGN KEY (id_etapa) REFERENCES Etapa(id)
           )
         ''');
 

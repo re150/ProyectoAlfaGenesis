@@ -18,7 +18,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ProfileVariables()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }

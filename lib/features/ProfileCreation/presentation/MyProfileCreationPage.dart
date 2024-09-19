@@ -145,12 +145,13 @@ void saveData(String name, String grado, String grupo) {
                             child: MyButton(
                               text: "Crear Perfil",
                               onTap: (){                                //Aqui va la funcionalidad de la BD
-                                if(
+                               /* if(
                                   _gradoSeleccionado != null 
                                 && _grupoSeleccionado != null 
                                 && nombreUsuariocontroller.text.isNotEmpty){
-                                  saveData(nombreUsuariocontroller.text, _gradoSeleccionado!, _grupoSeleccionado!);
-                                }
+                                  newProfile(nombreUsuariocontroller.text, _gradoSeleccionado!, _grupoSeleccionado!);
+                                }*/
+                                Navigator.pushNamed(context, '/profileSelection');
                               },
                               colorB: Colors.black,
                               colorT: Colors.white,

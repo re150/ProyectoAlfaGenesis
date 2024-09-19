@@ -25,7 +25,7 @@ class LandingPage extends StatelessWidget {
                 child: ListView(
                   padding: const EdgeInsets.all(20.0),
                   children: <Widget>[
-                    Container(
+                    SizedBox(
                       width: 100.0,
                       height: 100.0,
                       child: Image.asset('assets/logoo.png'),
@@ -42,10 +42,10 @@ class LandingPage extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      child: Image.asset('assets/logoo.png'),
+                    SizedBox(
                       width: 200.0,
                       height: 200.0,
+                      child: Image.asset('assets/logoo.png'),
                     ),
 
                     MyButton(

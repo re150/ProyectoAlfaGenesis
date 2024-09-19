@@ -6,7 +6,6 @@ import 'package:proyecto/widgets/MyTextField.dart';
 import 'package:http/http.dart' as http;
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'dart:convert';
-
 import 'package:proyecto/provider/ProfileVariables.dart';
 
 
@@ -101,6 +100,7 @@ Future<void> newAccount(String email, String password, String confirmPassword) a
 }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -165,7 +165,8 @@ Future<void> newAccount(String email, String password, String confirmPassword) a
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
-                                newAccount(emailController.text, passwordController.text, passwordAuthController.text);
+                               // newAccount(emailController.text, passwordController.text, passwordAuthController.text);
+                                Navigator.pushNamed(context, '/profileCreation');
                               },
                             ),
                           ),

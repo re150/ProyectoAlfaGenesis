@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:proyecto/features/LectionTemplate/presentation/LeccionBeach.dart';
 import 'package:proyecto/features/LectionTemplate/presentation/LeccionBricks.dart';
 import 'package:proyecto/features/LectionTemplate/presentation/LeccionBubbles.dart';
+import 'package:proyecto/features/LectionTemplate/presentation/LeccionSky.dart';
 import 'package:proyecto/widgets/MyLevelButton.dart';
 
 class MyMainPage extends StatefulWidget {
@@ -16,7 +17,8 @@ class _MyMainPageState extends State<MyMainPage> {
   final Map<String, dynamic> _niveles = {
     "Ladrillos": const LeccionBricks(),
     "Burbujas": const LeccionBubbles(),
-    "Playa": const LeccionBeach()
+    "Playa": const LeccionBeach(),
+    "Cielo": const LeccionSky(),
   };
 
   @override

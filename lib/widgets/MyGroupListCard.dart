@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 
-class MyGroupListCard extends StatefulWidget {
+class MyGroupListCard extends StatelessWidget {
   final String nombre;
   final void Function()? onTap;
 
   const MyGroupListCard({super.key, required this.nombre, required this.onTap});
 
-
-  @override
-  State<MyGroupListCard> createState() => _MyGroupListCardState();
-}
-
-class _MyGroupListCardState extends State<MyGroupListCard> {
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +14,12 @@ class _MyGroupListCardState extends State<MyGroupListCard> {
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(10),
+        color: const Color.fromARGB(255, 250, 220, 252)
       ),
       child: ListTile(
-        title: Text(widget.nombre),
+        title: Text(nombre),
         leading: Image.asset("assets/bee-kid.png"),
-        onTap: widget.onTap,
+        onTap: onTap,
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:proyecto/features/GroupCreationPage/presentation/MyGrouPcreationPage.dart';
 import 'package:proyecto/features/LectionTemplate/presentation/LeccionBeach.dart';
 import 'package:proyecto/features/LectionTemplate/presentation/LeccionBricks.dart';
 import 'package:proyecto/features/LectionTemplate/presentation/LeccionBubbles.dart';
@@ -61,7 +62,9 @@ class _MyMainPageState extends State<MyMainPage> {
             icon: const Icon(Icons.person),
             color: Colors.blue,
             iconSize: 50,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/GroupCreationPage');
+            },
           ),
         ],
       ),

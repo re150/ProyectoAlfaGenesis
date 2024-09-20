@@ -111,7 +111,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
                       position: _animaciones![1],
                       child: MyBubble(
                         onTap: () {
-                           boton.play(AssetSource("BubblePop.mp3"));
+                          boton.play(AssetSource("BubblePop.mp3"));
                         },
                         letra: letras[1],
                       ),
@@ -124,7 +124,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
                       position: _animaciones![2],
                       child: MyBubble(
                         onTap: () {
-                           boton.play(AssetSource("BubblePop.mp3"));
+                          boton.play(AssetSource("BubblePop.mp3"));
                         },
                         letra: letras[2],
                       ),
@@ -144,7 +144,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
                       position: _animaciones![3],
                       child: MyBubble(
                         onTap: () {
-                           boton.play(AssetSource("BubblePop.mp3"));
+                          boton.play(AssetSource("BubblePop.mp3"));
                         },
                         letra: letras[3],
                       ),
@@ -157,7 +157,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
                       position: _animaciones![4],
                       child: MyBubble(
                         onTap: () {
-                           boton.play(AssetSource("BubblePop.mp3"));
+                          boton.play(AssetSource("BubblePop.mp3"));
                         },
                         letra: letras[4],
                       ),

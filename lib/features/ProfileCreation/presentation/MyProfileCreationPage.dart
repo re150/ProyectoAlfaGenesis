@@ -42,7 +42,6 @@ void saveData(String name, String grado, String grupo) {
    @override
   void initState() {
     super.initState();
-   // widget.user = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
   }
 
   @override
@@ -145,13 +144,14 @@ void saveData(String name, String grado, String grupo) {
                             child: MyButton(
                               text: "Crear Perfil",
                               onTap: (){                                //Aqui va la funcionalidad de la BD
-                               /* if(
+                                if(
                                   _gradoSeleccionado != null 
                                 && _grupoSeleccionado != null 
                                 && nombreUsuariocontroller.text.isNotEmpty){
-                                  newProfile(nombreUsuariocontroller.text, _gradoSeleccionado!, _grupoSeleccionado!);
-                                }*/
-                                Navigator.pushNamed(context, '/profileSelection');
+                                  saveData(nombreUsuariocontroller.text,
+                                   _gradoSeleccionado!,
+                                    _grupoSeleccionado!);
+                                }
                               },
                               colorB: Colors.black,
                               colorT: Colors.white,

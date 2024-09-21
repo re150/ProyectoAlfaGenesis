@@ -165,8 +165,7 @@ Future<void> newAccount(String email, String password, String confirmPassword) a
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
-                               // newAccount(emailController.text, passwordController.text, passwordAuthController.text);
-                                Navigator.pushNamed(context, '/profileCreation');
+                                newAccount(emailController.text, passwordController.text, passwordAuthController.text);
                               },
                             ),
                           ),

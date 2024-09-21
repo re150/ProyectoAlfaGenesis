@@ -32,5 +32,8 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request));
     }
 
-
+    @GetMapping("/ShowAll")
+    public ResponseEntity<?> showStudens (){
+        return ResponseEntity.ok(authService.showAllProfile());
+    }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -24,14 +25,14 @@ class DatabaseHelper {
       onCreate: (db, version) async {
         
         await db.execute('''
-          CREATE TABLE Lecciones(
+          CREATE TABLE lecciones(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             titulo TEXT,
           )
         ''');
 
         await db.execute('''
-          CREATE TABLE Etapa(
+          CREATE TABLE etapa(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             id_leccion INTEGER,
             leccion_tipo TEXT,
@@ -43,7 +44,7 @@ class DatabaseHelper {
         //TOODO: CHECAR LAS ROWS EN LAS TABLAS
 
         await db.execute('''
-          CREATE TABLE Material(
+          CREATE TABLE material(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             id_etapa INTEGER,
             tipo_material TEXT,
@@ -52,47 +53,28 @@ class DatabaseHelper {
           )
         ''');
 
-        await _cargarDatos();
+        await _cargarDatos(db);
       },
     );
   }
 
-  Future<void> _cargarDatos() async {
-    //aqui se cargan los datos que teniamos en el JSON
-    final db = await database;
+  Future<void> _cargarDatos(Database db) async {
+    String dataSQL = await rootBundle.loadString('lib/core/resources/data.sql');
+    List<String> queries = dataSQL.split(';');
+    for (String query in queries) {
+      if (query.trim().isNotEmpty) {
+        await db.execute(query);
+       }
+     }
+        // Verifica los datos en la tabla Lecciones
+      List<Map<String, dynamic>> lecciones = await db.query('Lecciones');
+      print('Lecciones guardadas:');
+      lecciones.forEach((leccion) {
+        print(leccion);
+      });
 
-    int idLeccion = await db.insert('Lecciones', {'titulo': 'Titulo de leccion'});
-
-    List<Map<String, dynamic>> etapas = [
-      {'materials': {}},
-      {'materials': {}},
-      {'materials': {}},
-    ];
-
-    for (var etapa in etapas) {
-      int idEtapa = await db.insert(
-        'Etapas',
-        {
-          'id_leccion': idLeccion,
-          'leccion_tipo': 'tipo',
-          'instrucciones': 'instrucciones',
-          'musica_fondo': 'musica_fondo'
-        },
-      );
-
-      Map<String, dynamic> materials = etapa['materials'];
-
-      await db.insert(
-        'Materiales',
-        {
-          'id_etapa': idEtapa,
-          'texto': materials['texto'],
-          'audio_texto': materials['audio_texto'],
-          'url_imagen': materials['url_imagen'],
-          'url_imagen2': materials['url_imagen2'],
-          'url_imagen3': materials['url_imagen3'],
-        },
-      );
-    }
+    String path = join(await getDatabasesPath(), 'AlfaGenesisDB.db');
+      await deleteDatabase(path);
+     _database = null; // Resetea la instancia de la base de datos en memoria
   }
 }

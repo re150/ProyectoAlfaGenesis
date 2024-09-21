@@ -1,10 +1,7 @@
 package com.alfagenesi.com.BackAG.service;
 
 
-import com.alfagenesi.com.BackAG.model.Login;
-import com.alfagenesi.com.BackAG.model.Profile;
-import com.alfagenesi.com.BackAG.model.TemplateProfile;
-import com.alfagenesi.com.BackAG.model.User;
+import com.alfagenesi.com.BackAG.model.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,8 +12,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.gson.Gson;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +74,6 @@ public class AuthService {
          FirebaseAuth.getInstance().createUser(request);
          return "ok";
     }
-
     public String login(Login request) throws JsonProcessingException {
         String url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + apiKey;
         RestTemplate restTemplate = new RestTemplate();
@@ -144,18 +139,15 @@ public class AuthService {
 
         return "Nuevo perfil";
     }
-
     public String showProfiles(String request){
         List<Profile> userProfiles = new ArrayList<>();
         String userId = getProfileIdByEmail(request);
         Firestore dbFirestore = FirestoreClient.getFirestore();
 
-
         ApiFuture<QuerySnapshot> future = dbFirestore.collection(COLLECTION_NAME)
                 .document(userId)
                 .collection(COLLECTION_PROFILE)
                 .get();
-
         try {
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
             for (QueryDocumentSnapshot document : documents) {
@@ -169,7 +161,6 @@ public class AuthService {
         Gson gson = new Gson();
         return gson.toJson(userProfiles);
     }
-
     private String getProfileIdByEmail(String email) {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         Query query = dbFirestore.collection(COLLECTION_NAME)
@@ -188,5 +179,46 @@ public class AuthService {
             throw new RuntimeException("Error fetching profile ID", e);
         }
     }
+    public String showAllProfile(){
+        Firestore db = FirestoreClient.getFirestore();
+        Query query = db.collection(COLLECTION_NAME);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+        List<String> profiles = new ArrayList<>();
 
+        try {
+            for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+               String id =  document.getId();
+               profiles.add(getProfiles(id).toString());
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        Gson gson = new Gson();
+        return gson.toJson(profiles);
+    }
+    private List<String> getProfiles(String request){
+        List<String> userProfiles = new ArrayList<>();
+        DataProile newProfile = new DataProile();
+        String userId = request;
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+
+        ApiFuture<QuerySnapshot> future = dbFirestore.collection(COLLECTION_NAME)
+                .document(userId)
+                .collection(COLLECTION_PROFILE)
+                .get();
+        try {
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            for (QueryDocumentSnapshot document : documents) {
+                Profile profile = document.toObject(Profile.class);
+                newProfile.setName(profile.getName());
+                newProfile.setId(userId);
+                userProfiles.add( newProfile.toString());
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Error al obtener los perfiles del usuario", e);
+        }
+
+        return userProfiles;
+    }
 }

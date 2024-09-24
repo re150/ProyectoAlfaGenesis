@@ -7,12 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Profile {
-    int grado;
-    int level;
-    String grupo;
+public class DataMember {
+    String id;
     String name;
-    String imgUrl;
-    int stars;
-    Boolean teamStatus;
 }

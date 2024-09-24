@@ -78,6 +78,8 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
         "grupo": dataProfile.grupo,
         "imgUrl": Urlimg,
         "email": email,
+        "stars": 0,
+        "teamStatus" : false
       }),
     );
 

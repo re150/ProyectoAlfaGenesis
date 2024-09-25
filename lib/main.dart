@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:proyecto/core/resources/DataBaseHelper.dart';
+import 'package:proyecto/features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
+import 'package:proyecto/features/MainPage/presentation/MyMainPage.dart';
+import 'package:proyecto/features/ProfileCreation/presentation/MyProfileCreationPage.dart';
+import 'package:proyecto/features/ProfileEdition/presentation/MyProfileEditiontionPage.dart';
+import 'package:proyecto/features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
-import 'config/theme/ThemeData.dart';
-import 'features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
-import 'features/GroupCreationPage/presentation/MyGrouPcreationPage.dart';
+import 'package:proyecto/provider/ProfileVariables.dart';
+import 'package:sqflite/sqflite.dart';
 import 'features/LectionTemplate/presentation/LeccionDemo.dart';
 import 'features/LoginPage/presentation/pages/LoginPage.dart';
 import 'features/LandingPage/presentation/LandingPage.dart';
@@ -17,6 +22,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileVariables()),
       ],
       child: const MyApp(),
     ),
@@ -25,9 +31,13 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
+
+  //Database
+  DatabaseHelper db = DatabaseHelper();
+  db.initDatabase();
 
     return MaterialApp(
       theme: theme,
@@ -37,7 +47,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/leccion': (context) => const LeccionDemo(),
         '/accountCreation': (context) => const MyAccountCreationPage(),
-        '/profileCreation': (context) => const MyProfileCreationPage(/*user: {}*/),
+        '/profileCreation': (context) => MyProfileCreationPage(),
         '/profileEdition': (context) => const MyProfileEditionPage(),
         '/profileSelection': (context) => const MyProfileSelectionPage(),
         '/MainPage': (context) => const MyMainPage(), 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/constants.dart';
-import 'package:http/http.dart' as http;
 import 'package:proyecto/provider/AuthProvider.dart';
+import 'package:proyecto/provider/ProfileVariables.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyDropDownMenu.dart';
-import 'dart:convert';
+
 
 import 'package:proyecto/widgets/MyTextField.dart';
 
@@ -24,15 +24,9 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
   String? _gradoSeleccionado;
   String? _grupoSeleccionado;
   
- 
-
- Future<void> newProfile(String name, String grado, String grupo) async {
+void saveData(String name, String grado, String grupo) {
+  final statusData = Provider.of<ProfileVariables>(context, listen: false);
   int? parsedGrado;
-  final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    // Acceder al JWT token
-    final jwtToken = authProvider.jwtToken;
-    final email = authProvider.email;
-    print(jwtToken);
   try {
     parsedGrado = int.parse(grado);
   } catch (e) {
@@ -40,37 +34,14 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
     return;
   }
 
-  try {
-    final response = await http.post(
-      Uri.parse('http://$ipAdress:$port/next/alfa/NewProfile'),
-      headers: <String, String>{
-        'Authorization': 'Bearer $jwtToken',
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode({
-        "name": name,
-        "level": 1,
-        "grado": parsedGrado,
-        "grupo": grupo,
-        "imgUrl": "kml",
-        "email": email,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      Navigator.pushNamed(context, '/profileSelection');
-    } else {
-      print('Error en la creación del perfil. Código de estado: ${response.statusCode}');
-    }
-  } catch (e) {
-    print('Ocurrió un error durante la solicitud: $e');
-  }
+  statusData.setData(name, parsedGrado, grupo);
+  print('Name: $name, Grado: $parsedGrado, Grupo: $grupo');
+  Navigator.pushNamed(context, '/profileEdition');
 }
 
    @override
   void initState() {
     super.initState();
-   // widget.user = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
   }
 
   @override
@@ -173,13 +144,14 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
                             child: MyButton(
                               text: "Crear Perfil",
                               onTap: (){                                //Aqui va la funcionalidad de la BD
-                               /* if(
+                                if(
                                   _gradoSeleccionado != null 
                                 && _grupoSeleccionado != null 
                                 && nombreUsuariocontroller.text.isNotEmpty){
-                                  newProfile(nombreUsuariocontroller.text, _gradoSeleccionado!, _grupoSeleccionado!);
-                                }*/
-                                Navigator.pushNamed(context, '/profileSelection');
+                                  saveData(nombreUsuariocontroller.text,
+                                   _gradoSeleccionado!,
+                                    _grupoSeleccionado!);
+                                }
                               },
                               colorB: Colors.black,
                               colorT: Colors.white,

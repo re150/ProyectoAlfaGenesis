@@ -58,7 +58,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (3, 'palabra', 'cro');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (3, 'palabra', 'fo');}
+VALUES (3, 'palabra', 'fo');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (3, 'palabra', 'no');

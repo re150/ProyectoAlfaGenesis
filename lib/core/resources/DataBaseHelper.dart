@@ -11,13 +11,18 @@ class DatabaseHelper {
   DatabaseHelper._internal();
 
   Future<Database> get database async {
-    if (_database != null) return _database!;
-    _database = await _initDatabase();
+    if (_database != null) {
+      print(_database);
+      return _database!;
+    }
+    _database = await initDatabase();
     return _database!;
   }
 
-  Future<Database> _initDatabase() async {
+  Future<Database> initDatabase() async {
     String path = join(await getDatabasesPath(), 'AlfaGenesisDB.db');
+    //await deleteDatabase(path);
+    //_database = null; // Resetea la instancia de la base de datos en memoria
 
     return await openDatabase(
       path,
@@ -27,7 +32,7 @@ class DatabaseHelper {
         await db.execute('''
           CREATE TABLE lecciones(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            titulo TEXT,
+            titulo TEXT
           )
         ''');
 
@@ -59,7 +64,7 @@ class DatabaseHelper {
   }
 
   Future<void> _cargarDatos(Database db) async {
-    String dataSQL = await rootBundle.loadString('lib/core/resources/data.sql');
+    String dataSQL = await rootBundle.loadString('assets/data.sql');
     List<String> queries = dataSQL.split(';');
     for (String query in queries) {
       if (query.trim().isNotEmpty) {
@@ -73,8 +78,5 @@ class DatabaseHelper {
         print(leccion);
       });
 
-    String path = join(await getDatabasesPath(), 'AlfaGenesisDB.db');
-      await deleteDatabase(path);
-     _database = null; // Resetea la instancia de la base de datos en memoria
   }
 }

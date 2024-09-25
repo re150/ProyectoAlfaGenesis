@@ -13,4 +13,6 @@ public class TemplateProfile extends User {
     String grupo;
     String name;
     String imgUrl;
+    int stars;
+    Boolean teamStatus;
 }

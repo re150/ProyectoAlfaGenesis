@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
+import 'config/theme/ThemeData.dart';
 import 'features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
 import 'features/GroupCreationPage/presentation/MyGrouPcreationPage.dart';
 import 'features/LectionTemplate/presentation/LeccionDemo.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
+      theme: theme,
       initialRoute: '/', 
       routes: {
         '/': (context) => const LandingPage(),

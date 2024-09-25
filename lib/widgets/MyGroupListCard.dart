@@ -14,7 +14,7 @@ class MyGroupListCard extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(10),
-        color: const Color.fromARGB(255, 250, 220, 252)
+        color: Theme.of(context).colorScheme.outline,
       ),
       child: ListTile(
         title: Text(nombre),

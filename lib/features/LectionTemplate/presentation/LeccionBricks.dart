@@ -35,6 +35,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
   @override
   void initState() {
     super.initState();
+    bgMusic.setVolume(0.4);
     bgMusic.setReleaseMode(ReleaseMode.loop);
     start.play(AssetSource("game-start.mp3"));
     bgMusic.play(AssetSource("Blocks.mp3"));

@@ -14,9 +14,9 @@ class MyGroupCreationPage extends StatefulWidget {
 
 class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
   final List<String> _grados = ["1A", "1B", "1C"];
-  List<Widget?> _grupos = [];
-  int _indexIndicado = 0;
-  List<List<String>> _alumnoSeleccionado = [];
+  final List<Widget?> _grupos = [];
+  int _indexIndicado = -1;
+  final List<List<String>> _alumnoSeleccionado = [];
   List<String> _alumnos = List.generate(10, (index) => "Nombre ${index + 1}");
   String? _gradoSeleccionado;
 
@@ -41,59 +41,6 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     super.dispose();
   }
 
-  void _crearGrupo(int numero) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Crear Grupo"),
-          content: const Text("¿Seguro que deseas rear un grupo?"),
-          actions: [
-            TextButton(
-              onPressed: Navigator.of(context).pop,
-              child: const Text("Cancelar"),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _indexIndicado = numero - 1;
-                  _alumnoSeleccionado.add([]);
-                  _grupos.add(
-                    MyGroupCard(
-                      numero: numero,
-                      lista: _alumnoSeleccionado[numero - 1],
-                      onTap: () {
-                        setState(() {
-                          _indexIndicado = numero - 1;
-                        });
-                      },
-                    ),
-                  );
-                });
-                Navigator.of(context).pop();
-              },
-              child: const Text("Aceptar"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _actualizarGrupo() {
-    setState(() {
-      _grupos[_indexIndicado] = MyGroupCard(
-        numero: _indexIndicado + 1,
-        lista: _alumnoSeleccionado[_indexIndicado],
-        onTap: () {
-          setState(() {
-            _indexIndicado = _indexIndicado;
-          });
-        },
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +49,6 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
           Expanded(
             flex: 2,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
                   flex: 1,
@@ -175,10 +121,10 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: Colors.grey[100],
+                color: Colors.grey[200],
               ),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(15.0),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
@@ -236,11 +182,13 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
                                         onTap: () {
                                           setState(
                                             () {
-                                              _alumnoSeleccionado[
-                                                      _indexIndicado]
-                                                  .add(_alumnos[index]);
-                                              _alumnos.removeAt(index);
-                                              _actualizarGrupo();
+                                              if (_indexIndicado != -1) {
+                                                _alumnoSeleccionado[
+                                                        _indexIndicado]
+                                                    .add(_alumnos[index]);
+                                                _alumnos.removeAt(index);
+                                                _actualizarGrupo();
+                                              }
                                             },
                                           );
                                         },
@@ -262,5 +210,117 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
         ],
       ),
     );
+  }
+  
+  void _crearGrupo(int numero) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Crear Grupo"),
+          content: const Text("¿Seguro que deseas crear un grupo?"),
+          actions: [
+            TextButton(
+              onPressed: Navigator.of(context).pop,
+              child: const Text("Cancelar"),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _indexIndicado = numero - 1;
+                  _alumnoSeleccionado.add([]);
+                  _grupos.add(
+                    MyGroupCard(
+                      numero: numero,
+                      lista: _alumnoSeleccionado[numero - 1],
+                      onUse: () {
+                        setState(() {
+                          _indexIndicado = numero - 1;
+                          _actualizarSeleccion();
+                        });
+                      },
+                      onDelete: () => _borrarAlumnos(numero - 1),
+                      isSelected: false,
+                    ),
+                  );
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text("Aceptar"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _actualizarGrupo() {
+    setState(() {
+      _grupos[_indexIndicado] = MyGroupCard(
+        numero: _indexIndicado + 1,
+        lista: _alumnoSeleccionado[_indexIndicado],
+        onUse: () {
+          setState(() {
+            _indexIndicado = _indexIndicado;
+            _actualizarSeleccion();
+          });
+        },
+        onDelete: () => _borrarAlumnos(_indexIndicado),
+        isSelected: true,
+      );
+    });
+  }
+  
+
+  void _borrarAlumnos(int index) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Borrar Grupo"),
+        content: const Text("¿Seguro que deseas borrar el grupo?"),
+        actions: [
+          TextButton(
+            onPressed: Navigator.of(context).pop,
+            child: const Text("Cancelar"),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                List<String> alumnosDelGrupo = _alumnoSeleccionado[index];
+                _alumnoSeleccionado.removeAt(index);
+                _grupos.removeAt(index);
+                _alumnos.addAll(alumnosDelGrupo);
+                _alumnos.sort();
+                _indexIndicado = -1;
+                _actualizarSeleccion();
+              });
+              Navigator.of(context).pop();
+            },
+            child: const Text("Aceptar"),
+          )
+        ],
+      );
+    },
+  );
+}
+
+  void _actualizarSeleccion() {
+    setState(() {
+      for (int i = 0; i < _grupos.length; i++) {
+        _grupos[i] = MyGroupCard(
+          numero: i + 1,
+          lista: _alumnoSeleccionado[i],
+          onUse: () {
+            setState(() {
+              _indexIndicado = i;
+              _actualizarSeleccion();
+            });
+          },
+          onDelete: () => _borrarAlumnos(i),
+          isSelected: _indexIndicado == i,
+        );
+      }
+    });
   }
 }

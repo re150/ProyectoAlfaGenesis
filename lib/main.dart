@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:proyecto/core/resources/DataBaseHelper.dart';
-import 'package:proyecto/features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
-import 'package:proyecto/features/MainPage/presentation/MyMainPage.dart';
-import 'package:proyecto/features/ProfileCreation/presentation/MyProfileCreationPage.dart';
-import 'package:proyecto/features/ProfileEdition/presentation/MyProfileEditiontionPage.dart';
-import 'package:proyecto/features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
-import 'package:proyecto/provider/AuthProvider.dart';
-import 'package:proyecto/provider/ProfileVariables.dart';
-import 'package:sqflite/sqflite.dart';
+import 'config/theme/ThemeData.dart';
+import 'core/resources/DataBaseHelper.dart';
+import 'features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
+import 'features/GroupCreationPage/presentation/MyGroupCreationPage.dart';
 import 'features/LectionTemplate/presentation/LeccionDemo.dart';
 import 'features/LoginPage/presentation/pages/LoginPage.dart';
 import 'features/LandingPage/presentation/LandingPage.dart';
@@ -16,6 +11,8 @@ import 'features/MainPage/presentation/MyMainPage.dart';
 import 'features/ProfileCreation/presentation/MyProfileCreationPage.dart';
 import 'features/ProfileEdition/presentation/MyProfileEditiontionPage.dart';
 import 'features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
+import 'provider/AuthProvider.dart';
+import 'provider/ProfileVariables.dart';
 
 void main() {
     runApp(
@@ -34,8 +31,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-  //Database
+    
   DatabaseHelper db = DatabaseHelper();
   db.initDatabase();
 
@@ -47,7 +43,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/leccion': (context) => const LeccionDemo(),
         '/accountCreation': (context) => const MyAccountCreationPage(),
-        '/profileCreation': (context) => MyProfileCreationPage(),
+        '/profileCreation': (context) => const MyProfileCreationPage(),
         '/profileEdition': (context) => const MyProfileEditionPage(),
         '/profileSelection': (context) => const MyProfileSelectionPage(),
         '/MainPage': (context) => const MyMainPage(), 

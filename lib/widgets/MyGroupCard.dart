@@ -3,14 +3,18 @@ import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyGroupListCard.dart';
 
 class MyGroupCard extends StatefulWidget {
-  final void Function()? onTap;
+  final void Function()? onUse;
+  final void Function()? onDelete;
   final int numero;
   final List<String> lista;
+  final bool isSelected;
   const MyGroupCard({
     super.key,
     required this.lista,
     required this.numero,
-    required this.onTap,
+    required this.onUse,
+    required this.isSelected, 
+    required this.onDelete,
   });
 
   @override
@@ -18,6 +22,24 @@ class MyGroupCard extends StatefulWidget {
 }
 
 class _MyGroupCardState extends State<MyGroupCard> {
+  late bool _isSelected;
+
+  @override
+  void initState() {
+    super.initState();
+    _isSelected = widget.isSelected;
+  }
+
+  @override
+  void didUpdateWidget(covariant MyGroupCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isSelected != widget.isSelected) {
+      setState(() {
+        _isSelected = widget.isSelected;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,6 +48,7 @@ class _MyGroupCardState extends State<MyGroupCard> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.grey[100],
+        border: _isSelected ? Border.all(color: Colors.blue, width: 2) : null,
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -64,11 +87,25 @@ class _MyGroupCardState extends State<MyGroupCard> {
               ),
             ),
             const SizedBox(height: 10),
-            MyButton(
-                text: "Usar",
-                onTap: widget.onTap,
-                colorB: Colors.blue,
-                colorT: Colors.white)
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                MyButton(
+                  text: "Usar",
+                  onTap: widget.onUse,
+                  colorB: Colors.blue,
+                  colorT: Colors.white,
+                ),
+                
+                MyButton(
+                  text: "Borrar",
+                  onTap: widget.onDelete,
+                  colorB: Colors.red,
+                  colorT: Colors.white,
+                ),
+              ],
+            )
           ],
         ),
       ),

@@ -121,7 +121,15 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: Colors.grey[200],
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 4,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
               child: Padding(
                 padding: const EdgeInsets.all(15.0),

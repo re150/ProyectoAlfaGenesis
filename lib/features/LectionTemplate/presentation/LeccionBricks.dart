@@ -46,6 +46,33 @@ class _LeccionBricksState extends State<LeccionBricks> {
     ]);
   }
 
+  void _checarRespuesta() {
+
+    bool esCorrecto = true;
+    for (int i = 0; i < correctOrder.length; i++) {
+      if (draggedOrder[i] != correctOrder[i]) {
+        esCorrecto = false;
+        break;
+      }
+    }
+    if (esCorrecto) {
+      boton.play(AssetSource("successLesson.mp3"));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Correcto"),
+        ),
+      );
+    } else {
+      boton.play(AssetSource("wrong-choice.mp3"));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Incorrecto"),
+        ),
+      );
+    }
+    
+  }
+
   @override
   void dispose() {
     SystemChrome.setPreferredOrientations([
@@ -90,8 +117,6 @@ class _LeccionBricksState extends State<LeccionBricks> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: () {
-                                    
-
                                     return List.generate(
                                       numTargets,
                                       (index) {
@@ -171,30 +196,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
                         text: "Veificar",
                         colorB: Colors.blue,
                         colorT: Colors.white,
-                        onTap: () {
-                          bool esCorrecto = true;
-                          for (int i = 0; i < correctOrder.length; i++) {
-                            if (draggedOrder[i] != correctOrder[i]) {
-                              esCorrecto = false;
-                              break;
-                            }
-                          }
-                          if (esCorrecto) {
-                            boton.play(AssetSource("successLesson.mp3"));
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Correcto"),
-                              ),
-                            );
-                          } else {
-                            boton.play(AssetSource("wrong-choice.mp3"));
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Incorrecto"),
-                              ),
-                            );
-                          }
-                        },
+                        onTap: () => _checarRespuesta(),
                       ),
                     ],
                   ),

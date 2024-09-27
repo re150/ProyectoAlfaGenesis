@@ -43,13 +43,24 @@ class _MyGroupCardState extends State<MyGroupCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       height: MediaQuery.of(context).size.height * 0.7,
       width: MediaQuery.of(context).size.width * 0.35,
+
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.grey[100],
         border: _isSelected ? Border.all(color: Colors.blue, width: 2) : null,
+        boxShadow:[
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 4,
+            blurRadius: 5,
+            offset: const Offset(0, 3), 
+          ),
+        ], 
       ),
+
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

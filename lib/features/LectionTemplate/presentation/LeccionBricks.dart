@@ -24,7 +24,6 @@ class _LeccionBricksState extends State<LeccionBricks> {
     "ME",
     "SA",
   ];
-  late List<String> shuffledPalabras;
 
   String titulo = "Titulo de leccion";
   int numTargets = 2;
@@ -39,7 +38,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
     bgMusic.setReleaseMode(ReleaseMode.loop);
     start.play(AssetSource("game-start.mp3"));
     bgMusic.play(AssetSource("Blocks.mp3"));
-    shuffledPalabras = List<String>.from(palabras)..shuffle(Random());
+    palabras.shuffle();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -120,7 +119,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
                                     return List.generate(
                                       numTargets,
                                       (index) {
-                                        final palabra = shuffledPalabras[index];
+                                        final palabra = palabras[index];
                                         return Draggable<String>(
                                           data: palabra,
                                           feedback: MyBrick(texto: palabra),

@@ -1,7 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import '../../../widgets/MyBubble.dart';
 import '../../../widgets/MyLectionBanner.dart';
 
@@ -14,12 +13,31 @@ class LeccionBubbles extends StatefulWidget {
 
 class _LeccionBubblesState extends State<LeccionBubbles>
     with TickerProviderStateMixin {
+
   final List<String> letras = ["A", "B", "C", "D", "E"];
-  final AudioPlayer bgMusic = AudioPlayer();
-  final AudioPlayer boton = AudioPlayer();
+  final respuesta = "A";
+  final bgMusic = AudioPlayer();
+  final boton = AudioPlayer();
+  final res = AudioPlayer();
+  final String titulo = "Titulo de leccion";
   AnimationController? _controller;
   List<Animation<Offset>>? _animaciones;
-  final String titulo = "Titulo de leccion";
+  List<bool> popped = [false, false, false, false, false];
+
+
+
+  void _checarRespuesta(String letra, int index) {
+
+    setState(() {
+      popped[index] = true;
+    });
+    if (letra == respuesta) {
+      res.play(AssetSource("successLesson.mp3"));
+      
+    } else {
+      res.play(AssetSource("wrong-choice.mp3"));
+    }
+  }
 
   @override
   void initState() {
@@ -69,6 +87,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
     _controller?.dispose();
     bgMusic.dispose();
     boton.dispose();
+    res.dispose();
     super.dispose();
   }
 
@@ -96,12 +115,13 @@ class _LeccionBubblesState extends State<LeccionBubbles>
                   children: [
                     SlideTransition(
                       position: _animaciones![0],
-                      child: MyBubble(
+                      child: !popped[0] ? MyBubble(
                         onTap: () {
                           boton.play(AssetSource("BubblePop.mp3"));
+                          _checarRespuesta(letras[0], 0);
                         },
                         letra: letras[0],
-                      ),
+                      ) : Container()
                     ),
                   ],
                 ),
@@ -109,12 +129,13 @@ class _LeccionBubblesState extends State<LeccionBubbles>
                   children: [
                     SlideTransition(
                       position: _animaciones![1],
-                      child: MyBubble(
+                      child: !popped[1] ? MyBubble(
                         onTap: () {
                           boton.play(AssetSource("BubblePop.mp3"));
+                          _checarRespuesta(letras[1], 1);
                         },
                         letra: letras[1],
-                      ),
+                      ) : const SizedBox()
                     ),
                   ],
                 ),
@@ -122,12 +143,13 @@ class _LeccionBubblesState extends State<LeccionBubbles>
                   children: [
                     SlideTransition(
                       position: _animaciones![2],
-                      child: MyBubble(
+                      child: !popped[2] ? MyBubble(
                         onTap: () {
                           boton.play(AssetSource("BubblePop.mp3"));
+                          _checarRespuesta(letras[2], 2);
                         },
                         letra: letras[2],
-                      ),
+                      ) : const SizedBox()
                     ),
                   ],
                 ),
@@ -142,12 +164,13 @@ class _LeccionBubblesState extends State<LeccionBubbles>
                   children: [
                     SlideTransition(
                       position: _animaciones![3],
-                      child: MyBubble(
+                      child: !popped[3] ? MyBubble(
                         onTap: () {
                           boton.play(AssetSource("BubblePop.mp3"));
+                          _checarRespuesta(letras[3], 3);
                         },
                         letra: letras[3],
-                      ),
+                      ) : const SizedBox()
                     ),
                   ],
                 ),
@@ -155,12 +178,13 @@ class _LeccionBubblesState extends State<LeccionBubbles>
                   children: [
                     SlideTransition(
                       position: _animaciones![4],
-                      child: MyBubble(
+                      child: !popped[4] ? MyBubble(
                         onTap: () {
                           boton.play(AssetSource("BubblePop.mp3"));
+                          _checarRespuesta(letras[4], 4);
                         },
                         letra: letras[4],
-                      ),
+                      ) : const SizedBox()
                     ),
                   ],
                 ),

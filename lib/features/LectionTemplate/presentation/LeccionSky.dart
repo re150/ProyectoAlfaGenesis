@@ -15,6 +15,8 @@ class LeccionSky extends StatefulWidget {
 class _LeccionSkyState extends State<LeccionSky> {
   final String titulo = "Titulo de leccion";
   final bgMusic = AudioPlayer();
+  final nuve = AudioPlayer();
+  final respuesta = AudioPlayer();
   int? selectedIndexPalabras;
   int? selectedIndexImagenes;
 
@@ -40,12 +42,14 @@ class _LeccionSkyState extends State<LeccionSky> {
   }
 
   void _onTapSkyBlockPalabras(int index) {
+    nuve.play(AssetSource("SelectButton.mp3"));
     setState(() {
       selectedIndexPalabras = index;
     });
   }
 
   void _onTapSkyBlockImagenes(int index) {
+    nuve.play(AssetSource("SelectButton.mp3"));
     setState(() {
       selectedIndexImagenes = index;
     });
@@ -53,6 +57,7 @@ class _LeccionSkyState extends State<LeccionSky> {
 
   void _checarRespuesta(int indexP, int indexI) {
     if (indexP == indexI) {
+      respuesta.play(AssetSource("successLesson.mp3"));
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Correcto"),
@@ -60,7 +65,8 @@ class _LeccionSkyState extends State<LeccionSky> {
         ),
       );
     } else {
-     ScaffoldMessenger.of(context).showSnackBar(
+      respuesta.play(AssetSource("wrong-choice.mp3"));
+      ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Incorrecto"),
           duration: Duration(seconds: 2),
@@ -91,6 +97,8 @@ class _LeccionSkyState extends State<LeccionSky> {
       DeviceOrientation.landscapeLeft
     ]);
     bgMusic.dispose();
+    nuve.dispose();
+    respuesta.dispose();
     super.dispose();
   }
 

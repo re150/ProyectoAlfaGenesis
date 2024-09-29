@@ -75,7 +75,7 @@ class _LeccionBeachState extends State<LeccionBeach> with SingleTickerProviderSt
           child: Column(
             children: [
               const SizedBox(height: 40),
-              MyLectionBanner(titulo: titulo),
+              MyLectionBanner(titulo: titulo, onPressed: () {}),
               const SizedBox(height: 20),
               Expanded(
                 child: Row(

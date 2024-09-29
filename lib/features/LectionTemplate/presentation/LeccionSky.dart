@@ -118,6 +118,7 @@ class _LeccionSkyState extends State<LeccionSky> {
               children: [
                 MyLectionBanner(
                   titulo: titulo,
+                  onPressed: () {},
                 ),
               ],
             ),

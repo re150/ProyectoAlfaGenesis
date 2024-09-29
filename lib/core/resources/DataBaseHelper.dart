@@ -25,8 +25,8 @@ class DatabaseHelper {
     return _database == null ? await openDatabase(
       path,
       version: 1,
+      
       onCreate: (db, version) async {
-        
         await db.execute('''
           CREATE TABLE lecciones(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,7 +44,6 @@ class DatabaseHelper {
             FOREIGN KEY (id_leccion) REFERENCES Lecciones(id)
           )
         ''');
-        //TOODO: CHECAR LAS ROWS EN LAS TABLAS
 
         await db.execute('''
           CREATE TABLE material(

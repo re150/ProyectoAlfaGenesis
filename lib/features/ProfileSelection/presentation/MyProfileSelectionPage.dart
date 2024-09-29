@@ -70,7 +70,7 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
   return Scaffold(
     body: SafeArea(
       child:  loading
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : Column(
         children: [
           Expanded(

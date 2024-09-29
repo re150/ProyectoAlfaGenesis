@@ -7,6 +7,8 @@ import 'LeccionBubbles.dart';
 import 'LeccionSky.dart';
 
 class LeccionDemo extends StatefulWidget {
+  const LeccionDemo({super.key});
+
   @override
   State<LeccionDemo> createState() => _LeccionDemoState();
 }
@@ -50,7 +52,6 @@ class _LeccionDemoState extends State<LeccionDemo> {
         _materialesPorEtapa[etapaId] = materiales;
       }
     }
-
     setState(() {
       dataLoaded = true;
     });
@@ -69,7 +70,8 @@ class _LeccionDemoState extends State<LeccionDemo> {
     String leccionTipo = etapa['leccion_tipo'] ?? 'unknown';
     int etapaId = etapa['id'];
     List<Map<String, dynamic>> materiales = _materialesPorEtapa[etapaId] ?? [];
-    String titulo = etapa['titulo'] ?? "Titulo de leccion";
+    String titulo = _lecciones[0]["titulo"] as String;
+    String instrucciones = etapa['instrucciones'] as String;
 
     switch (leccionTipo) {
       case "blocks":
@@ -77,6 +79,7 @@ class _LeccionDemoState extends State<LeccionDemo> {
           materiales: materiales,
           titulo: titulo,
           onNext: _nextPage,
+          instrucciones: instrucciones,
         );
       case "bubbles":
         return LeccionBubbles();
@@ -85,7 +88,7 @@ class _LeccionDemoState extends State<LeccionDemo> {
       case "sky":
         return LeccionSky();
       default:
-        return const Text("Unknown lesson type");
+        return const Text("ERROR");
     }
   }
 
@@ -101,6 +104,7 @@ class _LeccionDemoState extends State<LeccionDemo> {
     return Scaffold(
       body: etapas.isNotEmpty
           ? PageView.builder(
+              scrollDirection: Axis.vertical,
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: etapas.length,

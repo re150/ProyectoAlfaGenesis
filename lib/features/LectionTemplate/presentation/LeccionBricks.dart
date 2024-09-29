@@ -9,12 +9,14 @@ class LeccionBricks extends StatefulWidget {
   final List<Map<String, dynamic>> materiales;
   final String titulo;
   final VoidCallback onNext;
+  final String instrucciones;
 
   const LeccionBricks({
     super.key,
     required this.materiales,
     required this.titulo,
     required this.onNext,
+    required this.instrucciones,
   });
 
   @override
@@ -22,11 +24,16 @@ class LeccionBricks extends StatefulWidget {
 }
 
 class _LeccionBricksState extends State<LeccionBricks> {
-  final ladrillo = AudioPlayer();
   final boton = AudioPlayer();
   final start = AudioPlayer();
+  final instruccriones = AudioPlayer();
+  final pista = AudioPlayer();
   final bgMusic = AudioPlayer();
+  String imgPath = "";
+  String instruccionesPath = "";
+  String pistaPath = "";
   List<String> palabras = [];
+  List<AudioPlayer> ladrillos = [];
   int numTargets = 0;
   List<String> correctOrder = [];
   List<String?> draggedOrder = [];
@@ -36,32 +43,44 @@ class _LeccionBricksState extends State<LeccionBricks> {
   @override
   void initState() {
     super.initState();
-    _processMateriales(); 
-    _setupAudio();
-    _setScreenOrientation(); 
+    _procesarMateriales();
+    _setAudio();
+    _setOrientacion();
   }
 
-  void _processMateriales() {
+  void _procesarMateriales() {
     setState(() {
       palabras = widget.materiales
           .where((material) => material["tipo_material"] == "palabra")
           .map((material) => material["valor_material"] as String)
           .toList();
+
       correctOrder = List.from(palabras);
       numTargets = palabras.length;
       palabras.shuffle();
       draggedOrder = List<String?>.filled(numTargets, null);
+
+      imgPath = widget.materiales.firstWhere((material) =>
+          material["tipo_material"] == "imagen")["valor_material"] as String;
+      pistaPath = widget.materiales.firstWhere((material) =>
+          material["tipo_material"] == "audio")["valor_material"] as String;
+
+      pistaPath = pistaPath.replaceFirst('assets/', '');
+      instruccionesPath = widget.instrucciones;
+      instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
+
+      ladrillos = List.generate(palabras.length, (_) => AudioPlayer());
     });
   }
 
-  void _setupAudio() {
+  void _setAudio() {
     bgMusic.setVolume(0.4);
     bgMusic.setReleaseMode(ReleaseMode.loop);
     start.play(AssetSource("game-start.mp3"));
     bgMusic.play(AssetSource("Blocks.mp3"));
   }
 
-  void _setScreenOrientation() {
+  void _setOrientacion() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -77,13 +96,13 @@ class _LeccionBricksState extends State<LeccionBricks> {
       }
     }
     String mensaje = esCorrecto ? "Correcto" : "Incorrecto";
-    boton.play(AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mensaje))); //REEMPLAZAR POR LA DEBIDA IMPLEMENTACION
-
-
+    boton.play(
+        AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(mensaje))); //REEMPLAZAR SNACKBAR POR LA DEBIDA IMPLEMENTACION
     bgMusic.stop();
     Future.delayed(const Duration(milliseconds: 1500), () {
-        widget.onNext();
+      widget.onNext();
     });
   }
 
@@ -95,7 +114,9 @@ class _LeccionBricksState extends State<LeccionBricks> {
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
     ]);
-    ladrillo.dispose();
+    for (AudioPlayer ladrillo in ladrillos) {
+      ladrillo.dispose();
+    }
     boton.dispose();
     start.dispose();
     bgMusic.dispose();
@@ -114,7 +135,11 @@ class _LeccionBricksState extends State<LeccionBricks> {
       child: Column(
         children: [
           const SizedBox(height: 40),
-          MyLectionBanner(titulo: widget.titulo),
+          MyLectionBanner(
+            titulo: widget.titulo,
+            onPressed: () =>
+                instruccriones.play(AssetSource(instruccionesPath)),
+          ),
           Expanded(
             child: Row(
               children: [
@@ -146,7 +171,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
                                             draggingPalabras.add(palabra);
                                             isDragging = true;
                                           });
-                                          ladrillo
+                                          ladrillos[index]
                                               .play(AssetSource("Brick.mp3"));
                                         },
                                         onDraggableCanceled: (_, __) {
@@ -189,7 +214,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
                                   draggedOrder[index] = receivedItem.data;
                                   isDragging = false;
                                 });
-                                ladrillo.play(AssetSource("Brick.mp3"));
+                                ladrillos[index].play(AssetSource("Brick.mp3"));
                               },
                               builder: (context, candidateData, rejectedData) {
                                 return Container(
@@ -217,10 +242,10 @@ class _LeccionBricksState extends State<LeccionBricks> {
                     ],
                   ),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     if (!isDragging) {
-                      ladrillo.play(AssetSource("Brick.mp3"));
+                      pista.play(AssetSource(pistaPath));
                     }
                   },
                   child: Container(
@@ -228,8 +253,8 @@ class _LeccionBricksState extends State<LeccionBricks> {
                     width: 200,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      image: const DecorationImage(
-                        image: AssetImage("assets/mesa.jpg"),
+                      image: DecorationImage(
+                        image: AssetImage(imgPath),
                         fit: BoxFit.cover,
                       ),
                     ),

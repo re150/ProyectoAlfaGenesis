@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
 import 'config/theme/ThemeData.dart';
 import 'core/resources/DataBaseHelper.dart';
 import 'features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';

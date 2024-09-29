@@ -104,6 +104,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
             children: [
               MyLectionBanner(
                 titulo: titulo,
+                onPressed: () {},
               ),
             ],
           ),

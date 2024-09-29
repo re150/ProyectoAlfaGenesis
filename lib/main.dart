@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
 import 'config/theme/ThemeData.dart';
 import 'core/resources/DataBaseHelper.dart';
 import 'features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
@@ -13,7 +14,7 @@ import 'features/ProfileEdition/presentation/MyProfileEditiontionPage.dart';
 import 'features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
 import 'provider/AuthProvider.dart';
 import 'provider/ProfileVariables.dart';
-
+//ARREGLAR BUG CUANDO SE APAGA LA PANTALLA
 void main() {
     runApp(
     MultiProvider(
@@ -29,19 +30,22 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  void _inicializarDB () async {
+    DatabaseHelper dbHelper = DatabaseHelper();
+    dbHelper.initDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
     
-  DatabaseHelper db = DatabaseHelper();
-  db.initDatabase();
-
+    _inicializarDB();
     return MaterialApp(
       theme: theme,
       initialRoute: '/', 
       routes: {
         '/': (context) => const LandingPage(),
         '/login': (context) => const LoginPage(),
-        '/leccion': (context) => const LeccionDemo(),
+        '/leccion': (context) => LeccionDemo(),
         '/accountCreation': (context) => const MyAccountCreationPage(),
         '/profileCreation': (context) => const MyProfileCreationPage(),
         '/profileEdition': (context) => const MyProfileEditionPage(),

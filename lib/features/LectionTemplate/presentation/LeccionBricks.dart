@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:proyecto/widgets/MyBrick.dart';
@@ -7,8 +6,15 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:proyecto/widgets/MyLectionBanner.dart';
 
 class LeccionBricks extends StatefulWidget {
+  final List<Map<String, dynamic>> materiales;
+  final String titulo;
+  final VoidCallback onNext;
+
   const LeccionBricks({
     super.key,
+    required this.materiales,
+    required this.titulo,
+    required this.onNext,
   });
 
   @override
@@ -20,25 +26,42 @@ class _LeccionBricksState extends State<LeccionBricks> {
   final boton = AudioPlayer();
   final start = AudioPlayer();
   final bgMusic = AudioPlayer();
-  List<String> palabras = [
-    "ME",
-    "SA",
-  ];
-
-  String titulo = "Titulo de leccion";
-  int numTargets = 2;
-  List<String> correctOrder = ['ME', 'SA'];
-  List<String?> draggedOrder = [null, null, null];
+  List<String> palabras = [];
+  int numTargets = 0;
+  List<String> correctOrder = [];
+  List<String?> draggedOrder = [];
   Set<String> draggingPalabras = {};
+  bool isDragging = false;
 
   @override
   void initState() {
     super.initState();
+    _processMateriales(); 
+    _setupAudio();
+    _setScreenOrientation(); 
+  }
+
+  void _processMateriales() {
+    setState(() {
+      palabras = widget.materiales
+          .where((material) => material["tipo_material"] == "palabra")
+          .map((material) => material["valor_material"] as String)
+          .toList();
+      correctOrder = List.from(palabras);
+      numTargets = palabras.length;
+      palabras.shuffle();
+      draggedOrder = List<String?>.filled(numTargets, null);
+    });
+  }
+
+  void _setupAudio() {
     bgMusic.setVolume(0.4);
     bgMusic.setReleaseMode(ReleaseMode.loop);
     start.play(AssetSource("game-start.mp3"));
     bgMusic.play(AssetSource("Blocks.mp3"));
-    palabras.shuffle();
+  }
+
+  void _setScreenOrientation() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -46,7 +69,6 @@ class _LeccionBricksState extends State<LeccionBricks> {
   }
 
   void _checarRespuesta() {
-
     bool esCorrecto = true;
     for (int i = 0; i < correctOrder.length; i++) {
       if (draggedOrder[i] != correctOrder[i]) {
@@ -54,22 +76,15 @@ class _LeccionBricksState extends State<LeccionBricks> {
         break;
       }
     }
-    if (esCorrecto) {
-      boton.play(AssetSource("successLesson.mp3"));
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Correcto"),
-        ),
-      );
-    } else {
-      boton.play(AssetSource("wrong-choice.mp3"));
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Incorrecto"),
-        ),
-      );
-    }
-    
+    String mensaje = esCorrecto ? "Correcto" : "Incorrecto";
+    boton.play(AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mensaje))); //REEMPLAZAR POR LA DEBIDA IMPLEMENTACION
+
+
+    bgMusic.stop();
+    Future.delayed(const Duration(milliseconds: 1500), () {
+        widget.onNext();
+    });
   }
 
   @override
@@ -78,7 +93,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
       DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft
+      DeviceOrientation.landscapeLeft,
     ]);
     ladrillo.dispose();
     boton.dispose();
@@ -99,7 +114,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
       child: Column(
         children: [
           const SizedBox(height: 40),
-          MyLectionBanner(titulo: titulo),
+          MyLectionBanner(titulo: widget.titulo),
           Expanded(
             child: Row(
               children: [
@@ -115,48 +130,48 @@ class _LeccionBricksState extends State<LeccionBricks> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
-                                  children: () {
-                                    return List.generate(
-                                      numTargets,
-                                      (index) {
-                                        final palabra = palabras[index];
-                                        return Draggable<String>(
-                                          data: palabra,
-                                          feedback: MyBrick(texto: palabra),
-                                          childWhenDragging: const SizedBox(
-                                            height: 100,
-                                            width: 240,
-                                          ),
-                                          onDragStarted: () {
-                                            setState(() {
-                                              draggingPalabras.add(palabra);
-                                            });
-                                            ladrillo
-                                                .play(AssetSource("Brick.mp3"));
-                                          },
-                                          onDraggableCanceled: (_, __) {
-                                            setState(() {
-                                              draggingPalabras.remove(palabra);
-                                            });
-                                          },
-                                          onDragEnd: (_) {
-                                            setState(() {
-                                              draggingPalabras.remove(palabra);
-                                            });
-                                          },
-                                          child:
-                                              draggedOrder.contains(palabra) ||
-                                                      draggingPalabras
-                                                          .contains(palabra)
-                                                  ? const SizedBox(
-                                                      height: 100,
-                                                      width: 240,
-                                                    )
-                                                  : MyBrick(texto: palabra),
-                                        );
-                                      },
-                                    );
-                                  }(),
+                                  children: List.generate(
+                                    numTargets,
+                                    (index) {
+                                      final palabra = palabras[index];
+                                      return Draggable<String>(
+                                        data: palabra,
+                                        feedback: MyBrick(texto: palabra),
+                                        childWhenDragging: const SizedBox(
+                                          height: 100,
+                                          width: 240,
+                                        ),
+                                        onDragStarted: () {
+                                          setState(() {
+                                            draggingPalabras.add(palabra);
+                                            isDragging = true;
+                                          });
+                                          ladrillo
+                                              .play(AssetSource("Brick.mp3"));
+                                        },
+                                        onDraggableCanceled: (_, __) {
+                                          setState(() {
+                                            draggingPalabras.remove(palabra);
+                                            isDragging = false;
+                                          });
+                                        },
+                                        onDragEnd: (_) {
+                                          setState(() {
+                                            draggingPalabras.remove(palabra);
+                                            isDragging = false;
+                                          });
+                                        },
+                                        child: draggedOrder.contains(palabra) ||
+                                                draggingPalabras
+                                                    .contains(palabra)
+                                            ? const SizedBox(
+                                                height: 100,
+                                                width: 240,
+                                              )
+                                            : MyBrick(texto: palabra),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
@@ -172,6 +187,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
                               onAcceptWithDetails: (receivedItem) {
                                 setState(() {
                                   draggedOrder[index] = receivedItem.data;
+                                  isDragging = false;
                                 });
                                 ladrillo.play(AssetSource("Brick.mp3"));
                               },
@@ -180,8 +196,9 @@ class _LeccionBricksState extends State<LeccionBricks> {
                                   width: 240,
                                   height: 100,
                                   decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      border: Border.all(color: Colors.orange)),
+                                    color: Colors.black,
+                                    border: Border.all(color: Colors.orange),
+                                  ),
                                   child: draggedOrder[index] != null
                                       ? MyBrick(texto: draggedOrder[index]!)
                                       : Container(),
@@ -192,17 +209,19 @@ class _LeccionBricksState extends State<LeccionBricks> {
                         ),
                       ),
                       MyButton(
-                        text: "Veificar",
+                        text: "Verificar",
                         colorB: Colors.blue,
                         colorT: Colors.white,
-                        onTap: () => _checarRespuesta(),
+                        onTap: _checarRespuesta,
                       ),
                     ],
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    ladrillo.play(AssetSource("Brick.mp3"));
+                    if (!isDragging) {
+                      ladrillo.play(AssetSource("Brick.mp3"));
+                    }
                   },
                   child: Container(
                     height: 200,

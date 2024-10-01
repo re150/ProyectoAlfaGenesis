@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class MyGroupListCard extends StatelessWidget {
   final String nombre;
+  final String imgPath;
   final void Function()? onTap;
 
-  const MyGroupListCard({super.key, required this.nombre, required this.onTap});
-
+  const MyGroupListCard({super.key, required this.nombre, required this.imgPath, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class MyGroupListCard extends StatelessWidget {
       ),
       child: ListTile(
         title: Text(nombre),
-        leading: Image.asset("assets/bee-kid.png"),
+        leading: Image.asset(imgPath),
         onTap: onTap,
       ),
     );

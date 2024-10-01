@@ -14,6 +14,7 @@ import 'features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
 import 'provider/AuthProvider.dart';
 import 'provider/ProfileVariables.dart';
 //ARREGLAR BUG CUANDO SE APAGA LA PANTALLA
+
 void main() {
     runApp(
     MultiProvider(
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const LandingPage(),
         '/login': (context) => const LoginPage(),
-        '/leccion': (context) => LeccionDemo(),
+        '/leccion': (context) => const LeccionDemo(),
         '/accountCreation': (context) => const MyAccountCreationPage(),
         '/profileCreation': (context) => const MyProfileCreationPage(),
         '/profileEdition': (context) => const MyProfileEditionPage(),

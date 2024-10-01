@@ -17,7 +17,7 @@ class MyProfileSelectionPage extends StatefulWidget {
 
 class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
   List<dynamic> profiles = [];
-   bool loading = true;
+  bool loading = true;
   @override
   void initState() {
     super.initState();
@@ -39,105 +39,113 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
     ]);
   }
 
-   Future<void> fetchProfiles() async {
-     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+  Future<void> fetchProfiles() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
     // Acceder al JWT token
     final jwtToken = authProvider.jwtToken;
     final email = authProvider.email;
-  
-     final response = await http.get(
+
+    final response = await http.get(
       Uri.parse('http://$ipAdress:$port/next/alfa/showProfile/$email'),
-      headers: <String, String>{
-        'Authorization': 'Bearer $jwtToken'
-      },
+      headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
     );
 
     if (response.statusCode == 200) {
       setState(() {
         List<dynamic> jsonData = json.decode(response.body);
-         profiles = jsonData;
+        profiles = jsonData;
         loading = false;
       });
-      
     } else {
       throw Exception('Error al cargar perfiles');
     }
   }
 
+  void _addPerfil() {
+    
+  }
+
   @override
   Widget build(BuildContext context) {
-  
-  return Scaffold(
-    body: SafeArea(
-      child:  loading
+    return Scaffold(
+      body: SafeArea(
+        child: loading
             ? const Center(child: CircularProgressIndicator())
             : Column(
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Stack(
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/OceanBG.jpg'),
-                            fit: BoxFit.cover,)
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                  image: AssetImage('assets/OceanBG.jpg'),
+                                  fit: BoxFit.cover,
+                                )),
+                              ),
+                              Center(child: Image.asset('assets/logoo.png')),
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: IconButton(
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    size: 40,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  color: Colors.black,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      Center(child: Image.asset('assets/logoo.png')),
-
-                       Align(
-                        alignment: Alignment.topLeft,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            size: 40,),
-                          onPressed: (){
-                            Navigator.pop(context);
-                          },
-                          color: Colors.black,
-                        ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    color: Colors.white,
-                    child: Center(
-                      child: CarouselView(
-                        elevation: 2,
-                        onTap: (_) {
-                          Navigator.pushNamed(context, '/profileEdition');
-                        },
-                        padding: const EdgeInsets.all(20),  
-                        itemExtent: MediaQuery.of(context).size.width/3,
-                        itemSnapping: false, 
-                        children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            color: Colors.white,
+                            child: Center(
+                                child: CarouselView(
+                              elevation: 2,
+                              onTap: (_) {
+                                Navigator.pushNamed(context, '/profileEdition');
+                              },
+                              padding: const EdgeInsets.all(20),
+                              itemExtent: MediaQuery.of(context).size.width / 3,
+                              itemSnapping: false,
+                              children: [
                                 for (var profile in profiles)
                                   MyProfileImage(
                                     name: profile['name']!,
                                     imagePath: profile['imgUrl']!,
                                   ),
                               ],
-                        )
+                            )),
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width/ 4,
+                          height: MediaQuery.of(context).size.height/ 4,
+                          child: IconButton(
+                              onPressed: () => _addPerfil(),
+                              icon: Icon(Icons.add,
+                                  size: MediaQuery.of(context).size.width / 10,
+                                  color: Colors.black)),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        ],
+                ],
+              ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

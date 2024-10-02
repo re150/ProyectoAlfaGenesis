@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class MyBeachImage extends StatelessWidget {
-  final String ruta;
+  final String imagen;
   final void Function() onTap;
-  const MyBeachImage({super.key, required this.ruta, required this.onTap});
+  const MyBeachImage({super.key, required this.imagen, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class MyBeachImage extends StatelessWidget {
             width: 2,
           ),
           image: DecorationImage(
-            image: AssetImage(ruta),
+            image: AssetImage(imagen),
             fit: BoxFit.cover,
           ),
         ),

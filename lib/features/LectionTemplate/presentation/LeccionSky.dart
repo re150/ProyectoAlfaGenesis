@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyLectionBanner.dart';
 import 'package:proyecto/widgets/MySkyBlock.dart';
 
 class LeccionSky extends StatefulWidget {
-  const LeccionSky({super.key});
+  //final List<Map<String, dynamic>> materiales;
+  final String titulo;
+  final String instrucciones;
+  const LeccionSky({
+    super.key,
+    //required this.materiales,
+    required this.titulo,
+    required this.instrucciones,
+  });
 
   @override
   State<LeccionSky> createState() => _LeccionSkyState();
 }
 
 class _LeccionSkyState extends State<LeccionSky> {
-  final String titulo = "Titulo de leccion";
   final bgMusic = AudioPlayer();
-  final nuve = AudioPlayer();
+  final boton = AudioPlayer();
+  final nube = AudioPlayer();
   final respuesta = AudioPlayer();
+  String instruccionesPath = "";
   int? selectedIndexPalabras;
   int? selectedIndexImagenes;
 
@@ -42,14 +50,14 @@ class _LeccionSkyState extends State<LeccionSky> {
   }
 
   void _onTapSkyBlockPalabras(int index) {
-    nuve.play(AssetSource("SelectButton.mp3"));
+    nube.play(AssetSource("SelectButton.mp3"));
     setState(() {
       selectedIndexPalabras = index;
     });
   }
 
   void _onTapSkyBlockImagenes(int index) {
-    nuve.play(AssetSource("SelectButton.mp3"));
+    nube.play(AssetSource("SelectButton.mp3"));
     setState(() {
       selectedIndexImagenes = index;
     });
@@ -75,29 +83,29 @@ class _LeccionSkyState extends State<LeccionSky> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
+  void _setMusica() {
     bgMusic.setReleaseMode(ReleaseMode.loop);
     bgMusic.play(AssetSource("Sky2.mp3"));
+  }
+
+  void _processMateriales() {
+    instruccionesPath = widget.instrucciones;
+    instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
     palabras = shuffleMap(palabras);
     imagenes = shuffleMap(imagenes);
   }
 
   @override
+  void initState() {
+    super.initState();
+    _setMusica();
+    _processMateriales();
+  }
+
+  @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft
-    ]);
     bgMusic.dispose();
-    nuve.dispose();
+    nube.dispose();
     respuesta.dispose();
     super.dispose();
   }
@@ -117,8 +125,8 @@ class _LeccionSkyState extends State<LeccionSky> {
             Row(
               children: [
                 MyLectionBanner(
-                  titulo: titulo,
-                  onPressed: () {},
+                  titulo: widget.titulo,
+                  onPressed: () => boton.play(AssetSource(instruccionesPath)),
                 ),
               ],
             ),

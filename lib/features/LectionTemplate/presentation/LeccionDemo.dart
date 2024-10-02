@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../core/resources/DataBaseHelper.dart';
 import 'LeccionBeach.dart';
@@ -14,7 +15,6 @@ class LeccionDemo extends StatefulWidget {
 }
 
 class _LeccionDemoState extends State<LeccionDemo> {
-  
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final Map<int, List<Map<String, dynamic>>> _etapasPorLeccion = {};
   final Map<int, List<Map<String, dynamic>>> _materialesPorEtapa = {};
@@ -23,10 +23,11 @@ class _LeccionDemoState extends State<LeccionDemo> {
   List<Map<String, dynamic>> _lecciones = [];
   bool dataLoaded = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
+    void _setOrientacion() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
   }
 
   Future<void> _loadData() async {
@@ -82,16 +83,47 @@ class _LeccionDemoState extends State<LeccionDemo> {
           instrucciones: instrucciones,
         );
       case "bubbles":
-        return LeccionBubbles();
+        return LeccionBubbles(
+          titulo: titulo,
+          onNext: _nextPage,
+          instrucciones: instrucciones,
+        );
       case "beach":
-        return LeccionBeach();
+        return LeccionBeach(
+          titulo: titulo,
+          instrucciones: instrucciones,
+          onNext: _nextPage,
+        );
       case "sky":
-        return LeccionSky();
+        return LeccionSky(
+          titulo: titulo,
+          instrucciones: instrucciones,
+        );
       default:
         return const Text("ERROR");
     }
   }
-  
+
+  @override
+  void initState() {
+    super.initState();
+    _setOrientacion();
+    _loadData();
+  }
+
+  @override
+  void dispose() {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+    ]);
+    _pageController.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     if (!dataLoaded) {
@@ -113,7 +145,7 @@ class _LeccionDemoState extends State<LeccionDemo> {
                 return _buildEtapa(etapas[index]);
               },
             )
-          : const Center(child: Text("SI VES ESTO NO TENGO IDEA DE QUE PASÓ")),
+          : const Center(child: Text("ERROR, MATERIALES VACIOS")),
     );
   }
 }

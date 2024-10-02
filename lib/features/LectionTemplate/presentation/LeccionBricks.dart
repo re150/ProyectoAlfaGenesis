@@ -40,14 +40,6 @@ class _LeccionBricksState extends State<LeccionBricks> {
   Set<String> draggingPalabras = {};
   bool isDragging = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _procesarMateriales();
-    _setAudio();
-    _setOrientacion();
-  }
-
   void _procesarMateriales() {
     setState(() {
       palabras = widget.materiales
@@ -80,13 +72,6 @@ class _LeccionBricksState extends State<LeccionBricks> {
     bgMusic.play(AssetSource("Blocks.mp3"));
   }
 
-  void _setOrientacion() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-  }
-
   void _checarRespuesta() {
     bool esCorrecto = true;
     for (int i = 0; i < correctOrder.length; i++) {
@@ -107,13 +92,14 @@ class _LeccionBricksState extends State<LeccionBricks> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _procesarMateriales();
+    _setAudio();
+  }
+
+  @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
     for (AudioPlayer ladrillo in ladrillos) {
       ladrillo.dispose();
     }

@@ -22,7 +22,7 @@ class MyLectionBanner extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.star, color: Colors.yellow[700], size: 40),
+            icon: const Icon(Icons.volume_up, color: Colors.black, size: 40),
             onPressed: onPressed,
           ),
         ],

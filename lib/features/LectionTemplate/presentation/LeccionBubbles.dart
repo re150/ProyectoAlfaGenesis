@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../../../widgets/MyBubble.dart';
 import '../../../widgets/MyLectionBanner.dart';
 
@@ -9,7 +8,18 @@ import '../../../widgets/MyLectionBanner.dart';
 /// Hola
 
 class LeccionBubbles extends StatefulWidget {
-  const LeccionBubbles({super.key});
+  //final List<Map<String, dynamic>> materiales;
+  final String titulo;
+  final VoidCallback onNext;
+  final String instrucciones;
+
+  const LeccionBubbles({
+    super.key,
+    //required this.materiales,
+    required this.titulo,
+    required this.onNext,
+    required this.instrucciones,
+  });
 
   @override
   State<LeccionBubbles> createState() => _LeccionBubblesState();
@@ -17,48 +27,53 @@ class LeccionBubbles extends StatefulWidget {
 
 class _LeccionBubblesState extends State<LeccionBubbles>
     with TickerProviderStateMixin {
-
-  final List<String> letras = ["A", "B", "C", "D", "E"];
-  final respuesta = "A";
+  final List<String> letras = ["RRO", "B", "C", "D", "E"];
   final bgMusic = AudioPlayer();
   final boton = AudioPlayer();
   final res = AudioPlayer();
-  final String titulo = "Titulo de leccion";
+  final instrucciones = AudioPlayer();
+  String instruccionesPath = "";
+  String respuesta = "";
   AnimationController? _controller;
   List<Animation<Offset>>? _animaciones;
   List<bool> popped = [false, false, false, false, false];
-
+  bool pop = false;
 
   void _checarRespuesta(String letra, int index) {
-
+    boton.play(AssetSource("BubblePop.mp3"));
     setState(() {
+      pop = true;
       popped[index] = true;
     });
     if (letra == respuesta) {
       res.play(AssetSource("successLesson.mp3"));
-      
     } else {
       res.play(AssetSource("wrong-choice.mp3"));
     }
+    bgMusic.stop();
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      widget.onNext();
+    });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    //comentarios de separación para no perderme
+  void _procesarMateriales() {
+    respuesta = letras[0];
+    instruccionesPath = widget.instrucciones;
+    instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
+  }
 
-    //orientacion de la tableta
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-
-    //musica
+  void _setMusica() {
     bgMusic.play(AssetSource("WaterLesson.mp3"));
     bgMusic.setReleaseMode(ReleaseMode.loop);
+  }
 
-    //animacion
-    _animaciones = List.generate(5, (index) {
+  void _shuffleElementos() {
+    _animaciones!.shuffle();
+    letras.shuffle();
+  }
+
+  void _setAnimacion() {
+    _animaciones = List.generate(6, (index) {
       final controller = AnimationController(
         duration: const Duration(seconds: 1),
         vsync: this,
@@ -74,19 +89,19 @@ class _LeccionBubblesState extends State<LeccionBubbles>
         curve: Curves.easeInOut,
       ));
     });
+  }
 
-    _animaciones!.shuffle();
-    letras.shuffle();
+  @override
+  void initState() {
+    super.initState();
+    _procesarMateriales();
+    _setMusica();
+    _setAnimacion();
+    _shuffleElementos();
   }
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft
-    ]);
     _controller?.dispose();
     bgMusic.dispose();
     boton.dispose();
@@ -106,94 +121,34 @@ class _LeccionBubblesState extends State<LeccionBubbles>
           Row(
             children: [
               MyLectionBanner(
-                titulo: titulo,
-                onPressed: () {},
+                titulo: widget.titulo,
+                onPressed: () {
+                  instrucciones.play(AssetSource(instruccionesPath));
+                },
               ),
             ],
           ),
           Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    SlideTransition(
-                      position: _animaciones![0],
-                      child: !popped[0] ? MyBubble(
-                        onTap: () {
-                          boton.play(AssetSource("BubblePop.mp3"));
-                          _checarRespuesta(letras[0], 0);
-                        },
-                        letra: letras[0],
-                      ) : Container()
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    SlideTransition(
-                      position: _animaciones![1],
-                      child: !popped[1] ? MyBubble(
-                        onTap: () {
-                          boton.play(AssetSource("BubblePop.mp3"));
-                          _checarRespuesta(letras[1], 1);
-                        },
-                        letra: letras[1],
-                      ) : const SizedBox()
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    SlideTransition(
-                      position: _animaciones![2],
-                      child: !popped[2] ? MyBubble(
-                        onTap: () {
-                          boton.play(AssetSource("BubblePop.mp3"));
-                          _checarRespuesta(letras[2], 2);
-                        },
-                        letra: letras[2],
-                      ) : const SizedBox()
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    SlideTransition(
-                      position: _animaciones![3],
-                      child: !popped[3] ? MyBubble(
-                        onTap: () {
-                          boton.play(AssetSource("BubblePop.mp3"));
-                          _checarRespuesta(letras[3], 3);
-                        },
-                        letra: letras[3],
-                      ) : const SizedBox()
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    SlideTransition(
-                      position: _animaciones![4],
-                      child: !popped[4] ? MyBubble(
-                        onTap: () {
-                          boton.play(AssetSource("BubblePop.mp3"));
-                          _checarRespuesta(letras[4], 4);
-                        },
-                        letra: letras[4],
-                      ) : const SizedBox()
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            child: GridView.builder(
+                itemCount: letras.length,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 4.0,
+                    mainAxisExtent: 200.0),
+                itemBuilder: (context, index) {
+                  return SlideTransition(
+                    position: _animaciones![index],
+                    child: !popped[index]
+                        ? MyBubble(
+                            onTap: () {
+                              if (!pop) _checarRespuesta(letras[index], index);
+                            },
+                            letra: letras[index],
+                          )
+                        : Container(),
+                  );
+                }),
           ),
         ],
       ),

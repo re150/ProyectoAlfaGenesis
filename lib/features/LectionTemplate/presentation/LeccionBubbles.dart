@@ -4,6 +4,10 @@ import 'package:flutter/services.dart';
 import '../../../widgets/MyBubble.dart';
 import '../../../widgets/MyLectionBanner.dart';
 
+/// Esta vista se encarga de la leccion correspondiente a la de burbujas
+///
+/// Hola
+
 class LeccionBubbles extends StatefulWidget {
   const LeccionBubbles({super.key});
 
@@ -23,7 +27,6 @@ class _LeccionBubblesState extends State<LeccionBubbles>
   AnimationController? _controller;
   List<Animation<Offset>>? _animaciones;
   List<bool> popped = [false, false, false, false, false];
-
 
 
   void _checarRespuesta(String letra, int index) {
@@ -104,6 +107,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
             children: [
               MyLectionBanner(
                 titulo: titulo,
+                onPressed: () {},
               ),
             ],
           ),

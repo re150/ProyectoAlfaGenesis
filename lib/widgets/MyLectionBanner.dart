@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class MyLectionBanner extends StatelessWidget {
   final String titulo;
-  const MyLectionBanner({super.key, required this.titulo});
+  final VoidCallback onPressed;
+  const MyLectionBanner({super.key, required this.titulo, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,10 @@ class MyLectionBanner extends StatelessWidget {
               color: Colors.black,
             ),
           ),
-          Icon(Icons.star, color: Colors.yellow[700], size: 40),
+          IconButton(
+            icon: Icon(Icons.star, color: Colors.yellow[700], size: 40),
+            onPressed: onPressed,
+          ),
         ],
       ),
     );

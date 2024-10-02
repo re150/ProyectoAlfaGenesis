@@ -8,6 +8,7 @@ import 'package:proyecto/widgets/MyGroupListCard.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+
 class MyGroupCard extends StatefulWidget {
   final void Function()? onUse;
   final void Function()? onDelete;
@@ -18,6 +19,20 @@ class MyGroupCard extends StatefulWidget {
   final List<String> listImg;
 
 
+
+  ///Este widget se encarga de mostrar un grupo de alumnos en una tarjeta de manera ordenada y agradable a la vista
+  ///
+  ///Recibe dos funciones con un valor de retorno void [onUse] y [onDelete] respectivamente. 
+  ///Un valor int [numero] que se usa para indicar el numero de grupo.
+  ///Una lista de Strings [lista] que deberia de contener todos los alumnos que se quieren agregar al grupo.
+  ///Y un booleano [isSelected] que empieza como falso y se usa para indicar si el grupo esta seleccionado o no
+  ///
+  ///## Importante:
+  ///[onUse] deberia de settear el grupo actual como el grupo usado para el resto de la aplicación
+  ///
+  ///[onDelete] se encarga de borrar el grupo seleccionado, y deberia regresar sus alumnos a la lista comunal
+  ///
+  ///
   const MyGroupCard({
     super.key,
     required this.lista,
@@ -25,7 +40,7 @@ class MyGroupCard extends StatefulWidget {
     required this.listImg,
     required this.numero,
     required this.onUse,
-    required this.isSelected, 
+    required this.isSelected,
     required this.onDelete,
   });
 
@@ -97,24 +112,21 @@ Map<String, dynamic> creatJson(String nameTeam, List<String> listProfile, List<S
    
       
     return Container(
-
       height: MediaQuery.of(context).size.height * 0.7,
       width: MediaQuery.of(context).size.width * 0.35,
-
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.grey[100],
         border: _isSelected ? Border.all(color: Colors.blue, width: 2) : null,
-        boxShadow:[
+        boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 4,
             blurRadius: 5,
-            offset: const Offset(0, 3), 
+            offset: const Offset(0, 3),
           ),
-        ], 
+        ],
       ),
-
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -156,7 +168,6 @@ Map<String, dynamic> creatJson(String nameTeam, List<String> listProfile, List<S
               ),
             ),
             const SizedBox(height: 10),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -169,7 +180,6 @@ Map<String, dynamic> creatJson(String nameTeam, List<String> listProfile, List<S
                   colorB: Colors.blue,
                   colorT: Colors.white,
                 ),
-                
                 MyButton(
                   text: "Borrar",
                   onTap: widget.onDelete,

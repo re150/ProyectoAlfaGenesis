@@ -7,7 +7,6 @@ class MyGroupListCard extends StatelessWidget {
 
   const MyGroupListCard({super.key, required this.nombre, required this.imgPath, required this.onTap});
 
-
   @override
   Widget build(BuildContext context) {
     return Container(

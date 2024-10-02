@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
         data['email'] = email;
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         authProvider.setJwtToken(data['idToken'], data['email']);
-        Navigator.pushNamed(context, '/MainPage');
+        Navigator.pushNamed(context, '/profileSelection');
       } else {
         print('Error');
       }

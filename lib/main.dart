@@ -14,7 +14,7 @@ import 'features/ProfileCreation/presentation/MyProfileCreationPage.dart';
 import 'features/ProfileEdition/presentation/MyProfileEditiontionPage.dart';
 import 'features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
 import 'provider/AuthProvider.dart';
-import 'provider/ProfileVariables.dart';
+import 'provider/ProfileProvider.dart';
 //ARREGLAR BUG CUANDO SE APAGA LA PANTALLA
 
 void main() {
@@ -22,10 +22,10 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => ProfileVariables()),
-          ChangeNotifierProvider(create: (_) => TeamProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => TeamProvider()),
       ],
-      child: const MyApp(),
+      child:  MyApp(),
     ),
   );
 }

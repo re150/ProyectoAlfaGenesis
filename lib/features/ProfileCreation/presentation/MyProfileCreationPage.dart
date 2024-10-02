@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
-import 'package:proyecto/provider/ProfileVariables.dart';
+import 'package:proyecto/provider/ProfileProvider.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyDropDownMenu.dart';
 
@@ -25,7 +25,7 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
   String? _grupoSeleccionado;
   
 void saveData(String name, String grado, String grupo) {
-  final statusData = Provider.of<ProfileVariables>(context, listen: false);
+  final statusData = Provider.of<ProfileProvider>(context, listen: false);
   int? parsedGrado;
   try {
     parsedGrado = int.parse(grado);
@@ -34,7 +34,7 @@ void saveData(String name, String grado, String grupo) {
     return;
   }
 
-  statusData.setData(name, parsedGrado, grupo);
+  statusData.setDataCreate(name, parsedGrado, grupo);
   print('Name: $name, Grado: $parsedGrado, Grupo: $grupo');
   Navigator.pushNamed(context, '/profileEdition');
 }

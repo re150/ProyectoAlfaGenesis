@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/constants.dart';
+import 'package:proyecto/provider/ProfileProvider.dart';
 import 'package:proyecto/widgets/MyProfileImage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -18,6 +19,8 @@ class MyProfileSelectionPage extends StatefulWidget {
 class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
   List<dynamic> profiles = [];
   bool loading = true;
+  int selectedProfile = -1;
+
   @override
   void initState() {
     super.initState();
@@ -40,7 +43,8 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
   }
 
    Future<void> fetchProfiles() async {
-     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    
     final jwtToken = authProvider.jwtToken;
     final email = authProvider.email;
 
@@ -60,8 +64,11 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
     }
   }
 
-  void _addPerfil() {
-    
+  void selectProfile(String name, int grado, String grupo, String id, String imgUrl,
+       int stars ,bool teamStatus, int level) async {
+    final profileVariables = Provider.of<ProfileProvider>(context, listen: false);      
+    profileVariables.setData( name, grado, grupo, imgUrl, id, teamStatus, stars, level);
+    Navigator.pushNamed(context, '/MainPage');  
   }
 
   @override
@@ -114,8 +121,18 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
                             child: Center(
                                 child: CarouselView(
                               elevation: 2,
-                              onTap: (_) {
-                                Navigator.pushNamed(context, '/profileEdition');
+                              onTap: (index) {   
+                                  selectedProfile = index;
+                                  String name = profiles[index]['name'];
+                                  String grupo = profiles[index]['grupo'];
+                                  int grado = profiles[index]['grado'];
+                                  String id = profiles[index]['id'];
+                                  String imgUrl = profiles[index]['imgUrl'];
+                                  int stars = profiles[index]['stars'];
+                                  bool teamStatus = profiles[index]['teamStatus'];
+                                  int level = profiles[index]['level']; 
+                                  selectProfile(name, grado, grupo, id, imgUrl, stars, teamStatus, level);
+                                     // Navigator.pushNamed(context, '/MainPag
                               },
                               padding: const EdgeInsets.all(20),
                               itemExtent: MediaQuery.of(context).size.width / 3,
@@ -134,7 +151,7 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
                           width: MediaQuery.of(context).size.width/ 4,
                           height: MediaQuery.of(context).size.height/ 4,
                           child: IconButton(
-                              onPressed: () => _addPerfil(),
+                              onPressed: () => Navigator.pushNamed(context, '/profileCreation'),
                               icon: Icon(Icons.add,
                                   size: MediaQuery.of(context).size.width / 10,
                                   color: Colors.black)),

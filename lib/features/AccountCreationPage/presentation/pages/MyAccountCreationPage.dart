@@ -6,7 +6,7 @@ import 'package:proyecto/widgets/MyTextField.dart';
 import 'package:http/http.dart' as http;
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'dart:convert';
-import 'package:proyecto/provider/ProfileVariables.dart';
+import 'package:proyecto/provider/ProfileProvider.dart';
 
 
 class MyAccountCreationPage extends StatefulWidget {

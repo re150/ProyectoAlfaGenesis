@@ -17,7 +17,7 @@ class MyProfileSelectionPage extends StatefulWidget {
 
 class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
   List<dynamic> profiles = [];
-   bool loading = true;
+  bool loading = true;
   @override
   void initState() {
     super.initState();
@@ -41,7 +41,6 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
 
    Future<void> fetchProfiles() async {
      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    // Acceder al JWT token
     final jwtToken = authProvider.jwtToken;
     final email = authProvider.email;
   

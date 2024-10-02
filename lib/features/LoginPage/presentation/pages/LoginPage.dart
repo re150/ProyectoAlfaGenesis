@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
         data['email'] = email;
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         authProvider.setJwtToken(data['idToken'], data['email']);
-        Navigator.pushNamed(context, '/profileSelection');
+        Navigator.pushNamed(context, '/MainPage');
       } else {
         print('Error');
       }
@@ -136,10 +136,10 @@ class _LoginPageState extends State<LoginPage> {
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
-                                //login(emailController.text, passwordController.text);
-                                if(emailController.text == "admin" && passwordController.text.isEmpty){
+                                login(emailController.text, passwordController.text);
+                               /* if(emailController.text == "admin" && passwordController.text.isEmpty){
                                   Navigator.pushNamed(context, '/MainPage');
-                                }
+                                }*/
                               },
                             ),
                           ),

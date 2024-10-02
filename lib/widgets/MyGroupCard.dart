@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:proyecto/core/resources/constants.dart';
+import 'package:proyecto/provider/AuthProvider.dart';
+import 'package:proyecto/provider/TeamProvider.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyGroupListCard.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MyGroupCard extends StatefulWidget {
   final void Function()? onUse;
   final void Function()? onDelete;
   final int numero;
-  final List<String> lista;
   final bool isSelected;
+  final List<String> lista;
+  final List<String> listId;
+  final List<String> listImg;
+
+
   const MyGroupCard({
     super.key,
     required this.lista,
+    required this.listId,
+    required this.listImg,
     required this.numero,
     required this.onUse,
     required this.isSelected, 
@@ -28,6 +40,7 @@ class _MyGroupCardState extends State<MyGroupCard> {
   void initState() {
     super.initState();
     _isSelected = widget.isSelected;
+  
   }
 
   @override
@@ -40,8 +53,49 @@ class _MyGroupCardState extends State<MyGroupCard> {
     }
   }
 
+ Future<void> creatTeam(List<String> listProfile, List<String> listId, String nameTeam) async{
+  final authProvider = Provider.of<AuthProvider>(context, listen: false);
+  final jwtToken = authProvider.jwtToken;
+
+  final response = await http.post(
+    Uri.parse('http://$ipAdress:$port/next/alfa/teams/CreateTeam'),
+    headers: <String, String>{
+      'Authorization': 'Bearer $jwtToken'
+    },
+    body:
+        jsonEncode(creatJson(nameTeam, listProfile, listId)),
+    );
+      
+      if (response.statusCode == 200) {
+        final teamProvider = Provider.of<TeamProvider>(context, listen: false); 
+        teamProvider.setIdTeam(response.body);
+        Navigator.pushNamed(context, '/MainPage');
+      } else {
+        throw Exception('Error al crear equipo');
+      }
+}
+
+
+Map<String, dynamic> creatJson(String nameTeam, List<String> listProfile, List<String> listId) {
+    Map<String, dynamic> jsonMap = {
+      "nameTeam": nameTeam,
+      "NomMembers": listProfile.length,
+    };
+
+    for (int i = 0; i < listProfile.length; i++) {
+      jsonMap["member${i + 1}"] = {
+        "id": listId[i],
+        "name": listProfile[i],
+      };
+    }
+     print(jsonMap);
+    return jsonMap;
+  }
+
   @override
   Widget build(BuildContext context) {
+   
+      
     return Container(
 
       height: MediaQuery.of(context).size.height * 0.7,
@@ -91,8 +145,12 @@ class _MyGroupCardState extends State<MyGroupCard> {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: MyGroupListCard(
-                          nombre: widget.lista[index], onTap: () {}),
+                          nombre: widget.lista[index],
+                          imgPath: widget.listImg[index],
+                           onTap: () {
+                           }),
                     );
+                  
                   },
                 ),
               ),
@@ -104,7 +162,10 @@ class _MyGroupCardState extends State<MyGroupCard> {
               children: [
                 MyButton(
                   text: "Usar",
-                  onTap: widget.onUse,
+                  onTap: (){
+                    print('en uso');
+                    creatTeam(widget.lista, widget.listId, "Grupo ${widget.numero}");
+                  },
                   colorB: Colors.blue,
                   colorT: Colors.white,
                 ),

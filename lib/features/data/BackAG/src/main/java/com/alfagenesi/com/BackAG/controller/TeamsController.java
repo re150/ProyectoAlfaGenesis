@@ -14,7 +14,7 @@ public class TeamsController {
     public ResponseEntity<?> showStudens (){
         return ResponseEntity.ok(authService.showAllProfile());
     }
-    @PostMapping("/addMembers")
+    @PostMapping("/CreateTeam")
     public ResponseEntity<?> addMembers (@RequestBody String data){
         return ResponseEntity.ok(authService.addMembers(data));
     }

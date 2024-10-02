@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:proyecto/provider/TeamProvider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'config/theme/ThemeData.dart';
 import 'core/resources/DataBaseHelper.dart';
@@ -21,6 +22,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ProfileVariables()),
+          ChangeNotifierProvider(create: (_) => TeamProvider()),
       ],
       child: const MyApp(),
     ),

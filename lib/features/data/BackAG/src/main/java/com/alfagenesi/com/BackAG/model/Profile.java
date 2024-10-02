@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 public class Profile {
     int grado;
     int level;
+    int stars;
+    String id;
     String grupo;
     String name;
     String imgUrl;
-    int stars;
     Boolean teamStatus;
 }

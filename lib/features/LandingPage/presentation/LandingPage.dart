@@ -21,7 +21,6 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-
           Container(
             height: MediaQuery.of(context).size.height * 0.7,
             decoration: const BoxDecoration(

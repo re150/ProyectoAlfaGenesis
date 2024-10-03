@@ -300,7 +300,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: MyGroupListCard(
                                         nombre: _alumnos[index],
-                                        imgPath: "",
+                                        imgPath: "asssets/bee-kid.png",
                                         onTap: () {
                                           setState(
                                             () {

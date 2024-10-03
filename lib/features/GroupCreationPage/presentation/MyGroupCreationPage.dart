@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/constants.dart';
+import 'package:proyecto/core/models/Alumno.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'package:proyecto/provider/TeamProvider.dart';
 import 'package:proyecto/widgets/MyButton.dart';
@@ -30,6 +31,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
   List<String> _alumnos = [];
   List<String> _alumnosId = [];
   List<String> _alumnosImg = [];
+  List<Alumno> _alumnosA = [];
   String? _gradoSeleccionado;
   List<dynamic> profiles = [];
   bool loading = true;
@@ -86,6 +88,19 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
   for (var profileString in profiles) {
     final matches = profileRegex.allMatches(profileString);
     for (var match in matches) {
+
+      /// Se añade el alumno a la lista de alumnos
+     _alumnosA.add(Alumno.fromMap({
+        'id': match.group(4)!,
+        'name': match.group(6)!,
+        'imgUrl': match.group(7)!,
+        'grado': int.parse(match.group(1)!),
+        'level': int.parse(match.group(2)!),
+        'stars': int.parse(match.group(3)!),
+        'grupo': match.group(5)!,
+        'teamStatus': match.group(8) == 'null' ? null : match.group(7) == 'true'
+      }));
+
       parsedProfiles.add({
         'level': int.parse(match.group(2)!),
         'grupoAndgrado': '${match.group(1)}${match.group(5)}', // Concatenar grado y grupo
@@ -100,6 +115,17 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
   return parsedProfiles;
 }
 
+void showAlumnos(List<Alumno> alumnos) {
+  for (var profile in _alumnosA) {
+        print(profile.name);
+        print(profile.imgUrl);
+        print(profile.grado);
+        print(profile.level);
+        print(profile.stars);
+        print(profile.grupo);
+        print(profile.teamStatus);
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +256,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
                                   _gradoSeleccionado = newValue;
                                   // Parsear y filtrar los perfiles
                                   List<Map<String, dynamic>> parsedProfiles = parseProfiles(profiles);
-                                
+                                   showAlumnos(_alumnosA);
                                   _alumnos = parsedProfiles
                                       .where((element) => element['grupoAndgrado'] == newValue)
                                       .map((e) => e['name'])

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
-import 'package:proyecto/provider/ProfileVariables.dart';
+import 'package:proyecto/provider/ProfileProvider.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyTextField.dart';
 import 'package:http/http.dart' as http;
@@ -59,7 +59,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
 
   Future<void> newProfile(String Urlimg) async {
   final authProvider = Provider.of<AuthProvider>(context, listen: false);
-  final dataProfile = Provider.of<ProfileVariables>(context,listen: false);
+  final dataProfile = Provider.of<ProfileProvider>(context,listen: false);
 
   final jwtToken = authProvider.jwtToken;
   final email = authProvider.email;

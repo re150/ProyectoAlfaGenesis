@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:proyecto/provider/TeamProvider.dart';
+import 'package:sqflite/sqflite.dart';
 import 'config/theme/ThemeData.dart';
 import 'core/resources/DataBaseHelper.dart';
 import 'features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
@@ -12,7 +14,7 @@ import 'features/ProfileCreation/presentation/MyProfileCreationPage.dart';
 import 'features/ProfileEdition/presentation/MyProfileEditiontionPage.dart';
 import 'features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
 import 'provider/AuthProvider.dart';
-import 'provider/ProfileVariables.dart';
+import 'provider/ProfileProvider.dart';
 //ARREGLAR BUG CUANDO SE APAGA LA PANTALLA
 
 void main() {
@@ -20,9 +22,10 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => ProfileVariables()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => TeamProvider()),
       ],
-      child: const MyApp(),
+      child:  MyApp(),
     ),
   );
 }

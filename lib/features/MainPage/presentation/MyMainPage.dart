@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:proyecto/features/GroupCreationPage/presentation/MyGrouPcreationPage.dart';
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionBeach.dart';
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionBricks.dart';
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionBubbles.dart';
-import 'package:proyecto/features/LectionTemplate/presentation/LeccionSky.dart';
 import 'package:proyecto/widgets/MyLevelButton.dart';
 
 class MyMainPage extends StatefulWidget {
@@ -15,12 +10,12 @@ class MyMainPage extends StatefulWidget {
 }
 
 class _MyMainPageState extends State<MyMainPage> {
-  final Map<String, dynamic> _niveles = {
-    "Ladrillos": const LeccionBricks(),
-    "Burbujas": const LeccionBubbles(),
-    "Playa": const LeccionBeach(),
-    "Cielo": const LeccionSky(),
-  };
+  final List<String> _niveles = [
+    "Ladrillos",
+    "Burbujas",
+    "Playa",
+    "Cielo",
+  ];
 
   @override
   void initState() {
@@ -102,11 +97,10 @@ class _MyMainPageState extends State<MyMainPage> {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: MyLevelButton(
-                                  nivel: _niveles.keys.elementAt(index),
+                                  nivel: _niveles[index],
                                   onTap: () {
                                     Navigator.pushNamed(context, '/leccion',
-                                        arguments: _niveles[_niveles.keys
-                                            .elementAt(index)] as Widget);
+                                        arguments: _niveles[index]);
                                   },
                                   color: Colors.primaries[
                                       index % Colors.primaries.length],

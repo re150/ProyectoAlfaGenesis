@@ -1,62 +1,98 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:proyecto/widgets/MyBeachImage.dart';
 import 'package:proyecto/widgets/MyLectionBanner.dart';
 
 class LeccionBeach extends StatefulWidget {
-  const LeccionBeach({super.key});
+  //final List<Map<String, dynamic>> materiales;
+  final String titulo;
+  final String instrucciones;
+  final VoidCallback onNext;
+  const LeccionBeach({
+    super.key,
+    //required this.materiales,
+    required this.titulo,
+    required this.instrucciones,
+    required this.onNext,
+  });
 
   @override
   State<LeccionBeach> createState() => _LeccionBeachState();
 }
 
-class _LeccionBeachState extends State<LeccionBeach> with SingleTickerProviderStateMixin {
-  final boton1 = AudioPlayer();
-  final boton2 = AudioPlayer();
-  final boton3 = AudioPlayer();
+class _LeccionBeachState extends State<LeccionBeach>
+    with SingleTickerProviderStateMixin {
+  final List<AudioPlayer> sonidos = [
+    AudioPlayer(),
+    AudioPlayer(),
+    AudioPlayer(),
+    AudioPlayer(),
+    AudioPlayer(),
+  ];
   final bgMusic = AudioPlayer();
   late AnimationController _controller;
   late Animation<double> _animation;
-
-  String titulo = "Titulo de leccion";
+  String instruccionesPath = "";
+  String res = "";
+  bool respondio = false;
   List<String> imagenes = [
     "assets/bee-kid.png",
     "assets/bubble.png",
     "assets/cat.png",
   ];
 
-  @override
-  void initState() {
-    super.initState();
+  void _checarRespuesta(String respuesta) {
+    setState(() {
+      respondio = true;
+    });
+    bool esCorrecto = false;
+    if (respuesta == res) {
+      esCorrecto = true;
+    }
+    sonidos[4].play(
+        AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
+
+    bgMusic.stop();
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      widget.onNext();
+    });
+  }
+
+  void _procesarMateriales() {
+    instruccionesPath = widget.instrucciones;
+    instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
+    res = imagenes[0];
+    imagenes.shuffle();
+  }
+
+
+  void _setMusica() {
     bgMusic.setReleaseMode(ReleaseMode.loop);
     bgMusic.play(AssetSource("Beach.mp3"));
+  }
 
+  void _setAnimacion() {
     _controller = AnimationController(
       duration: const Duration(seconds: 4),
       vsync: this,
     )..repeat(reverse: true);
-
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
+  }
 
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
+  @override
+  void initState() {
+    super.initState();
+    _procesarMateriales();
+    _setMusica();
+    _setAnimacion();
   }
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft
-    ]);
+    for (AudioPlayer sonido in sonidos) {
+      sonido.dispose();
+    }
     _controller.dispose();
-    boton1.dispose();
-    boton2.dispose();
-    boton3.dispose();
     bgMusic.dispose();
     super.dispose();
   }
@@ -75,25 +111,26 @@ class _LeccionBeachState extends State<LeccionBeach> with SingleTickerProviderSt
           child: Column(
             children: [
               const SizedBox(height: 40),
-              MyLectionBanner(titulo: titulo),
+              MyLectionBanner(
+                titulo: widget.titulo,
+                onPressed: () =>
+                    sonidos[4].play(AssetSource(instruccionesPath)),
+              ),
               const SizedBox(height: 20),
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    MyBeachImage(
-                      ruta: imagenes[0],
-                      onTap: () => boton1.play(AssetSource("game-start.mp3")),
-                    ),
-                    MyBeachImage(
-                      ruta: imagenes[1],
-                      onTap: () => boton2.play(AssetSource("game-start.mp3")),
-                    ),
-                    MyBeachImage(
-                      ruta: imagenes[2],
-                      onTap: () => boton3.play(AssetSource("game-start.mp3")),
-                    ),
-                  ],
+                  children: List.generate(
+                    imagenes.length,
+                    (index) {
+                      return MyBeachImage(
+                        imagen: imagenes[index],
+                        onTap: () {
+                          if (!respondio) _checarRespuesta(imagenes[index]);
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
               Expanded(
@@ -110,7 +147,7 @@ class _LeccionBeachState extends State<LeccionBeach> with SingleTickerProviderSt
                               0),
                           child: InkWell(
                             onTap: () =>
-                                boton1.play(AssetSource("game-start.mp3")),
+                                sonidos[3].play(AssetSource(instruccionesPath)),
                             child: Container(
                               width: 180,
                               height: 180,

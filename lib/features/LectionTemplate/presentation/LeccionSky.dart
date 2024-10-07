@@ -1,61 +1,112 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyLectionBanner.dart';
-import 'package:proyecto/widgets/MyLinePainter.dart';
+import 'package:proyecto/widgets/MySkyBlock.dart';
 
 class LeccionSky extends StatefulWidget {
-  const LeccionSky({super.key});
+  //final List<Map<String, dynamic>> materiales;
+  final String titulo;
+  final String instrucciones;
+  const LeccionSky({
+    super.key,
+    //required this.materiales,
+    required this.titulo,
+    required this.instrucciones,
+  });
 
   @override
   State<LeccionSky> createState() => _LeccionSkyState();
 }
 
 class _LeccionSkyState extends State<LeccionSky> {
-  final String titulo = "Titulo de leccion";
   final bgMusic = AudioPlayer();
+  final boton = AudioPlayer();
+  final nube = AudioPlayer();
+  final respuesta = AudioPlayer();
+  String instruccionesPath = "";
+  int? selectedIndexPalabras;
+  int? selectedIndexImagenes;
 
-  final List<String> imagenes = [
-    "assets/OceanBG.jpg",
-    "assets/bee-kid.png",
-    "assets/logoo.png",
-  ];
+  Map<int, String> imagenes = {
+    1: "assets/OceanBG.jpg",
+    2: "assets/bee-kid.png",
+    3: "assets/logoo.png",
+  };
 
-  final List<String> palabras = [
-    "CASA",
-    "CIELO",
-    "LUNA",
-    "CASA",
-    "CIELO",
-    "LUNA",
-    "CASA",
-    "CIELO",
-    "LUNA",
-    "CASA",
-    "CIELO",
-    "LUNA",
-  ];
+  Map<int, String> palabras = {
+    1: "CASA",
+    2: "CIELO",
+    3: "LUNA",
+    4: "CAMA",
+    5: "PERRO",
+    6: "GATA",
+  };
 
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
+  Map<K, V> shuffleMap<K, V>(Map<K, V> map) {
+    List<MapEntry<K, V>> entries = map.entries.toList();
+    entries.shuffle();
+    return Map<K, V>.fromEntries(entries);
+  }
+
+  void _onTapSkyBlockPalabras(int index) {
+    nube.play(AssetSource("SelectButton.mp3"));
+    setState(() {
+      selectedIndexPalabras = index;
+    });
+  }
+
+  void _onTapSkyBlockImagenes(int index) {
+    nube.play(AssetSource("SelectButton.mp3"));
+    setState(() {
+      selectedIndexImagenes = index;
+    });
+  }
+
+  void _checarRespuesta(int indexP, int indexI) {
+    if (indexP == indexI) {
+      respuesta.play(AssetSource("successLesson.mp3"));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Correcto"),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } else {
+      respuesta.play(AssetSource("wrong-choice.mp3"));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Incorrecto"),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  void _setMusica() {
     bgMusic.setReleaseMode(ReleaseMode.loop);
     bgMusic.play(AssetSource("Sky2.mp3"));
   }
 
+  void _processMateriales() {
+    instruccionesPath = widget.instrucciones;
+    instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
+    palabras = shuffleMap(palabras);
+    imagenes = shuffleMap(imagenes);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _setMusica();
+    _processMateriales();
+  }
+
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft
-    ]);
     bgMusic.dispose();
+    nube.dispose();
+    respuesta.dispose();
     super.dispose();
   }
 
@@ -74,11 +125,13 @@ class _LeccionSkyState extends State<LeccionSky> {
             Row(
               children: [
                 MyLectionBanner(
-                  titulo: titulo,
+                  titulo: widget.titulo,
+                  onPressed: () => boton.play(AssetSource(instruccionesPath)),
                 ),
               ],
             ),
             Expanded(
+              flex: 3,
               child: Row(
                 children: [
                   Expanded(
@@ -88,15 +141,19 @@ class _LeccionSkyState extends State<LeccionSky> {
                         Expanded(
                           child: ListView.builder(
                             itemCount: palabras.length,
+                            shrinkWrap: true,
+                            physics: const AlwaysScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  palabras[index],
-                                  style: const TextStyle(
-                                    fontSize: 25,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
+                                child: MySkyblock(
+                                  isSelected: selectedIndexPalabras == index,
+                                  onTap: () => _onTapSkyBlockPalabras(index),
+                                  content: Center(
+                                    child: Text(
+                                      palabras.values.elementAt(index),
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
                                   ),
                                 ),
                               );
@@ -106,17 +163,46 @@ class _LeccionSkyState extends State<LeccionSky> {
                       ],
                     ),
                   ),
-                  const Expanded(child: Column()),
                   Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              MyButton(
+                                text: "Verificar",
+                                onTap: () => _checarRespuesta(
+                                    palabras.keys
+                                        .elementAt(selectedIndexPalabras!),
+                                    imagenes.keys
+                                        .elementAt(selectedIndexImagenes!)),
+                                colorB: Colors.blue,
+                                colorT: Colors.white,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
                     child: ListView.builder(
                       itemCount: imagenes.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Image.asset(
-                            imagenes[index],
-                            width: 100,
-                            height: 100,
+                          child: MySkyblock(
+                            content: Image.asset(
+                              imagenes.values.elementAt(index),
+                              width: 100,
+                              height: 100,
+                            ),
+                            isSelected: selectedIndexImagenes == index,
+                            onTap: () => _onTapSkyBlockImagenes(index),
                           ),
                         );
                       },
@@ -131,128 +217,3 @@ class _LeccionSkyState extends State<LeccionSky> {
     );
   }
 }
-
-/* final List<String> imagenes = [
-    "assets/OceanBG.jpg",
-    "assets/bee-kid.png",
-    "assets/logoo.png",
-  ]; 
-  
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/SkyBG.webp"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                Row(
-                  children: [
-                    MyLectionBanner(
-                      titulo: titulo,
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: List.generate(
-                            palabras.length,
-                            (index) {
-                              return GestureDetector(
-                                onPanStart: (details) {
-                                  setState(() {
-                                    start = _getLocalPosition(context, details.globalPosition);
-                                    end = _getLocalPosition(context, details.globalPosition);
-                                    drawingLine = true;
-                                    draggedWord = palabras[index];
-                                  });
-                                },
-                                onPanUpdate: (details) {
-                                  setState(() {
-                                    end = _getLocalPosition(context, details.globalPosition);
-                                  });
-                                },
-                                onPanEnd: (details) {
-                                  setState(() {
-                                    drawingLine = false;
-                                    start = Offset.zero;
-                                    end = Offset.zero;
-                                    draggedWord = null;
-                                  });
-                                },
-                                child: Text(
-                                  palabras[index],
-                                  style: const TextStyle(
-                                    fontSize: 25,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: List.generate(
-                            imagenes.length,
-                            (index) {
-                              return DragTarget<String>(
-                                onWillAccept: (data) {
-                                  return data != null;
-                                },
-                                onAccept: (data) {
-                                  print("Emparejado: $data con imagen ${imagenes[index]}");
-                                  setState(() {
-                                    drawingLine = false;
-                                    start = Offset.zero;
-                                    end = Offset.zero;
-                                    draggedWord = null;
-                                  });
-                                },
-                                builder: (context, candidateData, rejectedData) {
-                                  return Container(
-                                    width: 100,
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      image: DecorationImage(
-                                        image: AssetImage(imagenes[index]),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            if (drawingLine)
-              CustomPaint(
-                painter: LinePainter(start: start, end: end),
-                child: Container(),
-              ),
-          ],
-        ),
-      ),
-  
-  
-  
-  */

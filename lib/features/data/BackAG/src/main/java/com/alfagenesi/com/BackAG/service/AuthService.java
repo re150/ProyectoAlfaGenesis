@@ -111,7 +111,6 @@ public class AuthService {
             if (!documents.isEmpty()) {
                 QueryDocumentSnapshot document = documents.get(0);
                 request.setId(document.getId());
-
                 noProfile = document.getLong(NUM_PROFILE);
                 // logger.info("num of profile",noProfile);
                 if (noProfile <= 5) {
@@ -128,6 +127,7 @@ public class AuthService {
         }
 
         Profile data = new Profile();
+        data.setId(request.getId());
         data.setName(request.getName());
         data.setGrado(request.getGrado());
         data.setGrupo(request.getGrupo());
@@ -135,6 +135,7 @@ public class AuthService {
         data.setLevel(request.getLevel());
         data.setStars(request.getStars());
         data.setTeamStatus(request.getTeamStatus());
+
 
 
         dbFirestore.collection(COLLECTION_NAME).document(request.getId())
@@ -198,7 +199,13 @@ public class AuthService {
         try {
             for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
                 String id = document.getId();
-                profiles.add(getProfiles(id).toString());
+                ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME)
+                        .whereEqualTo("id", id)
+                        .get();
+                noProfile = document.getLong(NUM_PROFILE);
+                if(noProfile != 0){
+                    profiles.add(getProfiles(id).toString());
+                }
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -210,23 +217,22 @@ public class AuthService {
 
     private List<String> getProfiles(String request) {
         List<String> userProfiles = new ArrayList<>();
-        DataMember newProfile = new DataMember();
         String userId = request;
-        Firestore dbFirestore = FirestoreClient.getFirestore();
 
+        Firestore dbFirestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> future = dbFirestore.collection(COLLECTION_NAME)
                 .document(userId)
                 .collection(COLLECTION_PROFILE)
                 .get();
+
         try {
+            //logger.info("np: {}",queryNoProfiles.get().getLong(NUM_PROFILE));
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-            for (QueryDocumentSnapshot document : documents) {
-                Profile profile = document.toObject(Profile.class);
-                newProfile.setName(profile.getName());
-                newProfile.setId(userId);
-                userProfiles.add(newProfile.toString());
-            }
-        } catch (InterruptedException | ExecutionException e) {
+                for (QueryDocumentSnapshot document : documents) {
+                    Profile profile = document.toObject(Profile.class);
+                    userProfiles.add(profile.toString());
+                }
+        } catch(InterruptedException | ExecutionException e){
             throw new RuntimeException("Error al obtener los perfiles del usuario", e);
         }
 
@@ -235,6 +241,7 @@ public class AuthService {
 
     public String addMembers(String jsonData) {
         Firestore db = FirestoreClient.getFirestore();
+
         ObjectMapper objectMapper = new ObjectMapper();
         List<DataMember> members = new ArrayList<>();
         int nomMembers = 0;
@@ -273,11 +280,17 @@ public class AuthService {
         if(nomMembers <= 5) {
             for (int i = 0; i < members.size(); i++) {
                 int no = i + 1;
+
+                db.collection(COLLECTION_NAME).document(members.get(i).getId())
+                        .collection(COLLECTION_PROFILE).document(members.get(i).getName())
+                                .update("teamStatus",true);
+
                 db.collection(COLLECTION_TEAMS).document(id)
                         .collection(COLLECTION_MEMBERS).document("member" +no)
                         .set(members.get(i));
             }
         }
-        return "New team is create";
+
+        return id;
     }
 }

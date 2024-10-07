@@ -21,14 +21,12 @@ class DatabaseHelper {
 
   Future<Database> initDatabase() async {
     String path = join(await getDatabasesPath(), 'AlfaGenesisDB.db');
-    //await deleteDatabase(path);
-    //_database = null; // Resetea la instancia de la base de datos en memoria
 
-    return await openDatabase(
+    return _database == null ? await openDatabase(
       path,
       version: 1,
+      
       onCreate: (db, version) async {
-        
         await db.execute('''
           CREATE TABLE lecciones(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,7 +44,6 @@ class DatabaseHelper {
             FOREIGN KEY (id_leccion) REFERENCES Lecciones(id)
           )
         ''');
-        //TOODO: CHECAR LAS ROWS EN LAS TABLAS
 
         await db.execute('''
           CREATE TABLE material(
@@ -60,7 +57,7 @@ class DatabaseHelper {
 
         await _cargarDatos(db);
       },
-    );
+    ) : _database!;
   }
 
   Future<void> _cargarDatos(Database db) async {
@@ -71,12 +68,20 @@ class DatabaseHelper {
         await db.execute(query);
        }
      }
-        // Verifica los datos en la tabla Lecciones
-      List<Map<String, dynamic>> lecciones = await db.query('Lecciones');
-      print('Lecciones guardadas:');
-      lecciones.forEach((leccion) {
-        print(leccion);
-      });
+  }
 
+  Future<List<Map<String, dynamic>>> getLecciones() async {
+    final db = await database;
+    return await db.query('Lecciones');
+  }
+
+  Future<List<Map<String, dynamic>>> getEtapa(int idLeccion) async {
+    final db = await database;
+    return await db.query('Etapa', where: 'id_leccion = ?', whereArgs: [idLeccion]);
+  }
+
+  Future<List<Map<String, dynamic>>> getMaterial(int idEtapa) async {
+    final db = await database;
+    return await db.query('Material', where: 'id_etapa = ?', whereArgs: [idEtapa]);
   }
 }

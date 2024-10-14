@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class TeamsController {
     @Autowired
     private AuthService authService;
-    @GetMapping("/ShowAll")
+    @GetMapping("/ShowProfiles")
     public ResponseEntity<?> showStudens (){
         return ResponseEntity.ok(authService.showAllProfile());
     }
@@ -18,4 +18,6 @@ public class TeamsController {
     public ResponseEntity<?> addMembers (@RequestBody String data){
         return ResponseEntity.ok(authService.addMembers(data));
     }
+    @GetMapping("/showTeams")
+    public ResponseEntity<?> showteam (){return  ResponseEntity.ok(authService.showTeam());}
 }

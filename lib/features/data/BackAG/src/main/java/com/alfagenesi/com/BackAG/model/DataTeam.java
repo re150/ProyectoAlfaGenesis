@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DataTeam {
+public class DataTeam extends Profile {
     String id;
     String nameTeam;
     int nomMembers;

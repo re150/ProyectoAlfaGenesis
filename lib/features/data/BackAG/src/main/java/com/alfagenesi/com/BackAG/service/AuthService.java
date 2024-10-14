@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+
 import org.springframework.beans.factory.annotation.Value;
 
 @Service
@@ -39,6 +40,8 @@ public class AuthService {
     private static final String COLLECTION_MEMBERS = "members";
     private static final String NUM_PROFILE = "noProfile";
     private static final String COLLECTION_TEAMS = "teams";
+    private static final String COLLECTION_TEAMNAME = "nameTeam";
+    private static final String COLLECTION_TEAMNOM = "nomMembers";
 
 
     public String add(Login user) throws FirebaseAuthException {
@@ -137,7 +140,6 @@ public class AuthService {
         data.setTeamStatus(request.getTeamStatus());
 
 
-
         dbFirestore.collection(COLLECTION_NAME).document(request.getId())
                 .collection(COLLECTION_PROFILE).document(data.getName()).set(data);
 
@@ -199,11 +201,11 @@ public class AuthService {
         try {
             for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
                 String id = document.getId();
-                ApiFuture<QuerySnapshot> future = db.collection(COLLECTION_NAME)
+                db.collection(COLLECTION_NAME)
                         .whereEqualTo("id", id)
                         .get();
                 noProfile = document.getLong(NUM_PROFILE);
-                if(noProfile != 0){
+                if (noProfile != 0) {
                     profiles.add(getProfiles(id).toString());
                 }
             }
@@ -228,11 +230,11 @@ public class AuthService {
         try {
             //logger.info("np: {}",queryNoProfiles.get().getLong(NUM_PROFILE));
             List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-                for (QueryDocumentSnapshot document : documents) {
-                    Profile profile = document.toObject(Profile.class);
-                    userProfiles.add(profile.toString());
-                }
-        } catch(InterruptedException | ExecutionException e){
+            for (QueryDocumentSnapshot document : documents) {
+                Profile profile = document.toObject(Profile.class);
+                userProfiles.add(profile.toString());
+            }
+        } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException("Error al obtener los perfiles del usuario", e);
         }
 
@@ -243,7 +245,7 @@ public class AuthService {
         Firestore db = FirestoreClient.getFirestore();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        List<DataMember> members = new ArrayList<>();
+        List<Profile> members = new ArrayList<>();
         int nomMembers = 0;
         String nameT = null;
 
@@ -254,7 +256,7 @@ public class AuthService {
             nomMembers = (nomMembersNode != null) ? nomMembersNode.asInt() : 0;
 
             JsonNode nameTNode = jsonNode.get("nameTeam");
-            nameT = (nameTNode != null)? nameTNode.asText() : null;
+            nameT = (nameTNode != null) ? nameTNode.asText() : null;
 
             for (int i = 1; i <= nomMembers; i++) {
                 String memberKey = "member" + i;
@@ -262,12 +264,29 @@ public class AuthService {
                 if (memberNode != null) {
                     String memberId = memberNode.get("id") != null ? memberNode.get("id").asText() : null;
                     String memberName = memberNode.get("name") != null ? memberNode.get("name").asText() : null;
+                    String memberImgUrl = memberNode.get("imgUrl") != null ? memberNode.get("imgUrl").asText() : null;
+                    int memberGrado = memberNode.get("grado") != null ? memberNode.get("grado").asInt() : null;
+                    int memberLevel = memberNode.get("level") != null ? memberNode.get("level").asInt() : null;
+                    int memberStars = memberNode.get("stars") != null ? memberNode.get("stars").asInt() : null;
+                    String memberGrupo = memberNode.get("grupo") != null ? memberNode.get("grupo").asText() : null;
+                    boolean memberteamStatus = memberNode.get("teamStatus") != null ? memberNode.get("teamStatus").asBoolean() : null;
+
                     if (memberId != null && memberName != null) {
-                        members.add(new DataMember(memberId, memberName));
+                        Profile data = new Profile();
+                        data.setId(memberId);
+                        data.setName(memberName);
+                        data.setImgUrl(memberImgUrl);
+                        data.setGrado(memberGrado);
+                        data.setLevel(memberLevel);
+                        data.setStars(memberStars);
+                        data.setGrupo(memberGrupo);
+                        data.setStars(memberStars);
+                        data.setTeamStatus(memberteamStatus);
+                        members.add(data);
                     }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String id = UUID.randomUUID().toString();
@@ -277,20 +296,67 @@ public class AuthService {
         teamD.setNameTeam(nameT);
 
         db.collection(COLLECTION_TEAMS).document(id).set(teamD);
-        if(nomMembers <= 5) {
+        if (nomMembers <= 5) {
             for (int i = 0; i < members.size(); i++) {
                 int no = i + 1;
 
                 db.collection(COLLECTION_NAME).document(members.get(i).getId())
                         .collection(COLLECTION_PROFILE).document(members.get(i).getName())
-                                .update("teamStatus",true);
+                        .update("teamStatus", true);
 
                 db.collection(COLLECTION_TEAMS).document(id)
-                        .collection(COLLECTION_MEMBERS).document("member" +no)
+                        .collection(COLLECTION_MEMBERS).document("member" + no)
                         .set(members.get(i));
             }
         }
 
         return id;
+    }
+
+    public String showTeam() {
+        Firestore db = FirestoreClient.getFirestore();
+        Query query = db.collection(COLLECTION_TEAMS);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+        List<Map<String, Object>> teamsList = new ArrayList<>();
+
+        try {
+            for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+                Map<String, Object> teamData = new HashMap<>();
+                teamData.put("nameTeam", document.getString(COLLECTION_TEAMNAME));
+                teamData.put("id", document.getId());
+                teamData.put("nomMembers", Math.toIntExact(document.getLong(COLLECTION_TEAMNOM)));
+
+                List<Map<String, Object>> membersList = getMembers(document.getId());
+                teamData.put("members", membersList);
+                teamsList.add(teamData);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        Gson gson = new Gson();
+        return gson.toJson(teamsList);
+    }
+
+    private List<Map<String, Object>> getMembers(String teamId) {
+        List<Map<String, Object>> membersList = new ArrayList<>();
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = dbFirestore.collection(COLLECTION_TEAMS)
+                .document(teamId)
+                .collection(COLLECTION_MEMBERS)
+                .get();
+
+        try {
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+            for (QueryDocumentSnapshot document : documents) {
+                Map<String, Object> memberData = document.getData();
+                membersList.add(memberData);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException("Error al obtener los perfiles del usuario", e);
+        }
+
+        return membersList;
     }
 }

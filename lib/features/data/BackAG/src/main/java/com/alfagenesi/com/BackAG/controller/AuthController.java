@@ -26,4 +26,6 @@ public class AuthController {
     public ResponseEntity<?> login (@RequestBody Login request) throws JsonProcessingException {
         return ResponseEntity.ok(authService.login(request));
     }
+    @GetMapping("/showTeams")
+    public ResponseEntity<?> showteam (){return  ResponseEntity.ok(authService.showTeam());}
 }

@@ -135,7 +135,7 @@ VALUES (5, 'palabra', 'u');
 /*Lección 2*/
 INSERT INTO lecciones (titulo) VALUES ('Lección 2: Sílabas con M');
 
-/*Material para etapas, lección 1*/
+/*Material para etapas, lección 2*/
 
 /*Etapa 1: blocks*/
 
@@ -163,22 +163,22 @@ INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
 VALUES (2, 'bubbles', 'assets/audio/VoiceHelp/LeccionBurbujas.mp3', 'assets/audio/Music/WaterLesson.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (7, 'audio', 'assets/audio/lessons/lesson1/mesa.mp3');
+VALUES (7, 'audio', 'assets/audio/lessons/lesson1/me.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (7, 'palabra', 'mesa');
+VALUES (7, 'palabra', 'me');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (7, 'palabra', 'masa');
+VALUES (7, 'palabra', 'ma');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (7, 'palabra', 'misa');
+VALUES (7, 'palabra', 'mi');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (7, 'palabra', 'mosa');
+VALUES (7, 'palabra', 'mo');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (7, 'palabra', 'musa');
+VALUES (7, 'palabra', 'mu');
 
 /*Etapa 3: sky*/
 
@@ -249,3 +249,341 @@ VALUES (10, 'palabra', 'ñe');
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (10, 'palabra', 'ca');
 
+/*Lección 3*/
+INSERT INTO lecciones (titulo) VALUES ('Lección 3: Sílabas con S');
+
+/*Material para etapas, lección 3*/
+
+/*Etapa 1: bubbles*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (3, 'bubbles', 'assets/audio/VoiceHelp/LeccionBurbujas.mp3', 'assets/audio/Music/WaterLesson.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (11, 'audio', 'assets/audio/lessons/lesson1/sa.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (11, 'palabra', 'sa');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (11, 'palabra', 'si');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (11, 'palabra', 'so');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (11, 'palabra', 'su');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (11, 'palabra', 'se');
+
+/*Etapa 2: blocks*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (3, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/audio/Music/Blocks.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (12, 'imagen', 'assets/images/lesson1/serrucho.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (12, 'audio', 'assets/audio/lessons/lesson1/serrucho.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (12, 'palabra', 'se');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (12, 'palabra', 'rru');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (12, 'palabra', 'cho');
+
+/*Etapa 3: beach*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (3, 'beach', 'assets/audio/VoiceHelp/LeccionPlaya.mp3', 'assets/audio/Music/Beach.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (13, 'audio', 'assets/audio/lessons/lesson1/silla.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (13, 'imagen', 'assets/images/lesson1/silla.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (13, 'imagen', 'assets/images/lesson1/silvar.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (13, 'imagen', 'assets/images/lesson1/sirena.jpg');
+
+/*Etapa 4: sky*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (3, 'sky', 'assets/audio/VoiceHelp/LeccionCielo.mp3', 'assets/audio/Music/Sky2.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (14, 'imagen', 'assets/images/lesson1/sopa.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (14, 'audio', 'assets/audio/lessons/lesson1/sopa.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (14, 'palabra', 'sopa');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (14, 'imagen', 'assets/images/lesson1/sombra.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (14, 'audio', 'assets/audio/lessons/lesson1/sombra.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (14, 'palabra', 'sombra');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (14, 'imagen', 'assets/images/lesson1/sonido.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (14, 'audio', 'assets/audio/lessons/lesson1/sonido.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (14, 'palabra', 'sonido');
+
+/*Etapa 5*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (3, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/audio/Music/Blocks.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (15, 'imagen', 'assets/images/lesson1/suelo.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (15, 'audio', 'assets/audio/lessons/lesson1/suelo.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (15, 'palabra', 'sue');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (15, 'palabra', 'lo');
+
+/*Lección 4*/
+INSERT INTO lecciones (titulo) VALUES ('Lección 4: Sílabas con L');
+
+/*Material para etapas, lección 4*/
+
+/*Etapa 1: sky*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (4, 'sky', 'assets/audio/VoiceHelp/LeccionCielo.mp3', 'assets/audio/Music/Sky2.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (16, 'imagen', 'assets/images/lesson1/lapiz.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (16, 'audio', 'assets/audio/lessons/lesson1/lapiz.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (16, 'palabra', 'lápiz');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (16, 'imagen', 'assets/images/lesson1/lago.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (16, 'audio', 'assets/audio/lessons/lesson1/lago.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (16, 'palabra', 'lago');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (16, 'imagen', 'assets/images/lesson1/ladrillo.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (16, 'audio', 'assets/audio/lessons/lesson1/ladrillo.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (16, 'palabra', 'ladrillo');
+
+/*Etapa 2: blocks*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (4, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/audio/Music/Blocks.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (17, 'imagen', 'assets/images/lesson1/leche.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (17, 'audio', 'assets/audio/lessons/lesson1/leche.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (17, 'palabra', 'le');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (17, 'palabra', 'che');
+
+/*Etapa 3: beach*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (4, 'beach', 'assets/audio/VoiceHelp/LeccionPlaya.mp3', 'assets/audio/Music/Beach.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (18, 'audio', 'assets/audio/lessons/lesson1/libro.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (18, 'imagen', 'assets/images/lesson1/libro.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (18, 'imagen', 'assets/images/lesson1/limpio.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (18, 'imagen', 'assets/images/lesson1/liquido.jpg');
+
+/*Etapa 4: bubbles*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (4, 'bubbles', 'assets/audio/VoiceHelp/LeccionBurbujas.mp3', 'assets/audio/Music/WaterLesson.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (19, 'audio', 'assets/audio/lessons/lesson1/lo.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (19, 'palabra', 'lo');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (19, 'palabra', 'la');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (19, 'palabra', 'le');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (19, 'palabra', 'li');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (19, 'palabra', 'lu');
+
+/*Etapa 5*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (4, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/audio/Music/Blocks.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (20, 'imagen', 'assets/images/lesson1/suelo.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (20, 'audio', 'assets/audio/lessons/lesson1/suelo.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (20, 'palabra', 'sue');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (20, 'palabra', 'lo');
+
+/*Lección 5*/
+INSERT INTO lecciones (titulo) VALUES ('Lección 5: Sílabas con T');
+
+/*Material para etapas, lección 5*/
+
+/*Etapa 1: beach*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (5, 'beach', 'assets/audio/VoiceHelp/LeccionPlaya.mp3', 'assets/audio/Music/Beach.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (21, 'audio', 'assets/audio/lessons/lesson1/taza.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (21, 'imagen', 'assets/images/lesson1/taza.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (21, 'imagen', 'assets/images/lesson1/tarta.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (21, 'imagen', 'assets/images/lesson1/tarea.jpg');
+
+/*Etapa 2: blocks*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (5, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/audio/Music/Blocks.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (22, 'imagen', 'assets/images/lesson1/tenedor.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (22, 'audio', 'assets/audio/lessons/lesson1/tenedor.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (22, 'palabra', 'te');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (22, 'palabra', 'ne');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (22, 'palabra', 'dor');
+
+/*Etapa 3: sky*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (5, 'sky', 'assets/audio/VoiceHelp/LeccionCielo.mp3', 'assets/audio/Music/Sky2.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (23, 'imagen', 'assets/images/lesson1/tigre.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (23, 'audio', 'assets/audio/lessons/lesson1/tigre.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (23, 'palabra', 'tigre');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (23, 'imagen', 'assets/images/lesson1/tienda.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (23, 'audio', 'assets/audio/lessons/lesson1/tienda.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (23, 'palabra', 'tienda');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (23, 'imagen', 'assets/images/lesson1/tiempo.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (23, 'audio', 'assets/audio/lessons/lesson1/tiempo.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (23, 'palabra', 'tiempo');
+
+/*Etapa 4: bubbles*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (5, 'bubbles', 'assets/audio/VoiceHelp/LeccionBurbujas.mp3', 'assets/audio/Music/WaterLesson.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (24, 'audio', 'assets/audio/lessons/lesson1/to.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (24, 'palabra', 'to');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (24, 'palabra', 'tu');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (24, 'palabra', 'ta');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (24, 'palabra', 'ti');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (24, 'palabra', 'te');
+
+/*Etapa 5: beach*/
+
+INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
+VALUES (5, 'beach', 'assets/audio/VoiceHelp/LeccionPlaya.mp3', 'assets/audio/Music/Beach.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (25, 'audio', 'assets/audio/lessons/lesson1/tumba.mp3');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (25, 'imagen', 'assets/images/lesson1/tumba.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (25, 'imagen', 'assets/images/lesson1/turista.jpg');
+
+INSERT INTO material (id_etapa, tipo_material, valor_material)
+VALUES (25, 'imagen', 'assets/images/lesson1/tucan.jpg');

@@ -19,7 +19,7 @@ class MyBeachImage extends StatelessWidget {
           ),
           image: DecorationImage(
             image: AssetImage(imagen),
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
           ),
         ),
       ),

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:proyecto/widgets/MyLevelButton.dart';
 
+import '../../../core/resources/DataBaseHelper.dart';
+import '../../LectionTemplate/presentation/LeccionDemo.dart';
+
 class MyMainPage extends StatefulWidget {
   const MyMainPage({super.key});
 
@@ -10,12 +13,7 @@ class MyMainPage extends StatefulWidget {
 }
 
 class _MyMainPageState extends State<MyMainPage> {
-  final List<String> _niveles = [
-    "Ladrillos",
-    "Burbujas",
-    "Playa",
-    "Cielo",
-  ];
+  List<Map<String, dynamic>> _lecciones = [];
 
   @override
   void initState() {
@@ -24,6 +22,15 @@ class _MyMainPageState extends State<MyMainPage> {
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
     ]);
+    _loadLecciones();
+  }
+
+  Future<void> _loadLecciones() async {
+    final dbHelper = DatabaseHelper();
+    final lecciones = await dbHelper.getLecciones();
+    setState(() {
+      _lecciones = lecciones;
+    });
   }
 
   @override
@@ -32,7 +39,7 @@ class _MyMainPageState extends State<MyMainPage> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
       DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft
+      DeviceOrientation.landscapeLeft,
     ]);
     super.dispose();
   }
@@ -92,15 +99,21 @@ class _MyMainPageState extends State<MyMainPage> {
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             padding: const EdgeInsets.all(20),
-                            itemCount: _niveles.length,
+                            itemCount: _lecciones.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: MyLevelButton(
-                                  nivel: _niveles[index],
+                                  nivel: _lecciones[index]['titulo'],
                                   onTap: () {
-                                    Navigator.pushNamed(context, '/leccion',
-                                        arguments: _niveles[index]);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => LeccionDemo(
+                                          leccion: _lecciones[index],
+                                        ),
+                                      ),
+                                    );
                                   },
                                   color: Colors.primaries[
                                       index % Colors.primaries.length],

@@ -69,8 +69,15 @@ flutter:
     - assets/audio/VoiceHelp/
     - assets/audio/lessons/
     - assets/audio/lessons/lesson1/
+    - assets/audio/lessons/lesson2/
+    - assets/audio/lessons/lesson3/
+    - assets/audio/lessons/lesson4/
+    - assets/audio/lessons/lesson5/
     - assets/images/
-    - assets/images/lesson1/
+    - assets/images/lesson2/
+    - assets/images/lesson3/
+    - assets/images/lesson4/
+    - assets/images/lesson5/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

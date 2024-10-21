@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:proyecto/core/resources/checador_respuestas.dart';
 import 'package:proyecto/widgets/MyBrick.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -72,23 +72,23 @@ class _LeccionBricksState extends State<LeccionBricks> {
     bgMusic.play(AssetSource("Blocks.mp3"));
   }
 
-  void _checarRespuesta() {
+  void _checarRespuesta() async{
+    if(draggedOrder.length != correctOrder.length || draggedOrder.contains(null) ) return;
     bool esCorrecto = true;
+
     for (int i = 0; i < correctOrder.length; i++) {
       if (draggedOrder[i] != correctOrder[i]) {
         esCorrecto = false;
         break;
       }
     }
-    String mensaje = esCorrecto ? "Correcto" : "Incorrecto";
-    boton.play(
-        AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(mensaje))); //REEMPLAZAR SNACKBAR POR LA DEBIDA IMPLEMENTACION
+
+    boton.play(AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
+    final checar = Checador();
     bgMusic.stop();
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      widget.onNext();
-    });
+    await checar.checarRespuesta(context, esCorrecto);
+    widget.onNext();
+
   }
 
   @override
@@ -106,6 +106,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
     boton.dispose();
     start.dispose();
     bgMusic.dispose();
+    instruccriones.dispose();
     super.dispose();
   }
 

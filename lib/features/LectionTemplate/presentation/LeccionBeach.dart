@@ -4,13 +4,13 @@ import 'package:proyecto/widgets/MyBeachImage.dart';
 import 'package:proyecto/widgets/MyLectionBanner.dart';
 
 class LeccionBeach extends StatefulWidget {
-  //final List<Map<String, dynamic>> materiales;
+  final List<Map<String, dynamic>> materiales;
   final String titulo;
   final String instrucciones;
   final VoidCallback onNext;
   const LeccionBeach({
     super.key,
-    //required this.materiales,
+    required this.materiales,
     required this.titulo,
     required this.instrucciones,
     required this.onNext,
@@ -35,11 +35,7 @@ class _LeccionBeachState extends State<LeccionBeach>
   String instruccionesPath = "";
   String res = "";
   bool respondio = false;
-  List<String> imagenes = [
-    "assets/bee-kid.png",
-    "assets/bubble.png",
-    "assets/cat.png",
-  ];
+  List<String> imagenes = [];
 
   void _checarRespuesta(String respuesta) {
     setState(() {
@@ -59,12 +55,20 @@ class _LeccionBeachState extends State<LeccionBeach>
   }
 
   void _procesarMateriales() {
-    instruccionesPath = widget.instrucciones;
-    instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
-    res = imagenes[0];
-    imagenes.shuffle();
+    setState(() {
+      imagenes = widget.materiales
+          .where((material) => material["tipo_material"] == "imagen")
+          .map((material) => material["valor_material"] as String)
+          .toList();
+      instruccionesPath = widget.materiales
+          .where((material) => material["tipo_material"] == "audio")
+          .map((material) => material["valor_material"] as String)
+          .first;
+      instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
+      res = imagenes[0];
+      imagenes.shuffle();
+    });
   }
-
 
   void _setMusica() {
     bgMusic.setReleaseMode(ReleaseMode.loop);

@@ -70,6 +70,12 @@ class DatabaseHelper {
      }
   }
 
+  Future<void> deleteDB() async {
+    String path = join(await getDatabasesPath(), 'AlfaGenesisDB.db');
+    await deleteDatabase(path);
+    _database = null;
+  }
+
   Future<List<Map<String, dynamic>>> getLecciones() async {
     final db = await database;
     return await db.query('Lecciones');

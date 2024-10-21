@@ -16,16 +16,12 @@ import javax.validation.Valid;
 public class AuthController {
     @Autowired
     private AuthService authService;
-
     @PostMapping("/signUp")
     public ResponseEntity<?> signup(@Valid @RequestBody Login request) throws FirebaseAuthException {
         return ResponseEntity.ok(authService.add(request));
     }
-
    @PostMapping("/login")
     public ResponseEntity<?> login (@RequestBody Login request) throws JsonProcessingException {
         return ResponseEntity.ok(authService.login(request));
     }
-    @GetMapping("/showTeams")
-    public ResponseEntity<?> showteam (){return  ResponseEntity.ok(authService.showTeam());}
 }

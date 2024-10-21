@@ -12,7 +12,7 @@ class MyGroupCard extends StatefulWidget {
   final bool isSelected;
   final List<Alumno> lista;
   final String nombreGrupo;
-
+  final String id;
   ///Este widget se encarga de mostrar un grupo de alumnos en una tarjeta de manera ordenada y agradable a la vista
   ///
   ///## Importante:
@@ -32,6 +32,7 @@ class MyGroupCard extends StatefulWidget {
     required this.onDeleteAlumno,
     required this.onSelect,
     required this.nombreGrupo,
+    required this.id,
   });
 
   @override

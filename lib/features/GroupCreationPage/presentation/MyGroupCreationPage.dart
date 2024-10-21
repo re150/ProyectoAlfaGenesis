@@ -37,6 +37,26 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
   bool loading = false;
   List<dynamic> deserializedProfiles = [];
 
+  Future<void> _deleteTeam(String id) async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final jwtToken = authProvider.jwtToken;
+    final response = await http.post(
+      Uri.parse('http://$ipAdress:$port/next/alfa/teams/DeleteTeam'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken'
+      },
+      body: jsonEncode({
+        'id': id,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Equipo eliminado');
+    } else {
+      throw Exception('Error al eliminar el equipo');
+    }
+  }
+
   ///Funcion para borrar un grupo de la lista de grupos, toma como argumento el numero del grupo a borrar.
   ///
   ///Muestra un [AlertDialog] para que el usuario pueda confirmar si desea borrar un grupo.
@@ -62,10 +82,12 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
                 setState(() {
                   if (_grupos[numero - 1]!.lista.isNotEmpty) {
                     for (var alumno in _grupos[numero - 1]!.lista) {
+                      _deleteAlumno(_grupos[numero - 1]!.id,alumno.id, alumno.name);
                       alumno.setTeamStatus(false);
                     }
                     _filtrarAlumnos(_gradoSeleccionado);
                   }
+                  _deleteTeam(_grupos[numero - 1]!.id);
                   _grupos.removeAt(numero - 1);
                   for (int i = 0; i < _grupos.length; i++) {
                     _grupos[i] = MyGroupCard(
@@ -77,12 +99,14 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
                       onSelect: () => _seleccionarGrupo(i + 1),
                       onDeleteAlumno: _grupos[i]!.onDeleteAlumno,
                       nombreGrupo: _grupos[i]!.nombreGrupo,
+                      id: _grupos[i]!.id,
                     );
                   }
                   if (_indexIndicado >= _grupos.length) {
                     _indexIndicado = _grupos.length - 1;
                   }
                 });
+                
                 Navigator.of(context).pop();
               },
               child: const Text("Aceptar"),
@@ -96,19 +120,23 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
   ///Función para usar el grupo seleccionado que se debe comunicar con el backend.
   ///Para que el grupo seleccionado sea el grupo activo en la aplicación
   ///
-  void _usargrupo(String name) async {
-
+  void _usargrupo(String id) async {
      List<Alumno> listMembers = [];
      if(teamOnDB.isNotEmpty){
-        if(teamOnDB.containsKey(name)){
-
+        if(teamOnDB.containsKey(id)){
+            setState(() {
+              _indexIndicado = _grupos.indexWhere((element) => element!.nombreGrupo == id);
+              _seleccionarGrupo(_indexIndicado + 1);
+              Provider.of<TeamProvider>(context, listen: false).setIdTeam(teamOnDB[id]!);
+                Navigator.pushNamed(context, '/leccion');
+            });
         }else{
           for(var team in _grupos){
-              if(team?.nombreGrupo == name){
+              if(team?.nombreGrupo == id){
                 listMembers = team!.lista;
               }
           }
-          creatTeam(name, listMembers);
+          creatTeam(id, listMembers);
         }
      }
   }
@@ -159,6 +187,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
             onDeleteAlumno: (alumno) =>
             _quitarAlumnoDeGrupo(alumno),
             nombreGrupo: nameTeam,
+            id: teamId,
             ),
         );
          _updateTeamMembers(alumnosTeam, nameTeam, numero);
@@ -193,13 +222,34 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
             onSelect: _grupos[numTeam]!.onSelect,
             onDeleteAlumno: _grupos[numTeam]!.onDeleteAlumno,
             nombreGrupo: _grupos[numTeam]!.nombreGrupo,
+            id: _grupos[numTeam]!.id,
           );
         }
         _filtrarAlumnos(_gradoSeleccionado);
       });
   }
 
+  Future<void> _deleteAlumno(String idTeam, String idUser, String name) async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final jwtToken = authProvider.jwtToken;
+    final response = await http.post(
+      Uri.parse('http://$ipAdress:$port/next/alfa/teams/DeleteMember'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken'
+      },
+      body: jsonEncode({
+        'id': idTeam,
+        'idUser': idUser,
+        'name': name,
+      }),
+    );
 
+    if (response.statusCode == 200) {
+      print('Miembro eliminado');
+    } else {
+      throw Exception('Error al eliminar el miembro');
+    }
+  }
   ///Función para quitar un alumno de un grupo, toma como argumento un alumno.
   ///
   ///Hace uso de la funcion de [setState] para actualizar la vista en tiempo real.
@@ -221,12 +271,43 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
           onSelect: grupo.onSelect,
           onDeleteAlumno: grupo.onDeleteAlumno,
           nombreGrupo: grupo.nombreGrupo,
+          id: grupo.id,
         );
+        _deleteAlumno(_grupos[_indexIndicado]!.id, alumno.id, alumno.name);
         _filtrarAlumnos(_gradoSeleccionado);
       }
     });
   }
 
+  Future<void> _addAlumno(Alumno alumno, String idTeam, int teamSize) async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final jwtToken = authProvider.jwtToken;
+    final response = await http.post(
+      Uri.parse('http://$ipAdress:$port/next/alfa/teams/AddMember'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken'
+      },
+      body: jsonEncode({
+        'id': idTeam,
+        'nom': teamSize,
+        "grado":alumno.grado,
+        "level":alumno.level,
+        "stars":alumno.stars,
+        "idUser":alumno.id,
+        "grupo":alumno.grupo,
+        "name": alumno.name,
+        "imgUrl":alumno.imgUrl,
+        "teamStatus":alumno.teamStatus
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Miembro Añaadido');
+    } else {
+      throw Exception('Error al Añaadido el miembro');
+    }
+  }
+ 
   ///Función para agregar un alumno a un grupo, toma como argumento un alumno.
   ///
   ///Hace uso de la funcion de [setState] para actualizar la vista en tiempo real.
@@ -236,6 +317,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
   ///
   void _agregarAlumnoAlGrupo(Alumno alumno ) {
     setState(() {
+       _addAlumno(alumno, _grupos[_indexIndicado]!.id, _grupos[_indexIndicado]!.lista.length + 1);
       alumno.setTeamStatus(true);
       _grupos[_indexIndicado] = MyGroupCard(
         lista: [..._grupos[_indexIndicado]!.lista, alumno],
@@ -246,7 +328,9 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
         onSelect: _grupos[_indexIndicado]!.onSelect,
         onDeleteAlumno: _grupos[_indexIndicado]!.onDeleteAlumno,
         nombreGrupo: _grupos[_indexIndicado]!.nombreGrupo,
+        id: _grupos[_indexIndicado]!.id,
       );
+     
       _filtrarAlumnos(_gradoSeleccionado);
     });
   }
@@ -270,6 +354,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
           onSelect: grupo.onSelect,
           onDeleteAlumno: grupo.onDeleteAlumno,
           nombreGrupo: grupo.nombreGrupo,
+          id: grupo.id,
         );
       }).toList();
     });
@@ -352,6 +437,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
                           onDeleteAlumno: (alumno) =>
                               _quitarAlumnoDeGrupo(alumno),
                           nombreGrupo: nombreController.text,
+                          id: '',
                         ),
                       );
 
@@ -365,6 +451,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
                           onSelect: () => _seleccionarGrupo(i + 1),
                           onDeleteAlumno: _grupos[i]!.onDeleteAlumno,
                           nombreGrupo: _grupos[i]!.nombreGrupo,
+                          id: _grupos[i]!.id,
                         );
                       }
                     },
@@ -412,6 +499,13 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     });
   }
  
+  void _loadView(){
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MyGroupCreationPage()),
+      );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -504,7 +598,6 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     return newList;
 }
 
-
   Future<void> creatTeam(String nameTeam, List<Alumno> listProfile) async{
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final jwtToken = authProvider.jwtToken;
@@ -521,12 +614,30 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
       if (response.statusCode == 200) {
           final teamProvider = Provider.of<TeamProvider>(context, listen: false); 
           teamProvider.setIdTeam(response.body);
+          int index = _grupos.length;
+            if(_grupos.length == 0){
+              index = 0;
+            } else {
+              index = _grupos.length - 1;
+            }
+          _grupos[index] = MyGroupCard(
+            lista: listProfile,
+            numeroGrupo: _grupos.length,
+            onUse: () => _usargrupo(nameTeam),
+            onDeleteGroup: () => _borrarGrupo(_grupos.length),
+            isSelected: false,
+            onSelect: () => _seleccionarGrupo(_grupos.length),
+            onDeleteAlumno: (alumno) => _quitarAlumnoDeGrupo(alumno),
+            nombreGrupo: nameTeam,
+            id: response.body,
+          );
       } else {
           throw Exception('Error al crear equipo');
       }
+      _loadView();
    }
 
- Map<String, dynamic> creatJson(String nameTeam, List<Alumno> listProfile) {
+  Map<String, dynamic> creatJson(String nameTeam, List<Alumno> listProfile) {
     Map<String, dynamic> jsonMap = {
       "nameTeam": nameTeam,
       "NomMembers": listProfile.length,
@@ -543,6 +654,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
         "grupo": listProfile[i].grupo,
         "teamStatus": listProfile[i].teamStatus
       };
+      print(jsonMap);
     }
     return jsonMap;
   }

@@ -4,15 +4,19 @@ import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyLectionBanner.dart';
 import 'package:proyecto/widgets/MySkyBlock.dart';
 
+import '../../../core/resources/checador_respuestas.dart';
+
 class LeccionSky extends StatefulWidget {
-  //final List<Map<String, dynamic>> materiales;
+  final List<Map<String, dynamic>> materiales;
   final String titulo;
   final String instrucciones;
+  final VoidCallback onNext;
   const LeccionSky({
     super.key,
-    //required this.materiales,
+    required this.materiales,
     required this.titulo,
     required this.instrucciones,
+    required this.onNext,
   });
 
   @override
@@ -22,35 +26,23 @@ class LeccionSky extends StatefulWidget {
 class _LeccionSkyState extends State<LeccionSky> {
   final bgMusic = AudioPlayer();
   final boton = AudioPlayer();
+  final instrucciones = AudioPlayer();
   final nube = AudioPlayer();
-  final respuesta = AudioPlayer();
+  final respuestaSonido = AudioPlayer();
   String instruccionesPath = "";
   int? selectedIndexPalabras;
   int? selectedIndexImagenes;
-
-  Map<int, String> imagenes = {
-    1: "assets/OceanBG.jpg",
-    2: "assets/bee-kid.png",
-    3: "assets/logoo.png",
-  };
-
-  Map<int, String> palabras = {
-    1: "CASA",
-    2: "CIELO",
-    3: "LUNA",
-    4: "CAMA",
-    5: "PERRO",
-    6: "GATA",
-  };
-
-  Map<K, V> shuffleMap<K, V>(Map<K, V> map) {
-    List<MapEntry<K, V>> entries = map.entries.toList();
-    entries.shuffle();
-    return Map<K, V>.fromEntries(entries);
-  }
+  List<String> imagenes = [];
+  List<String> palabras = [];
+  List<String> sonidos = [];
+  Map<String, String> sonidosPorPalabra = {};
+  Map<String, String> respuesta = {};
 
   void _onTapSkyBlockPalabras(int index) {
-    nube.play(AssetSource("SelectButton.mp3"));
+    String sonido = sonidosPorPalabra[palabras[index]]!;
+    sonido = sonido.replaceFirst('assets/', '');
+
+    respuestaSonido.play(AssetSource(sonido));
     setState(() {
       selectedIndexPalabras = index;
     });
@@ -63,36 +55,55 @@ class _LeccionSkyState extends State<LeccionSky> {
     });
   }
 
-  void _checarRespuesta(int indexP, int indexI) {
-    if (indexP == indexI) {
-      respuesta.play(AssetSource("successLesson.mp3"));
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Correcto"),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    } else {
-      respuesta.play(AssetSource("wrong-choice.mp3"));
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Incorrecto"),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
+  void _checarRespuesta(String palabra, String imagen) async {
+    String? res = respuesta[palabra];
+    bool esCorrecto = res == imagen;
+    nube.play(
+      esCorrecto
+          ? AssetSource("successLesson.mp3")
+          : AssetSource("wrong-choice.mp3"),
+    );
+
+    bgMusic.stop();
+    final checar = Checador();
+    await checar.checarRespuesta(context, esCorrecto);
+    widget.onNext();
+
+    
   }
 
   void _setMusica() {
     bgMusic.setReleaseMode(ReleaseMode.loop);
     bgMusic.play(AssetSource("Sky2.mp3"));
+    bgMusic.setVolume(0.5);
   }
 
   void _processMateriales() {
+
     instruccionesPath = widget.instrucciones;
     instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
-    palabras = shuffleMap(palabras);
-    imagenes = shuffleMap(imagenes);
+
+    palabras = widget.materiales
+        .where((material) => material["tipo_material"] == "palabra")
+        .map((material) => material["valor_material"] as String)
+        .toList();
+
+    imagenes =  widget.materiales
+        .where((material) => material["tipo_material"] == "imagen")
+        .map((material) => material["valor_material"] as String)
+        .toList();
+    
+    sonidos = widget.materiales
+        .where((material) => material["tipo_material"] == "audio")
+        .map((material) => material["valor_material"] as String)
+        .toList();
+    
+    sonidosPorPalabra = Map.fromIterables(palabras, sonidos);
+    
+    respuesta = Map.fromIterables(palabras, imagenes);
+
+    palabras.shuffle();
+    imagenes.shuffle();
   }
 
   @override
@@ -106,7 +117,8 @@ class _LeccionSkyState extends State<LeccionSky> {
   void dispose() {
     bgMusic.dispose();
     nube.dispose();
-    respuesta.dispose();
+    instrucciones.dispose();
+    respuestaSonido.dispose();
     super.dispose();
   }
 
@@ -151,7 +163,7 @@ class _LeccionSkyState extends State<LeccionSky> {
                                   onTap: () => _onTapSkyBlockPalabras(index),
                                   content: Center(
                                     child: Text(
-                                      palabras.values.elementAt(index),
+                                      palabras[index],
                                       style: const TextStyle(fontSize: 20),
                                     ),
                                   ),
@@ -175,10 +187,8 @@ class _LeccionSkyState extends State<LeccionSky> {
                               MyButton(
                                 text: "Verificar",
                                 onTap: () => _checarRespuesta(
-                                    palabras.keys
-                                        .elementAt(selectedIndexPalabras!),
-                                    imagenes.keys
-                                        .elementAt(selectedIndexImagenes!)),
+                                    palabras[selectedIndexPalabras!],
+                                    imagenes[selectedIndexImagenes!]),
                                 colorB: Colors.blue,
                                 colorT: Colors.white,
                               ),
@@ -197,7 +207,7 @@ class _LeccionSkyState extends State<LeccionSky> {
                           padding: const EdgeInsets.all(8.0),
                           child: MySkyblock(
                             content: Image.asset(
-                              imagenes.values.elementAt(index),
+                              imagenes[index],
                               width: 100,
                               height: 100,
                             ),

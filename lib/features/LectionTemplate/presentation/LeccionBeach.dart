@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:proyecto/widgets/MyBeachImage.dart';
 import 'package:proyecto/widgets/MyLectionBanner.dart';
 
+import '../../../core/resources/checador_respuestas.dart';
+
 class LeccionBeach extends StatefulWidget {
   final List<Map<String, dynamic>> materiales;
   final String titulo;
@@ -33,25 +35,22 @@ class _LeccionBeachState extends State<LeccionBeach>
   late AnimationController _controller;
   late Animation<double> _animation;
   String instruccionesPath = "";
-  String res = "";
+  String respuestaCorrecta = "";
   bool respondio = false;
   List<String> imagenes = [];
 
-  void _checarRespuesta(String respuesta) {
+  void _checarRespuesta(String res) async {
     setState(() {
       respondio = true;
     });
-    bool esCorrecto = false;
-    if (respuesta == res) {
-      esCorrecto = true;
-    }
+    bool esCorrecto = res == respuestaCorrecta;
     sonidos[4].play(
         AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
 
     bgMusic.stop();
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      widget.onNext();
-    });
+    final checar = Checador();
+    await checar.checarRespuesta(context, esCorrecto);
+    widget.onNext();
   }
 
   void _procesarMateriales() {
@@ -65,7 +64,7 @@ class _LeccionBeachState extends State<LeccionBeach>
           .map((material) => material["valor_material"] as String)
           .first;
       instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
-      res = imagenes[0];
+      respuestaCorrecta = imagenes[0];
       imagenes.shuffle();
     });
   }
@@ -73,6 +72,7 @@ class _LeccionBeachState extends State<LeccionBeach>
   void _setMusica() {
     bgMusic.setReleaseMode(ReleaseMode.loop);
     bgMusic.play(AssetSource("Beach.mp3"));
+    bgMusic.setVolume(0.5);
   }
 
   void _setAnimacion() {

@@ -24,7 +24,7 @@ class _LeccionDemoState extends State<LeccionDemo> {
   List<Map<String, dynamic>> _etapas = [];
   bool dataLoaded = false;
 
-    void _setOrientacion() {
+  void _setOrientacion() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -55,13 +55,13 @@ class _LeccionDemoState extends State<LeccionDemo> {
   }
 
   void _nextPage() {
-    if (_currentPage < _pageController.page!.toInt() + 1) {
+    if (_currentPage == _etapas.length - 1) {
+      Navigator.of(context).pop();
+    } else {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-    } else {
-      Navigator.maybePop(context);
     }
   }
 
@@ -96,8 +96,10 @@ class _LeccionDemoState extends State<LeccionDemo> {
         );
       case "sky":
         return LeccionSky(
+          materiales: materiales,
           titulo: titulo,
           instrucciones: instrucciones,
+          onNext: _nextPage,
         );
       default:
         return const Text("ERROR");
@@ -113,16 +115,15 @@ class _LeccionDemoState extends State<LeccionDemo> {
 
   @override
   void dispose() {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.landscapeLeft,
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
     ]);
     _pageController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -137,8 +138,15 @@ class _LeccionDemoState extends State<LeccionDemo> {
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _etapas.length,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+                if (index == _etapas.length) {
+                  _nextPage();
+                }
+              },
               itemBuilder: (context, index) {
-                _currentPage = index;
                 return _buildEtapa(_etapas[index]);
               },
             )

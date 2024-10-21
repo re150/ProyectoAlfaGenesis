@@ -102,9 +102,10 @@ class _MyMainPageState extends State<MyMainPage> {
                             itemCount: _lecciones.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(30.0),
                                 child: MyLevelButton(
                                   nivel: _lecciones[index]['titulo'],
+                                  puntaje: index+1 <= 5? index+1 : 0,
                                   onTap: () {
                                     Navigator.push(
                                       context,
@@ -115,8 +116,6 @@ class _MyMainPageState extends State<MyMainPage> {
                                       ),
                                     );
                                   },
-                                  color: Colors.primaries[
-                                      index % Colors.primaries.length],
                                 ),
                               );
                             },

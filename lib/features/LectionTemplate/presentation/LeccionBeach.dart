@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:proyecto/widgets/MyBeachImage.dart';
 import 'package:proyecto/widgets/MyLectionBanner.dart';
 
+import '../../../core/resources/checador_respuestas.dart';
+
 class LeccionBeach extends StatefulWidget {
-  //final List<Map<String, dynamic>> materiales;
+  final List<Map<String, dynamic>> materiales;
   final String titulo;
   final String instrucciones;
   final VoidCallback onNext;
   const LeccionBeach({
     super.key,
-    //required this.materiales,
+    required this.materiales,
     required this.titulo,
     required this.instrucciones,
     required this.onNext,
@@ -33,42 +35,44 @@ class _LeccionBeachState extends State<LeccionBeach>
   late AnimationController _controller;
   late Animation<double> _animation;
   String instruccionesPath = "";
-  String res = "";
+  String respuestaCorrecta = "";
   bool respondio = false;
-  List<String> imagenes = [
-    "assets/bee-kid.png",
-    "assets/bubble.png",
-    "assets/cat.png",
-  ];
+  List<String> imagenes = [];
 
-  void _checarRespuesta(String respuesta) {
+  void _checarRespuesta(String res) async {
     setState(() {
       respondio = true;
     });
-    bool esCorrecto = false;
-    if (respuesta == res) {
-      esCorrecto = true;
-    }
+    bool esCorrecto = res == respuestaCorrecta;
     sonidos[4].play(
         AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
 
     bgMusic.stop();
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      widget.onNext();
-    });
+    final checar = Checador();
+    await checar.checarRespuesta(context, esCorrecto);
+    widget.onNext();
   }
 
   void _procesarMateriales() {
-    instruccionesPath = widget.instrucciones;
-    instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
-    res = imagenes[0];
-    imagenes.shuffle();
+    setState(() {
+      imagenes = widget.materiales
+          .where((material) => material["tipo_material"] == "imagen")
+          .map((material) => material["valor_material"] as String)
+          .toList();
+      instruccionesPath = widget.materiales
+          .where((material) => material["tipo_material"] == "audio")
+          .map((material) => material["valor_material"] as String)
+          .first;
+      instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
+      respuestaCorrecta = imagenes[0];
+      imagenes.shuffle();
+    });
   }
-
 
   void _setMusica() {
     bgMusic.setReleaseMode(ReleaseMode.loop);
     bgMusic.play(AssetSource("Beach.mp3"));
+    bgMusic.setVolume(0.5);
   }
 
   void _setAnimacion() {

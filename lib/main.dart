@@ -25,7 +25,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
         ChangeNotifierProvider(create: (_) => TeamProvider()),
       ],
-      child:  MyApp(),
+      child:  const MyApp(),
     ),
   );
 }
@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
 
   void _inicializarDB () async {
     DatabaseHelper dbHelper = DatabaseHelper();
+    dbHelper.deleteDB(); //BORRAR LUEGO
     dbHelper.initDatabase();
   }
 

@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:proyecto/core/resources/checador_respuestas.dart';
 import '../../../widgets/MyBubble.dart';
 import '../../../widgets/MyLectionBanner.dart';
 
@@ -8,14 +9,14 @@ import '../../../widgets/MyLectionBanner.dart';
 /// Hola
 
 class LeccionBubbles extends StatefulWidget {
-  //final List<Map<String, dynamic>> materiales;
+  final List<Map<String, dynamic>> materiales;
   final String titulo;
   final VoidCallback onNext;
   final String instrucciones;
 
   const LeccionBubbles({
     super.key,
-    //required this.materiales,
+    required this.materiales,
     required this.titulo,
     required this.onNext,
     required this.instrucciones,
@@ -27,44 +28,63 @@ class LeccionBubbles extends StatefulWidget {
 
 class _LeccionBubblesState extends State<LeccionBubbles>
     with TickerProviderStateMixin {
-  final List<String> letras = ["RRO", "B", "C", "D", "E"];
   final bgMusic = AudioPlayer();
   final boton = AudioPlayer();
   final res = AudioPlayer();
   final instrucciones = AudioPlayer();
+  final instruccionesEtapa = AudioPlayer();
+  List<String> letras = [];
   String instruccionesPath = "";
+  String instruccionesEtapaPath = "";
   String respuesta = "";
-  AnimationController? _controller;
+  List<AnimationController>? _controllers;
   List<Animation<Offset>>? _animaciones;
   List<bool> popped = [false, false, false, false, false];
   bool pop = false;
 
-  void _checarRespuesta(String letra, int index) {
+  void _checarRespuesta(String letra, int index) async {
     boton.play(AssetSource("BubblePop.mp3"));
+    bool esCorrecto = false;
     setState(() {
       pop = true;
       popped[index] = true;
     });
     if (letra == respuesta) {
       res.play(AssetSource("successLesson.mp3"));
+      esCorrecto = true;
     } else {
       res.play(AssetSource("wrong-choice.mp3"));
     }
     bgMusic.stop();
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      widget.onNext();
-    });
+    final checar = Checador();
+    await checar.checarRespuesta(context, esCorrecto);
+    widget.onNext();
+
   }
 
   void _procesarMateriales() {
-    respuesta = letras[0];
-    instruccionesPath = widget.instrucciones;
-    instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
+    setState(() {
+      letras = widget.materiales
+          .where((material) => material["tipo_material"] == "palabra")
+          .map((material) => material["valor_material"] as String)
+          .toList();
+      respuesta = letras[0];
+
+      instruccionesEtapaPath = widget.materiales
+          .where((material) => material["tipo_material"] == "audio")
+          .map((material) => material["valor_material"] as String)
+          .first;
+      instruccionesEtapaPath = instruccionesEtapaPath.replaceFirst('assets/', '');
+      
+      instruccionesPath = widget.instrucciones;
+      instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
+    });
   }
 
   void _setMusica() {
     bgMusic.play(AssetSource("WaterLesson.mp3"));
     bgMusic.setReleaseMode(ReleaseMode.loop);
+    bgMusic.setVolume(0.5);
   }
 
   void _shuffleElementos() {
@@ -73,7 +93,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
   }
 
   void _setAnimacion() {
-    _animaciones = List.generate(6, (index) {
+    _controllers = List.generate(6, (index) {
       final controller = AnimationController(
         duration: const Duration(seconds: 1),
         vsync: this,
@@ -81,6 +101,10 @@ class _LeccionBubblesState extends State<LeccionBubbles>
       Future.delayed(Duration(milliseconds: index * 500), () {
         controller.repeat(reverse: true);
       });
+      return controller;
+    });
+
+    _animaciones = _controllers!.map((controller) {
       return Tween<Offset>(
         begin: const Offset(0, 0),
         end: const Offset(0, -0.1),
@@ -88,7 +112,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
         parent: controller,
         curve: Curves.easeInOut,
       ));
-    });
+    }).toList();
   }
 
   @override
@@ -102,9 +126,10 @@ class _LeccionBubblesState extends State<LeccionBubbles>
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _controllers?.forEach((controller) => controller.dispose());
     bgMusic.dispose();
     boton.dispose();
+    instrucciones.dispose();
     res.dispose();
     super.dispose();
   }
@@ -123,7 +148,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
               MyLectionBanner(
                 titulo: widget.titulo,
                 onPressed: () {
-                  instrucciones.play(AssetSource(instruccionesPath));
+                  instrucciones.play(AssetSource(instruccionesEtapaPath));
                 },
               ),
             ],

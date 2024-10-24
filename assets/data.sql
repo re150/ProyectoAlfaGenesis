@@ -143,7 +143,7 @@ INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
 VALUES (2, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/Music/Blocks.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (6, 'imagen', 'assets/images/lesson2/manzana.jpg');
+VALUES (6, 'imagen', 'assets/images/lesson2/manzana.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (6, 'audio', 'assets/audio/lessons/lesson2/manzana.mp3');
@@ -186,7 +186,7 @@ INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
 VALUES (2, 'sky', 'assets/audio/VoiceHelp/LeccionCielo.mp3', 'assets/Music/Sky2.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (8, 'imagen', 'assets/images/lesson2/mirar.jpg');
+VALUES (8, 'imagen', 'assets/images/lesson2/mirar.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (8, 'audio', 'assets/audio/lessons/lesson2/mirar.mp3');
@@ -195,7 +195,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (8, 'palabra', 'mirar');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (8, 'imagen', 'assets/images/lesson2/minar.jpg');
+VALUES (8, 'imagen', 'assets/images/lesson2/minar.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (8, 'audio', 'assets/audio/lessons/lesson2/minar.mp3');
@@ -204,7 +204,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (8, 'palabra', 'minar');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (8, 'imagen', 'assets/images/lesson2/miedo.jpg');
+VALUES (8, 'imagen', 'assets/images/lesson2/miedo.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (8, 'audio', 'assets/audio/lessons/lesson2/miedo.mp3');
@@ -221,13 +221,13 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (9, 'audio', 'assets/audio/lessons/lesson2/monio.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (9, 'imagen', 'assets/images/lesson2/monio.jpg');
+VALUES (9, 'imagen', 'assets/images/lesson2/monio.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (9, 'imagen', 'assets/images/lesson2/mono.jpg');
+VALUES (9, 'imagen', 'assets/images/lesson2/mono.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (9, 'imagen', 'assets/images/lesson2/moto.jpg');
+VALUES (9, 'imagen', 'assets/images/lesson2/moto.png');
 
 /*Etapa 5*/
 
@@ -235,7 +235,7 @@ INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
 VALUES (2, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/Music/Blocks.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (10, 'imagen', 'assets/images/lesson2/munieca.jpg');
+VALUES (10, 'imagen', 'assets/images/lesson2/munieca.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (10, 'audio', 'assets/audio/lessons/lesson2/munieca.mp3');
@@ -383,7 +383,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (16, 'palabra', 'lápiz');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (16, 'imagen', 'assets/images/lesson4/lago.jpg');
+VALUES (16, 'imagen', 'assets/images/lesson4/lago.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (16, 'audio', 'assets/audio/lessons/lesson4/lago.mp3');
@@ -392,7 +392,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (16, 'palabra', 'lago');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (16, 'imagen', 'assets/images/lesson4/ladrillo.jpg');
+VALUES (16, 'imagen', 'assets/images/lesson4/ladrillo.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (16, 'audio', 'assets/audio/lessons/lesson4/ladrillo.mp3');
@@ -406,7 +406,7 @@ INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
 VALUES (4, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/Music/Blocks.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (17, 'imagen', 'assets/images/lesson4/leche.jpg');
+VALUES (17, 'imagen', 'assets/images/lesson4/leche.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (17, 'audio', 'assets/audio/lessons/lesson4/leche.mp3');
@@ -429,10 +429,10 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (18, 'imagen', 'assets/images/lesson4/libro.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (18, 'imagen', 'assets/images/lesson4/limpiar.jpg');
+VALUES (18, 'imagen', 'assets/images/lesson4/limpiar.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (18, 'imagen', 'assets/images/lesson4/lima.jpg');
+VALUES (18, 'imagen', 'assets/images/lesson4/lima.png');
 
 /*Etapa 4: bubbles*/
 
@@ -488,7 +488,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (21, 'audio', 'assets/audio/lessons/lesson5/taza.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (21, 'imagen', 'assets/images/lesson5/taza.jpg');
+VALUES (21, 'imagen', 'assets/images/lesson5/taza.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (21, 'imagen', 'assets/images/lesson5/taco.png');
@@ -531,7 +531,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (23, 'palabra', 'tigre');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (23, 'imagen', 'assets/images/lesson5/tienda.jpg');
+VALUES (23, 'imagen', 'assets/images/lesson5/tienda.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (23, 'audio', 'assets/audio/lessons/lesson5/tienda.mp3');
@@ -583,7 +583,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (25, 'imagen', 'assets/images/lesson5/tumba.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (25, 'imagen', 'assets/images/lesson5/turista.jpg');
+VALUES (25, 'imagen', 'assets/images/lesson5/turista.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (25, 'imagen', 'assets/images/lesson5/tucan.png');
@@ -599,7 +599,7 @@ INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
 VALUES (6, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/Music/Blocks.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (26, 'imagen', 'assets/images/lesson6/pato.jpg');
+VALUES (26, 'imagen', 'assets/images/lesson6/pato.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (26, 'audio', 'assets/audio/lessons/lesson6/pato.mp3');
@@ -619,7 +619,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (27, 'audio', 'assets/audio/lessons/lesson6/pez.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (27, 'imagen', 'assets/images/lesson6/pez.jpg');
+VALUES (27, 'imagen', 'assets/images/lesson6/pez.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (27, 'imagen', 'assets/images/lesson6/pelota.png');
@@ -665,7 +665,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (29, 'palabra', 'pollo');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (29, 'imagen', 'assets/images/lesson6/pozo.jpg');
+VALUES (29, 'imagen', 'assets/images/lesson6/pozo.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (29, 'audio', 'assets/audio/lessons/lesson6/pozo.mp3');
@@ -713,7 +713,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (31, 'audio', 'assets/audio/lessons/lesson7/raton.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (31, 'imagen', 'assets/images/lesson7/raton.jpg');
+VALUES (31, 'imagen', 'assets/images/lesson7/raton.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (31, 'imagen', 'assets/images/lesson7/rana.png');
@@ -727,7 +727,7 @@ INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
 VALUES (7, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/Music/Blocks.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (32, 'imagen', 'assets/images/lesson7/regalo.jpg');
+VALUES (32, 'imagen', 'assets/images/lesson7/regalo.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (32, 'audio', 'assets/audio/lessons/lesson7/regalo.mp3');
@@ -756,7 +756,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (33, 'palabra', 'ropa');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (33, 'imagen', 'assets/images/lesson7/rodilla.jpg');
+VALUES (33, 'imagen', 'assets/images/lesson7/rodilla.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (33, 'audio', 'assets/audio/lessons/lesson7/rodilla.mp3');
@@ -805,7 +805,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (35, 'audio', 'assets/audio/lessons/lesson7/rueda.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (35, 'imagen', 'assets/images/lesson7/rueda.jpg');
+VALUES (35, 'imagen', 'assets/images/lesson7/rueda.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (35, 'imagen', 'assets/images/lesson7/rubio.png');
@@ -824,7 +824,7 @@ INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
 VALUES (8, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/Music/Blocks.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (36, 'imagen', 'assets/images/lesson8/naranja.jpg');
+VALUES (36, 'imagen', 'assets/images/lesson8/naranja.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (36, 'audio', 'assets/audio/lessons/lesson8/naranja.mp3');
@@ -876,7 +876,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (38, 'palabra', 'niño');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (38, 'imagen', 'assets/images/lesson8/nido.jpg');
+VALUES (38, 'imagen', 'assets/images/lesson8/nido.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (38, 'audio', 'assets/audio/lessons/lesson8/nido.mp3');
@@ -902,7 +902,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (39, 'audio', 'assets/audio/lessons/lesson8/noche.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (39, 'imagen', 'assets/images/lesson8/noche.jpg');
+VALUES (39, 'imagen', 'assets/images/lesson8/noche.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (39, 'imagen', 'assets/images/lesson8/nota.png');
@@ -919,7 +919,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (40, 'audio', 'assets/audio/lessons/lesson8/nube.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (40, 'imagen', 'assets/images/lesson8/nube.jpg');
+VALUES (40, 'imagen', 'assets/images/lesson8/nube.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (40, 'imagen', 'assets/images/lesson8/nutria.png');
@@ -938,7 +938,7 @@ INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
 VALUES (9, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/Music/Blocks.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (41, 'imagen', 'assets/images/lesson9/casa.jpg');
+VALUES (41, 'imagen', 'assets/images/lesson9/casa.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (41, 'audio', 'assets/audio/lessons/lesson9/casa.mp3');
@@ -964,7 +964,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (42, 'palabra', 'cepillo');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (42, 'imagen', 'assets/images/lesson9/cena.jpg');
+VALUES (42, 'imagen', 'assets/images/lesson9/cena.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (42, 'audio', 'assets/audio/lessons/lesson9/cena.mp3');
@@ -1013,7 +1013,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (44, 'audio', 'assets/audio/lessons/lesson9/conejo.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (44, 'imagen', 'assets/images/lesson9/conejo.jpg');
+VALUES (44, 'imagen', 'assets/images/lesson9/conejo.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (44, 'imagen', 'assets/images/lesson9/cometa.png');
@@ -1078,7 +1078,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (47, 'palabra', 'queso');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (47, 'imagen', 'assets/images/lesson10/queja.jpg');
+VALUES (47, 'imagen', 'assets/images/lesson10/queja.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (47, 'audio', 'assets/audio/lessons/lesson10/queja.mp3');
@@ -1101,7 +1101,7 @@ INSERT INTO etapa (id_leccion, leccion_tipo, instrucciones, musica_fondo)
 VALUES (10, 'blocks', 'assets/audio/VoiceHelp/LeccionBloques.mp3', 'assets/Music/Blocks.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (48, 'imagen', 'assets/images/lesson10/quince.jpg');
+VALUES (48, 'imagen', 'assets/images/lesson10/quince.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (48, 'audio', 'assets/audio/lessons/lesson10/quince.mp3');
@@ -1121,7 +1121,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (49, 'audio', 'assets/audio/lessons/lesson10/quedarse.mp3');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (49, 'imagen', 'assets/images/lesson10/quedarse.jpg');
+VALUES (49, 'imagen', 'assets/images/lesson10/quedarse.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (49, 'imagen', 'assets/images/lesson10/querido.png');

@@ -12,8 +12,11 @@ NEEDS FOR LESSON TYPE:
     - beach: 3 images, 1 audio 
 */
 
+/*Nivel 1*/
+INSERT INTO niveles (titulo) VALUES ('Nivel 1: Vocales');
+
 /*Lección 1*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 1: Vocales');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (1, 'Lección 1: Vocales');
 
 /*Material para etapas, lección 1*/
 
@@ -132,8 +135,11 @@ VALUES (5, 'palabra', 'a');
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (5, 'palabra', 'u');
 
+/*Nivel 2*/
+INSERT INTO niveles (titulo) VALUES ('Nivel 2: Sílabas: Sílabas parte 1');
+
 /*Lección 2*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 2: Sílabas con M');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (2, 'Lección 2');
 
 /*Material para etapas, lección 2*/
 
@@ -250,7 +256,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (10, 'palabra', 'ca');
 
 /*Lección 3*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 3: Sílabas con S');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (2, 'Lección 3: Sílabas con S');
 
 /*Material para etapas, lección 3*/
 
@@ -364,7 +370,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (15, 'palabra', 'lo');
 
 /*Lección 4*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 4: Sílabas con L');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (2, 'Lección 4: Sílabas con L');
 
 /*Material para etapas, lección 4*/
 
@@ -475,7 +481,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (20, 'palabra', 'na');
 
 /*Lección 5*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 5: Sílabas con T');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (2, 'Lección 5: Sílabas con T');
 
 /*Material para etapas, lección 5*/
 
@@ -589,7 +595,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (25, 'imagen', 'assets/images/lesson5/tucan.png');
 
 /*Lección 6*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 6: Sílabas con P');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (2, 'Lección 6: Sílabas con P');
 
 /*Material para etapas, lección 6*/
 
@@ -699,8 +705,11 @@ VALUES (30, 'palabra', 'pul');
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (30, 'palabra', 'po');
 
+/*Nivel 3*/
+INSERT INTO niveles (titulo) VALUES ('Nivel 3: Sílabas: Sílabas parte 2');
+
 /*Lección 7*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 7: Sílabas con R');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (3, 'Lección 7: Sílabas con R');
 
 /*Material para etapas, lección 7*/
 
@@ -814,7 +823,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (35, 'imagen', 'assets/images/lesson7/ruido.png');
 
 /*Lección 8*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 8: Sílabas con N');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (3, 'Lección 8: Sílabas con N');
 
 /*Material para etapas, lección 8*/
 
@@ -928,7 +937,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (40, 'imagen', 'assets/images/lesson8/nuez.png');
 
 /*Lección 9*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 9: Sílabas con C');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (3, 'Lección 9: Sílabas con C');
 
 /*Material para etapas, lección 9*/
 
@@ -1045,7 +1054,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (45, 'palabra', 'co');
 
 /*Lección 10*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 10: Sílabas con Q');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (3, 'Lección 10: Sílabas con Q');
 
 /*Material para etapas, lección 10*/
 
@@ -1144,7 +1153,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (50, 'palabra', 'qui');
 
 /*Lección 11*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 11: Sílabas con D');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (3, 'Lección 11: Sílabas con D');
 
 /*Material para etapas, lección 11*/
 
@@ -1260,8 +1269,11 @@ VALUES (55, 'palabra', 'di');
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (55, 'palabra', 'do');
 
+/*Nivel 4*/
+INSERT INTO niveles (titulo) VALUES ('Nivel 4: Sílabas: Sílabas parte 3');
+
 /*Lección 12*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 12: Sílabas con V');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (4, 'Lección 12: Sílabas con V');
 
 /*Material para etapas, lección 12*/
 
@@ -1375,7 +1387,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (60, 'palabra', 'no');
 
 /*Lección 13*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 13: Sílabas con J');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (4, 'Lección 13: Sílabas con J');
 
 /*Material para etapas, lección 13*/
 
@@ -1492,7 +1504,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (65, 'palabra', 'jo');
 
 /*Lección 14*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 14: Sílabas con F');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (4, 'Lección 14: Sílabas con F');
 
 /*Material para etapas, lección 14*/
 
@@ -1603,7 +1615,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (70, 'palabra', 'to');
 
 /*Lección 15*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 15: Sílabas con B');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (4, 'Lección 15: Sílabas con B');
 
 /*Material para etapas, lección 15*/
 
@@ -1720,7 +1732,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (75, 'palabra', 'bo');
 
 /*Lección 16*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 16: Sílabas con Ñ');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (4, 'Lección 16: Sílabas con Ñ');
 
 /*Material para etapas, lección 16*/
 
@@ -1836,8 +1848,11 @@ VALUES (80, 'palabra', 'ñi');
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (80, 'palabra', 'ñu');
 
+/*Nivel 5*/
+INSERT INTO niveles (titulo) VALUES ('Nivel 5: Sílabas: Sílabas parte 4');
+
 /*Lección 17*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 17: Sílabas con G');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (5, 'Lección 17: Sílabas con G');
 
 /*Material para etapas, lección 17*/
 
@@ -1951,7 +1966,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (85, 'palabra', 'no');
 
 /*Lección 18*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 18: Sílabas con H');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (5, 'Lección 18: Sílabas con H');
 
 /*Material para etapas, lección 18*/
 
@@ -2065,7 +2080,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (90, 'palabra', 'vo');
 
 /*Lección 19*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 19: Sílabas con Z');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (5, 'Lección 19: Sílabas con Z');
 
 /*Material para etapas, lección 19*/
 
@@ -2185,7 +2200,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (95, 'palabra', 'zo');
 
 /*Lección 20*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 20: Sílabas con Y');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (5, 'Lección 20: Sílabas con Y');
 
 /*Material para etapas, lección 20*/
 
@@ -2302,7 +2317,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (100, 'palabra', 'yo');
 
 /*Lección 21*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 21: Sílabas con X');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (5, 'Lección 21: Sílabas con X');
 
 /*Material para etapas, lección 21*/
 
@@ -2418,8 +2433,11 @@ VALUES (105, 'palabra', 'xi');
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (105, 'palabra', 'xo');
 
+/*Nivel 6*/
+INSERT INTO niveles (titulo) VALUES ('Nivel 6: Sílabas: Sílabas parte 5');
+
 /*Lección 22*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 22: Sílabas con K');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (6, 'Lección 22: Sílabas con K');
 
 /*Material para etapas, lección 22*/
 
@@ -2536,7 +2554,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (110, 'palabra', 'ko');
 
 /*Lección 23*/
-INSERT INTO lecciones (titulo) VALUES ('Lección 23: Sílabas con W');
+INSERT INTO lecciones (id_nivel, titulo) VALUES (6, 'Lección 23: Sílabas con W');
 
 /*Material para etapas, lección 23*/
 

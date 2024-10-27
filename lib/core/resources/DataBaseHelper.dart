@@ -27,10 +27,20 @@ class DatabaseHelper {
       version: 1,
       
       onCreate: (db, version) async {
+
+        await db.execute('''
+          CREATE TABLE nivel(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT
+          )
+        ''');
+
         await db.execute('''
           CREATE TABLE lecciones(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_nivel INTEGER,
             titulo TEXT
+            FOREIGN KEY (id_nivel) REFERENCES Nivel(id)
           )
         ''');
 
@@ -76,9 +86,14 @@ class DatabaseHelper {
     _database = null;
   }
 
-  Future<List<Map<String, dynamic>>> getLecciones() async {
+  Future<List<Map<String, dynamic>>> getNivel() async {
     final db = await database;
-    return await db.query('Lecciones');
+    return await db.query('Nivel');
+  }
+
+  Future<List<Map<String, dynamic>>> getLecciones(idNivel) async {
+    final db = await database;
+    return await db.query('Lecciones', where: 'id_nivel = ?', whereArgs: [idNivel]);
   }
 
   Future<List<Map<String, dynamic>>> getEtapa(int idLeccion) async {
@@ -90,4 +105,5 @@ class DatabaseHelper {
     final db = await database;
     return await db.query('Material', where: 'id_etapa = ?', whereArgs: [idEtapa]);
   }
+
 }

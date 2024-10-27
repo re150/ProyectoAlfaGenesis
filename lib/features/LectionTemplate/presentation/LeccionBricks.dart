@@ -259,7 +259,7 @@ class _LeccionBricksState extends State<LeccionBricks>
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
                         image: AssetImage(imgPath),
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),

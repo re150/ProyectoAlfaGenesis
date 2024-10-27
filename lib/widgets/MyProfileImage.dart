@@ -22,7 +22,7 @@ class MyProfileImage extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: Text(
                 name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,

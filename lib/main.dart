@@ -13,6 +13,7 @@ import 'features/MainPage/presentation/MyMainPage.dart';
 import 'features/ProfileCreation/presentation/MyProfileCreationPage.dart';
 import 'features/ProfileEdition/presentation/MyProfileEditiontionPage.dart';
 import 'features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
+import 'features/RoadMap/presentation/MyRoadMapView.dart';
 import 'provider/AuthProvider.dart';
 import 'provider/ProfileProvider.dart';
 //ARREGLAR BUG CUANDO SE APAGA LA PANTALLA
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
 
   void _inicializarDB () async {
     DatabaseHelper dbHelper = DatabaseHelper();
-    dbHelper.deleteDB(); //BORRAR LUEGO
+    //dbHelper.deleteDB();
     dbHelper.initDatabase();
   }
 
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const LandingPage(),
         '/login': (context) => const LoginPage(),
         '/leccion': (context) => const LeccionDemo(),
+        '/roadMap': (context) => const MyRoadMapView(),
         '/accountCreation': (context) => const MyAccountCreationPage(),
         '/profileCreation': (context) => const MyProfileCreationPage(),
         '/profileEdition': (context) => const MyProfileEditionPage(),

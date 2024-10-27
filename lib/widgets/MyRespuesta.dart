@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto/widgets/MyStarButton.dart';
 
 class Respuesta extends StatelessWidget {
   final bool esCorrecto;
@@ -21,9 +22,8 @@ class Respuesta extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 esCorrecto
-                    ? const Icon(Icons.star, color: Colors.yellow, size: 100)
-                    : const Icon(Icons.star_border,
-                        color: Colors.yellow, size: 100),
+                    ? const MyStar(size: 100, correcto: true)
+                    : const MyStar(size: 100, correcto: false)
               ],
             ),
           ),

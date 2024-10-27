@@ -17,7 +17,6 @@ class LeccionDemo extends StatefulWidget {
 
 class _LeccionDemoState extends State<LeccionDemo> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
-  final Map<int, List<Map<String, dynamic>>> _etapasPorLeccion = {};
   final Map<int, List<Map<String, dynamic>>> _materialesPorEtapa = {};
   final PageController _pageController = PageController();
   int _currentPage = 0;
@@ -131,26 +130,29 @@ class _LeccionDemoState extends State<LeccionDemo> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Scaffold(
-      body: _etapas.isNotEmpty
-          ? PageView.builder(
-              scrollDirection: Axis.vertical,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _etapas.length,
-              onPageChanged: (index) {
-                setState(() {
-                  _currentPage = index;
-                });
-                if (index == _etapas.length) {
-                  _nextPage();
-                }
-              },
-              itemBuilder: (context, index) {
-                return _buildEtapa(_etapas[index]);
-              },
-            )
-          : const Center(child: Text("ERROR, MATERIALES VACIOS")),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: _etapas.isNotEmpty
+            ? PageView.builder(
+                scrollDirection: Axis.vertical,
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _etapas.length,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentPage = index;
+                  });
+                  if (index == _etapas.length) {
+                    _nextPage();
+                  }
+                },
+                itemBuilder: (context, index) {
+                  return _buildEtapa(_etapas[index]);
+                },
+              )
+            : const Center(child: Text("ERROR, MATERIALES VACIOS")),
+      ),
     );
   }
 }

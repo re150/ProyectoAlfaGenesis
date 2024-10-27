@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:proyecto/core/resources/DataBaseHelper.dart';
+import 'package:proyecto/features/MainPage/presentation/MyMainPage.dart';
 import '../../../widgets/MyRoadMapButton.dart';
 
 class MyRoadMapView extends StatefulWidget {
@@ -12,23 +13,33 @@ class MyRoadMapView extends StatefulWidget {
 
 class _MyRoadMapViewState extends State<MyRoadMapView> {
   late int puntaje;
+  List<Map<String, dynamic>> _niveles = [];
+  bool dataLoaded = false;
 
-  void _onPressed() {
-    Navigator.pushNamed(context, '/MainPage');
+  void _onPressed(int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>   MyMainPage(
+          nivel: _niveles[index],
+        ),
+      ),
+    );
   }
 
-  Future<void> _loadLecciones() async {
+  Future<void> _loadNiveles() async {
     final dbHelper = DatabaseHelper();
-    //final lecciones = await dbHelper.getLecciones();
+    final niveles = await dbHelper.getNiveles();
     setState(() {
-      //TODO
+      _niveles = niveles;
+      dataLoaded = true;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _loadLecciones();
+    _loadNiveles();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -48,6 +59,13 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
 
   @override
   Widget build(BuildContext context) {
+    if (!dataLoaded) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -128,7 +146,7 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
                       width: MediaQuery.sizeOf(context).width * 0.3,
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 5,
+                        itemCount: _niveles.length,
                         separatorBuilder: (context, index) {
                           return Align(
                             alignment: Alignment.center,
@@ -141,8 +159,8 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
                         },
                         itemBuilder: (context, horizontalIndex) {
                           return MyRoadmapButton(
-                            isLocked: (horizontalIndex+1)>1,
-                            onPressed: _onPressed,
+                            isLocked: false,
+                            onPressed:() => _onPressed(horizontalIndex),
                             titulo: '${horizontalIndex + 1}',
                             puntaje: horizontalIndex + 1,
                             imagen: 'assets/cat.png',

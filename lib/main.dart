@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
 
   void _inicializarDB () async {
     DatabaseHelper dbHelper = DatabaseHelper();
-    //dbHelper.deleteDB();
+    dbHelper.deleteDB();
     dbHelper.initDatabase();
   }
 

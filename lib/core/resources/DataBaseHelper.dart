@@ -39,7 +39,7 @@ class DatabaseHelper {
           CREATE TABLE lecciones(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             id_nivel INTEGER,
-            titulo TEXT
+            titulo TEXT,
             FOREIGN KEY (id_nivel) REFERENCES Nivel(id)
           )
         ''');
@@ -86,14 +86,14 @@ class DatabaseHelper {
     _database = null;
   }
 
-  Future<List<Map<String, dynamic>>> getNivel() async {
+  Future<List<Map<String, dynamic>>> getNiveles() async {
     final db = await database;
     return await db.query('Nivel');
   }
 
-  Future<List<Map<String, dynamic>>> getLecciones(idNivel) async {
+  Future<List<Map<String, dynamic>>> getLecciones(int idNivel) async {
     final db = await database;
-    return await db.query('Lecciones', where: 'id_nivel = ?', whereArgs: [idNivel]);
+    return await db.query('Lecciones');
   }
 
   Future<List<Map<String, dynamic>>> getEtapa(int idLeccion) async {
@@ -105,5 +105,4 @@ class DatabaseHelper {
     final db = await database;
     return await db.query('Material', where: 'id_etapa = ?', whereArgs: [idEtapa]);
   }
-
 }

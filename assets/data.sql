@@ -2239,7 +2239,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (97, 'imagen', 'assets/images/lesson20/yate.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
-VALUES (97, 'imagen', 'assets/images/lesson20/yogur.png');
+VALUES (97, 'imagen', 'assets/images/lesson20/yogurt.png');
 
 INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (97, 'imagen', 'assets/images/lesson20/yoyo.png');

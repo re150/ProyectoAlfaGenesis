@@ -46,17 +46,6 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
     ]);
   }
 
-  @override
-  void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
-    super.dispose();
-  }
-
   Future<void> newProfile(String Urlimg) async {
   final authProvider = Provider.of<AuthProvider>(context, listen: false);
   final dataProfile = Provider.of<ProfileProvider>(context,listen: false);
@@ -99,7 +88,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Crear Perfil'),
+        title: const Text('Perfil'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -122,7 +111,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                         flex: 6,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: Colors.white,
                             image: DecorationImage(
                               image: AssetImage(selectedImage),
                               fit: BoxFit.contain,

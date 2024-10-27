@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:proyecto/core/resources/DataBaseHelper.dart';
 import 'package:proyecto/features/MainPage/presentation/MyMainPage.dart';
 import '../../../widgets/MyRoadMapButton.dart';
+import '../../../widgets/MyStarButton.dart';
 
 class MyRoadMapView extends StatefulWidget {
   const MyRoadMapView({super.key});
@@ -15,6 +16,9 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
   late int puntaje;
   List<Map<String, dynamic>> _niveles = [];
   bool dataLoaded = false;
+  List<String> imagenes = ["crab.png", "Bricks.png", "OceanBG.jpg", "pez3.jpg", "SkyBG.webp", "WallBricks.jpg", "crab.png"];
+  int puntajeTotal = 100; //PUNTAJE TOTAL DEL USUARIO EXTRAIDO DE LA DB
+
 
   void _onPressed(int index) {
     Navigator.push(
@@ -51,8 +55,6 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
     ]);
     super.dispose();
   }
@@ -83,6 +85,15 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
             },
           ),
           actions: [
+                 const MyStar(correcto: true), 
+
+          Text(
+            'x$puntajeTotal',
+            style: const TextStyle(fontSize: 20),
+          ),
+
+
+
             IconButton(
               icon: const Icon(Icons.manage_accounts),
               color: Colors.blue,
@@ -158,12 +169,13 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
                           );
                         },
                         itemBuilder: (context, horizontalIndex) {
+                          bool lock = index > 0;
                           return MyRoadmapButton(
-                            isLocked: false,
+                            isLocked: lock,
                             onPressed:() => _onPressed(horizontalIndex),
-                            titulo: '${horizontalIndex + 1}',
-                            puntaje: horizontalIndex + 1,
-                            imagen: 'assets/cat.png',
+                            titulo: lock ? "BLOQUEADO" : _niveles[horizontalIndex]['nombre'],
+                            puntaje: 5,
+                            imagen: lock? "assets/cat.png" : "assets/${imagenes[horizontalIndex%imagenes.length]}",
                           );
                         },
                       ),

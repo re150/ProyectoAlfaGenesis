@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:proyecto/widgets/MyLevelButton.dart';
+import 'package:proyecto/widgets/MyStarButton.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../../core/resources/DataBaseHelper.dart';
@@ -19,6 +20,8 @@ class _MyMainPageState extends State<MyMainPage> {
   final Map<int, List<Map<String, dynamic>>> _leccionessPorNivel = {};
   List<Map<String, dynamic>> _lecciones = [];
   bool dataLoaded = false;
+  int puntajeTotal = 100; //PUNTAJE TOTAL DEL USUARIO EXTRAIDO DE LA DB
+  List<String> imagenes = ["cat.png", "Bricks.png", "OceanBG.jpg", "pez3.jpg", "SkyBG.webp", "WallBricks.jpg", "crab.png"];
 
   Future<void> _loadLecciones() async {
     final Database db = await _dbHelper.database;
@@ -61,7 +64,28 @@ class _MyMainPageState extends State<MyMainPage> {
   @override
   Widget build(BuildContext context) {
     if (!dataLoaded) {
-      return const Center(child: CircularProgressIndicator());
+      return const Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.white,
+                color: Colors.blue,
+              ),
+            ),
+            Center(
+              child: Text(
+                'Cargando...',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 30,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     }
     return Scaffold(
       appBar: AppBar(
@@ -77,6 +101,13 @@ class _MyMainPageState extends State<MyMainPage> {
           },
         ),
         actions: [
+          const MyStar(correcto: true), 
+
+          Text(
+            'x$puntajeTotal',
+            style: const TextStyle(fontSize: 20),
+          ),
+
           IconButton(
             icon: const Icon(Icons.person),
             color: Colors.blue,
@@ -125,6 +156,7 @@ class _MyMainPageState extends State<MyMainPage> {
                                       child: MyLevelButton(
                                         nivel: _lecciones[index]['titulo'],
                                         puntaje: index + 1 <= 5 ? index + 1 : 0,
+                                        imagen: imagenes[index%imagenes.length],
                                         onTap: () {
                                           Navigator.push(
                                             context,

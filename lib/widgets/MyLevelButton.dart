@@ -5,10 +5,12 @@ class MyLevelButton extends StatefulWidget {
   final String nivel;
   final int puntaje;
   final VoidCallback onTap;
+  final String imagen;
   const MyLevelButton({
     required this.onTap,
     required this.nivel,
     this.puntaje = 0,
+    required this.imagen,
     super.key,
   });
 
@@ -93,11 +95,11 @@ class _MyLevelButtonState extends State<MyLevelButton>
                   children: [
                     Container(
                       width: MediaQuery.sizeOf(context).width / 2,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: Colors.white,
                         image: DecorationImage(
-                          image: AssetImage('assets/crab.png'),
-                          fit: BoxFit.contain,
+                          image: AssetImage("assets/${widget.imagen}"),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),

@@ -8,7 +8,8 @@ import 'LeccionBubbles.dart';
 import 'LeccionSky.dart';
 
 class LeccionDemo extends StatefulWidget {
-  const LeccionDemo({super.key});
+  final Map<String, dynamic> leccion;
+  const LeccionDemo({super.key, this.leccion = const {}});
 
   @override
   State<LeccionDemo> createState() => _LeccionDemoState();
@@ -16,14 +17,13 @@ class LeccionDemo extends StatefulWidget {
 
 class _LeccionDemoState extends State<LeccionDemo> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
-  final Map<int, List<Map<String, dynamic>>> _etapasPorLeccion = {};
   final Map<int, List<Map<String, dynamic>>> _materialesPorEtapa = {};
   final PageController _pageController = PageController();
   int _currentPage = 0;
-  List<Map<String, dynamic>> _lecciones = [];
+  List<Map<String, dynamic>> _etapas = [];
   bool dataLoaded = false;
 
-    void _setOrientacion() {
+  void _setOrientacion() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -32,26 +32,21 @@ class _LeccionDemoState extends State<LeccionDemo> {
 
   Future<void> _loadData() async {
     final Database db = await _dbHelper.database;
-    _lecciones = await db.query('lecciones');
+    int leccionId = widget.leccion['id'];
+    _etapas = await db.query(
+      'etapa',
+      where: 'id_leccion = ?',
+      whereArgs: [leccionId],
+    );
 
-    for (var leccion in _lecciones) {
-      int leccionId = leccion['id'];
-      List<Map<String, dynamic>> etapas = await db.query(
-        'etapa',
-        where: 'id_leccion = ?',
-        whereArgs: [leccionId],
+    for (var etapa in _etapas) {
+      int etapaId = etapa['id'];
+      List<Map<String, dynamic>> materiales = await db.query(
+        'material',
+        where: 'id_etapa = ?',
+        whereArgs: [etapaId],
       );
-      _etapasPorLeccion[leccionId] = etapas;
-
-      for (var etapa in etapas) {
-        int etapaId = etapa['id'];
-        List<Map<String, dynamic>> materiales = await db.query(
-          'material',
-          where: 'id_etapa = ?',
-          whereArgs: [etapaId],
-        );
-        _materialesPorEtapa[etapaId] = materiales;
-      }
+      _materialesPorEtapa[etapaId] = materiales;
     }
     setState(() {
       dataLoaded = true;
@@ -59,7 +54,9 @@ class _LeccionDemoState extends State<LeccionDemo> {
   }
 
   void _nextPage() {
-    if (_currentPage < _pageController.page!.toInt() + 1) {
+    if (_currentPage == _etapas.length - 1) {
+      Navigator.of(context).pop();
+    } else {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -71,7 +68,7 @@ class _LeccionDemoState extends State<LeccionDemo> {
     String leccionTipo = etapa['leccion_tipo'] ?? 'unknown';
     int etapaId = etapa['id'];
     List<Map<String, dynamic>> materiales = _materialesPorEtapa[etapaId] ?? [];
-    String titulo = _lecciones[0]["titulo"] as String;
+    String titulo = widget.leccion["titulo"] as String;
     String instrucciones = etapa['instrucciones'] as String;
 
     switch (leccionTipo) {
@@ -84,20 +81,24 @@ class _LeccionDemoState extends State<LeccionDemo> {
         );
       case "bubbles":
         return LeccionBubbles(
+          materiales: materiales,
           titulo: titulo,
           onNext: _nextPage,
           instrucciones: instrucciones,
         );
       case "beach":
         return LeccionBeach(
+          materiales: materiales,
           titulo: titulo,
           instrucciones: instrucciones,
           onNext: _nextPage,
         );
       case "sky":
         return LeccionSky(
+          materiales: materiales,
           titulo: titulo,
           instrucciones: instrucciones,
+          onNext: _nextPage,
         );
       default:
         return const Text("ERROR");
@@ -113,16 +114,15 @@ class _LeccionDemoState extends State<LeccionDemo> {
 
   @override
   void dispose() {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.landscapeLeft,
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
     ]);
     _pageController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -130,22 +130,29 @@ class _LeccionDemoState extends State<LeccionDemo> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    int leccionId = _lecciones[0]['id'];
-    List<Map<String, dynamic>> etapas = _etapasPorLeccion[leccionId] ?? [];
-
-    return Scaffold(
-      body: etapas.isNotEmpty
-          ? PageView.builder(
-              scrollDirection: Axis.vertical,
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: etapas.length,
-              itemBuilder: (context, index) {
-                _currentPage = index;
-                return _buildEtapa(etapas[index]);
-              },
-            )
-          : const Center(child: Text("ERROR, MATERIALES VACIOS")),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: _etapas.isNotEmpty
+            ? PageView.builder(
+                scrollDirection: Axis.vertical,
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _etapas.length,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentPage = index;
+                  });
+                  if (index == _etapas.length) {
+                    _nextPage();
+                  }
+                },
+                itemBuilder: (context, index) {
+                  return _buildEtapa(_etapas[index]);
+                },
+              )
+            : const Center(child: Text("ERROR, MATERIALES VACIOS")),
+      ),
     );
   }
 }

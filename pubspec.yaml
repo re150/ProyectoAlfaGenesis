@@ -69,8 +69,51 @@ flutter:
     - assets/audio/VoiceHelp/
     - assets/audio/lessons/
     - assets/audio/lessons/lesson1/
+    - assets/audio/lessons/lesson10/
+    - assets/audio/lessons/lesson11/
+    - assets/audio/lessons/lesson12/
+    - assets/audio/lessons/lesson13/
+    - assets/audio/lessons/lesson14/
+    - assets/audio/lessons/lesson15/
+    - assets/audio/lessons/lesson16/
+    - assets/audio/lessons/lesson17/
+    - assets/audio/lessons/lesson18/
+    - assets/audio/lessons/lesson19/
+    - assets/audio/lessons/lesson2/
+    - assets/audio/lessons/lesson20/
+    - assets/audio/lessons/lesson21/
+    - assets/audio/lessons/lesson22/
+    - assets/audio/lessons/lesson23/
+    - assets/audio/lessons/lesson3/
+    - assets/audio/lessons/lesson4/
+    - assets/audio/lessons/lesson5/
+    - assets/audio/lessons/lesson6/
+    - assets/audio/lessons/lesson7/
+    - assets/audio/lessons/lesson8/
+    - assets/audio/lessons/lesson9/
     - assets/images/
-    - assets/images/lesson1/
+    - assets/images/lesson10/
+    - assets/images/lesson11/
+    - assets/images/lesson12/
+    - assets/images/lesson13/
+    - assets/images/lesson14/
+    - assets/images/lesson15/
+    - assets/images/lesson16/
+    - assets/images/lesson17/
+    - assets/images/lesson18/
+    - assets/images/lesson19/
+    - assets/images/lesson2/
+    - assets/images/lesson20/
+    - assets/images/lesson21/
+    - assets/images/lesson22/
+    - assets/images/lesson23/
+    - assets/images/lesson3/
+    - assets/images/lesson4/
+    - assets/images/lesson5/
+    - assets/images/lesson6/
+    - assets/images/lesson7/
+    - assets/images/lesson8/
+    - assets/images/lesson9/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/DataBaseHelper.dart';
 import 'package:proyecto/core/resources/constants.dart';
@@ -60,6 +61,15 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       print(e);
     }
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 
   @override
@@ -140,6 +150,10 @@ class _LoginPageState extends State<LoginPage> {
                                 /*if(emailController.text == "admin" && passwordController.text.isEmpty){
                                   Navigator.pushNamed(context, '/MainPage');
                                 }*/
+                                //login(emailController.text, passwordController.text);
+                                if(emailController.text == "admin" && passwordController.text.isEmpty){
+                                  Navigator.pushNamed(context, '/roadMap');
+                                }
                               },
                             ),
                           ),

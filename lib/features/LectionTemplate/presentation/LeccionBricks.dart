@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:proyecto/core/resources/checador_respuestas.dart';
 import 'package:proyecto/widgets/MyBrick.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -23,7 +23,8 @@ class LeccionBricks extends StatefulWidget {
   State<LeccionBricks> createState() => _LeccionBricksState();
 }
 
-class _LeccionBricksState extends State<LeccionBricks> {
+class _LeccionBricksState extends State<LeccionBricks>
+    with WidgetsBindingObserver {
   final boton = AudioPlayer();
   final start = AudioPlayer();
   final instruccriones = AudioPlayer();
@@ -72,30 +73,35 @@ class _LeccionBricksState extends State<LeccionBricks> {
     bgMusic.play(AssetSource("Blocks.mp3"));
   }
 
-  void _checarRespuesta() {
+  void _checarRespuesta() async {
+    if (draggedOrder.length != correctOrder.length ||
+        draggedOrder.contains(null)) return;
     bool esCorrecto = true;
+
     for (int i = 0; i < correctOrder.length; i++) {
       if (draggedOrder[i] != correctOrder[i]) {
         esCorrecto = false;
         break;
       }
     }
-    String mensaje = esCorrecto ? "Correcto" : "Incorrecto";
+
     boton.play(
         AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(mensaje))); //REEMPLAZAR SNACKBAR POR LA DEBIDA IMPLEMENTACION
+    final checar = Checador();
     bgMusic.stop();
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      widget.onNext();
-    });
+    await checar.checarRespuesta(context, esCorrecto);
+    widget.onNext();
   }
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _procesarMateriales();
     _setAudio();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      pista.play(AssetSource(pistaPath));
+    });
   }
 
   @override
@@ -106,7 +112,19 @@ class _LeccionBricksState extends State<LeccionBricks> {
     boton.dispose();
     start.dispose();
     bgMusic.dispose();
+    instruccriones.dispose();
+    pista.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      bgMusic.resume();
+    } else if (state == AppLifecycleState.paused) {
+      bgMusic.pause();
+    }
   }
 
   @override
@@ -241,7 +259,7 @@ class _LeccionBricksState extends State<LeccionBricks> {
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
                         image: AssetImage(imgPath),
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),

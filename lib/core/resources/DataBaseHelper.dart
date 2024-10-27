@@ -27,10 +27,20 @@ class DatabaseHelper {
       version: 1,
       
       onCreate: (db, version) async {
+
+        await db.execute('''
+          CREATE TABLE nivel(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT
+          )
+        ''');
+
         await db.execute('''
           CREATE TABLE lecciones(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            titulo TEXT
+            id_nivel INTEGER,
+            titulo TEXT,
+            FOREIGN KEY (id_nivel) REFERENCES Nivel(id)
           )
         ''');
 
@@ -70,7 +80,18 @@ class DatabaseHelper {
      }
   }
 
-  Future<List<Map<String, dynamic>>> getLecciones() async {
+  Future<void> deleteDB() async {
+    String path = join(await getDatabasesPath(), 'AlfaGenesisDB.db');
+    await deleteDatabase(path);
+    _database = null;
+  }
+
+  Future<List<Map<String, dynamic>>> getNiveles() async {
+    final db = await database;
+    return await db.query('Nivel');
+  }
+
+  Future<List<Map<String, dynamic>>> getLecciones(int idNivel) async {
     final db = await database;
     return await db.query('Lecciones');
   }

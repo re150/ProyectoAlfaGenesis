@@ -1,9 +1,8 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:proyecto/widgets/MyBeachImage.dart';
-import 'package:proyecto/widgets/MyLectionBanner.dart';
-
+import 'package:audioplayers/audioplayers.dart';
 import '../../../core/resources/checador_respuestas.dart';
+import '../../../widgets/MyBeachImage.dart';
+import '../../../widgets/MyLectionBanner.dart';
 
 class LeccionBeach extends StatefulWidget {
   final List<Map<String, dynamic>> materiales;
@@ -23,7 +22,7 @@ class LeccionBeach extends StatefulWidget {
 }
 
 class _LeccionBeachState extends State<LeccionBeach>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   final List<AudioPlayer> sonidos = [
     AudioPlayer(),
     AudioPlayer(),
@@ -86,9 +85,13 @@ class _LeccionBeachState extends State<LeccionBeach>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _procesarMateriales();
     _setMusica();
     _setAnimacion();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      sonidos[4].play(AssetSource(instruccionesPath));
+    });
   }
 
   @override
@@ -98,7 +101,17 @@ class _LeccionBeachState extends State<LeccionBeach>
     }
     _controller.dispose();
     bgMusic.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      bgMusic.resume();
+    } else if(state == AppLifecycleState.paused) {
+      bgMusic.pause();
+    }
   }
 
   @override

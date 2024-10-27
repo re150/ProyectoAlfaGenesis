@@ -23,7 +23,7 @@ class LeccionSky extends StatefulWidget {
   State<LeccionSky> createState() => _LeccionSkyState();
 }
 
-class _LeccionSkyState extends State<LeccionSky> {
+class _LeccionSkyState extends State<LeccionSky> with WidgetsBindingObserver {
   final bgMusic = AudioPlayer();
   final boton = AudioPlayer();
   final instrucciones = AudioPlayer();
@@ -68,8 +68,6 @@ class _LeccionSkyState extends State<LeccionSky> {
     final checar = Checador();
     await checar.checarRespuesta(context, esCorrecto);
     widget.onNext();
-
-    
   }
 
   void _setMusica() {
@@ -79,7 +77,6 @@ class _LeccionSkyState extends State<LeccionSky> {
   }
 
   void _processMateriales() {
-
     instruccionesPath = widget.instrucciones;
     instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
 
@@ -88,18 +85,18 @@ class _LeccionSkyState extends State<LeccionSky> {
         .map((material) => material["valor_material"] as String)
         .toList();
 
-    imagenes =  widget.materiales
+    imagenes = widget.materiales
         .where((material) => material["tipo_material"] == "imagen")
         .map((material) => material["valor_material"] as String)
         .toList();
-    
+
     sonidos = widget.materiales
         .where((material) => material["tipo_material"] == "audio")
         .map((material) => material["valor_material"] as String)
         .toList();
-    
+
     sonidosPorPalabra = Map.fromIterables(palabras, sonidos);
-    
+
     respuesta = Map.fromIterables(palabras, imagenes);
 
     palabras.shuffle();
@@ -109,6 +106,7 @@ class _LeccionSkyState extends State<LeccionSky> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _setMusica();
     _processMateriales();
   }
@@ -120,6 +118,15 @@ class _LeccionSkyState extends State<LeccionSky> {
     instrucciones.dispose();
     respuestaSonido.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      bgMusic.resume();
+    } else if (state == AppLifecycleState.paused) {
+      bgMusic.pause();
+    }
   }
 
   @override

@@ -125,7 +125,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                             color: Colors.blue,
                             image: DecorationImage(
                               image: AssetImage(selectedImage),
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
@@ -135,7 +135,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                           child: MyTextField(
                               controller: nombreController,
                               hintText: "Escribe tu nombre",
-                              obscureText: true)
+                              obscureText: false)
                               ),
                     ],
                   ),

@@ -35,12 +35,6 @@ class _MyMainPageState extends State<MyMainPage> {
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
     super.dispose();
   }
 
@@ -48,7 +42,7 @@ class _MyMainPageState extends State<MyMainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Elegir Nivel', style: TextStyle(fontSize: 30)),
+        title: const Text('Elegir Lección', style: TextStyle(fontSize: 30)),
         backgroundColor: Colors.white,
         centerTitle: true,
         leading: IconButton(

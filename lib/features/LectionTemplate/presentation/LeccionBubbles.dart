@@ -27,7 +27,7 @@ class LeccionBubbles extends StatefulWidget {
 }
 
 class _LeccionBubblesState extends State<LeccionBubbles>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   final bgMusic = AudioPlayer();
   final boton = AudioPlayer();
   final res = AudioPlayer();
@@ -59,7 +59,6 @@ class _LeccionBubblesState extends State<LeccionBubbles>
     final checar = Checador();
     await checar.checarRespuesta(context, esCorrecto);
     widget.onNext();
-
   }
 
   void _procesarMateriales() {
@@ -74,8 +73,9 @@ class _LeccionBubblesState extends State<LeccionBubbles>
           .where((material) => material["tipo_material"] == "audio")
           .map((material) => material["valor_material"] as String)
           .first;
-      instruccionesEtapaPath = instruccionesEtapaPath.replaceFirst('assets/', '');
-      
+      instruccionesEtapaPath =
+          instruccionesEtapaPath.replaceFirst('assets/', '');
+
       instruccionesPath = widget.instrucciones;
       instruccionesPath = instruccionesPath.replaceFirst('assets/', '');
     });
@@ -99,7 +99,9 @@ class _LeccionBubblesState extends State<LeccionBubbles>
         vsync: this,
       );
       Future.delayed(Duration(milliseconds: index * 500), () {
-        controller.repeat(reverse: true);
+        if (mounted) {
+          controller.repeat(reverse: true);
+        }
       });
       return controller;
     });
@@ -118,10 +120,14 @@ class _LeccionBubblesState extends State<LeccionBubbles>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _procesarMateriales();
     _setMusica();
     _setAnimacion();
     _shuffleElementos();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      instrucciones.play(AssetSource(instruccionesEtapaPath));
+    });
   }
 
   @override
@@ -131,7 +137,17 @@ class _LeccionBubblesState extends State<LeccionBubbles>
     boton.dispose();
     instrucciones.dispose();
     res.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      bgMusic.resume();
+    } else if (state == AppLifecycleState.paused) {
+      bgMusic.pause();
+    }
   }
 
   @override

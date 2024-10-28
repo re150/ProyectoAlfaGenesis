@@ -16,7 +16,6 @@ import 'features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
 import 'features/RoadMap/presentation/MyRoadMapView.dart';
 import 'provider/AuthProvider.dart';
 import 'provider/ProfileProvider.dart';
-//ARREGLAR BUG CUANDO SE APAGA LA PANTALLA
 
 void main() {
     runApp(

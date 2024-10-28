@@ -86,7 +86,12 @@ class DatabaseHelper {
     _database = null;
   }
 
-  Future<List<Map<String, dynamic>>> getLecciones() async {
+  Future<List<Map<String, dynamic>>> getNiveles() async {
+    final db = await database;
+    return await db.query('Nivel');
+  }
+
+  Future<List<Map<String, dynamic>>> getLecciones(int idNivel) async {
     final db = await database;
     return await db.query('Lecciones');
   }
@@ -100,5 +105,4 @@ class DatabaseHelper {
     final db = await database;
     return await db.query('Material', where: 'id_etapa = ?', whereArgs: [idEtapa]);
   }
-
 }

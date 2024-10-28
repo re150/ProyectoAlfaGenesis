@@ -370,13 +370,11 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
 
   @override
   void dispose() {
+    super.dispose();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft
     ]);
-    super.dispose();
   }
 
   /*Future<void> fetchProfiles() async {

@@ -24,6 +24,7 @@ class MyRoadmapButton extends StatefulWidget {
 
 class _MyRoadmapButtonState extends State<MyRoadmapButton>
     with SingleTickerProviderStateMixin {
+
   late AnimationController _controller;
   final pressed = AudioPlayer();
   late int puntos;
@@ -108,8 +109,7 @@ class _MyRoadmapButtonState extends State<MyRoadmapButton>
                     ])
                   : null,
             ),
-            color: Colors.white,
-            shape: BoxShape.circle,
+            color: Colors.blue,
             border: Border.all(
               color: Colors.black,
               width: 4,
@@ -123,54 +123,46 @@ class _MyRoadmapButtonState extends State<MyRoadmapButton>
               ),
             ],
           ),
-          child: ClipOval(
-            child: Column(
-              children: [
-                if (!widget.isLocked)
-                  Container(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(5, (index) {
-                        return MyStar(correcto: index < puntos);
-                      }),
-                    ),
-                  ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: widget.isLocked ? const MyLock() : null,
+          child: Column(
+            children: [
+              if (!widget.isLocked)
+                Container(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(5, (index) {
+                      return MyStar(correcto: index < puntos);
+                    }),
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: ClipOval(
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.22,
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.blue, Colors.deepPurple],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Nivel ${widget.titulo}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                          ),
-                        ),
+              Expanded(
+                flex: 2,
+                child: SizedBox(
+                  child: widget.isLocked ? const MyLock() : null,
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.blue, Colors.deepPurple],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      widget.titulo,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

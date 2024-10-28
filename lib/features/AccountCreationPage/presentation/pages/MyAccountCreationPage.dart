@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/widgets/MyButton.dart';
@@ -7,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'dart:convert';
 import 'package:proyecto/provider/ProfileProvider.dart';
-
 
 class MyAccountCreationPage extends StatefulWidget {
   const MyAccountCreationPage({super.key});
@@ -20,49 +20,39 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController passwordAuthController = TextEditingController();
-   Map<String, dynamic> data = {};
-  
-    void clearFields() {
-      emailController.clear();
-      passwordController.clear();
-      passwordAuthController.clear();
+  Map<String, dynamic> data = {};
+
+  void clearFields() {
+    emailController.clear();
+    passwordController.clear();
+    passwordAuthController.clear();
+  }
+
+  Future<void> newAccount(
+      String email, String password, String confirmPassword) async {
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (!emailRegex.hasMatch(email)) {
+      print('Correo no válido');
+      clearFields();
+      return;
     }
 
-Future<void> newAccount(String email, String password, String confirmPassword) async {
-  final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-  if (!emailRegex.hasMatch(email)) {
-    print('Correo no válido');
-    clearFields();
-    return;
-  }
+    if (password.length < 8) {
+      print('La contraseña debe tener al menos 8 caracteres');
+      clearFields();
+      return;
+    }
 
-  if (password.length < 8) {
-    print('La contraseña debe tener al menos 8 caracteres');
-    clearFields();
-    return;
-  }
+    if (password != confirmPassword) {
+      print('Las contraseñas no coinciden');
+      clearFields();
+      return;
+    }
 
-  if (password != confirmPassword) {
-    print('Las contraseñas no coinciden');
-    clearFields();
-    return;
-  }
-
-  try {
-    final response = await http.post(
-      Uri.parse('http://$ipAdress:$port/api/signUp'), 
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode({
-        "email": email,
-        "password": password,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      final loginResponse = await http.post(
-        Uri.parse('http://$ipAdress:$port/api/login'), 
+    try {
+      final response = await http.post(
+        Uri.parse('http://$ipAdress:$port/api/signUp'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -72,35 +62,58 @@ Future<void> newAccount(String email, String password, String confirmPassword) a
         }),
       );
 
-      if (loginResponse.statusCode == 200) {
-        final responseBody = jsonDecode(loginResponse.body);
-        //print(responseBody);
-        if (responseBody.containsKey('idToken')) {
-          data = responseBody;
-          data['email'] = email;
-          final authProvider = Provider.of<AuthProvider>(context, listen: false);
-          authProvider.setJwtToken(data['idToken'], data['email']);
-         // print('Token: ${authProvider.jwtToken}');
-          Navigator.pushNamed(context, '/profileCreation');
+      if (response.statusCode == 200) {
+        final loginResponse = await http.post(
+          Uri.parse('http://$ipAdress:$port/api/login'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode({
+            "email": email,
+            "password": password,
+          }),
+        );
+
+        if (loginResponse.statusCode == 200) {
+          final responseBody = jsonDecode(loginResponse.body);
+          //print(responseBody);
+          if (responseBody.containsKey('idToken')) {
+            data = responseBody;
+            data['email'] = email;
+            final authProvider =
+                Provider.of<AuthProvider>(context, listen: false);
+            authProvider.setJwtToken(data['idToken'], data['email']);
+            // print('Token: ${authProvider.jwtToken}');
+            Navigator.pushNamed(context, '/profileCreation');
+          } else {
+            print(
+                'Error: La respuesta del servidor no contiene los datos esperados');
+            clearFields();
+          }
         } else {
-          print('Error: La respuesta del servidor no contiene los datos esperados');
+          print('Error al iniciar sesión: ${loginResponse.statusCode}');
           clearFields();
         }
       } else {
-        print('Error al iniciar sesión: ${loginResponse.statusCode}');
-        clearFields();
+        print('Error al crear el usuario: ${response.statusCode}');
       }
-    } else {
-      print('Error al crear el usuario: ${response.statusCode}');
+    } catch (e) {
+      print('Ocurrió un error: $e');
+      clearFields();
     }
-  } catch (e) {
-    print('Ocurrió un error: $e');
-    clearFields();
   }
-}
+
+  @override
+  void initState() {
+    super.initState();
+     SystemChrome.setPreferredOrientations([
+       DeviceOrientation.portraitUp,
+       DeviceOrientation.portraitDown,
+     ]);
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -112,7 +125,8 @@ Future<void> newAccount(String email, String password, String confirmPassword) a
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 2,
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(100)),
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(100)),
                       image: DecorationImage(
                         image: AssetImage('assets/bg.jpg'),
                         fit: BoxFit.cover,
@@ -165,7 +179,10 @@ Future<void> newAccount(String email, String password, String confirmPassword) a
                               colorB: Colors.black,
                               colorT: Colors.white,
                               onTap: () {
-                                newAccount(emailController.text, passwordController.text, passwordAuthController.text);
+                                newAccount(
+                                    emailController.text,
+                                    passwordController.text,
+                                    passwordAuthController.text);
                               },
                             ),
                           ),

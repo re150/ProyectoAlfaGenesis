@@ -14,8 +14,8 @@ class MyBeachImage extends StatelessWidget {
         height: 200,
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.black,
-            width: 2,
+            color: const Color(0xFFFCFBFB),
+            width: 1,
           ),
           image: DecorationImage(
             image: AssetImage(imagen),

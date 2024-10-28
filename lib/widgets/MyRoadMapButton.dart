@@ -131,7 +131,7 @@ class _MyRoadmapButtonState extends State<MyRoadmapButton>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(5, (index) {
-                      return MyStar(correcto: index < puntos);
+                      return MyStar(correcto: index < puntos, size: 35,);
                     }),
                   ),
                 ),

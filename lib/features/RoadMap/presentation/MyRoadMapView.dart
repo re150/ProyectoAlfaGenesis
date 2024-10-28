@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:proyecto/core/resources/DataBaseHelper.dart';
+import 'package:proyecto/core/resources/musica_fondo.dart';
 import 'package:proyecto/features/MainPage/presentation/MyMainPage.dart';
 import '../../../widgets/MyRoadMapButton.dart';
 import '../../../widgets/MyStarButton.dart';
@@ -12,13 +13,38 @@ class MyRoadMapView extends StatefulWidget {
   State<MyRoadMapView> createState() => _MyRoadMapViewState();
 }
 
-class _MyRoadMapViewState extends State<MyRoadMapView> {
+class _MyRoadMapViewState extends State<MyRoadMapView> with WidgetsBindingObserver {
   late int puntaje;
   List<Map<String, dynamic>> _niveles = [];
   bool dataLoaded = false;
   List<String> imagenes = ["crab.png", "Bricks.png", "OceanBG.jpg", "pez3.jpg", "SkyBG.webp", "WallBricks.jpg", "crab.png"];
   int puntajeTotal = 100; //PUNTAJE TOTAL DEL USUARIO EXTRAIDO DE LA DB
 
+  void _onPop(){
+    showDialog(
+      context: context, 
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: const Text('¿Desea salir?'),
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: (){
+                MusicaFondo().detenerMusica();
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: const Text('Salir'),
+            ),
+          ],
+        );
+      });
+  }
 
   void _onPressed(int index) {
     Navigator.push(
@@ -43,6 +69,8 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    MusicaFondo().playMusica("Music/MainViewBG.mp3");
     _loadNiveles();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
@@ -57,6 +85,15 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
       DeviceOrientation.portraitDown,
     ]);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state){
+    if(state == AppLifecycleState.resumed){
+      MusicaFondo().continuarMusica();
+    }else if(state == AppLifecycleState.paused){
+      MusicaFondo().pausarMusica();
+    }
   }
 
   @override
@@ -80,9 +117,7 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
             icon: const Icon(Icons.arrow_back),
             color: Colors.red,
             iconSize: 50,
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: ()=> _onPop(),
           ),
           actions: [
                  const MyStar(correcto: true), 

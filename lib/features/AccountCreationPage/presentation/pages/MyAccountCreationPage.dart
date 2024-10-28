@@ -9,6 +9,8 @@ import 'package:proyecto/provider/AuthProvider.dart';
 import 'dart:convert';
 import 'package:proyecto/provider/ProfileProvider.dart';
 
+import '../../../../core/resources/musica_fondo.dart';
+
 class MyAccountCreationPage extends StatefulWidget {
   const MyAccountCreationPage({super.key});
 
@@ -106,6 +108,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
   @override
   void initState() {
     super.initState();
+     MusicaFondo().detenerMusica();
      SystemChrome.setPreferredOrientations([
        DeviceOrientation.portraitUp,
        DeviceOrientation.portraitDown,

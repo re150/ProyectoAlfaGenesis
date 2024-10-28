@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:proyecto/core/resources/musica_fondo.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../core/resources/DataBaseHelper.dart';
 import 'LeccionBeach.dart';
@@ -55,6 +56,7 @@ class _LeccionDemoState extends State<LeccionDemo> {
 
   void _nextPage() {
     if (_currentPage == _etapas.length - 1) {
+      MusicaFondo().continuarMusica();
       Navigator.of(context).pop();
     } else {
       _pageController.nextPage(
@@ -108,6 +110,7 @@ class _LeccionDemoState extends State<LeccionDemo> {
   @override
   void initState() {
     super.initState();
+    MusicaFondo().detenerMusica();
     _setOrientacion();
     _loadData();
   }
@@ -115,8 +118,6 @@ class _LeccionDemoState extends State<LeccionDemo> {
   @override
   void dispose() {
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
     ]);

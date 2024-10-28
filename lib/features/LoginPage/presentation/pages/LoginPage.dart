@@ -11,6 +11,8 @@ import 'dart:convert';
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../../../core/resources/musica_fondo.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 

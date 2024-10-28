@@ -5,6 +5,7 @@ import 'package:proyecto/widgets/MyStarButton.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../../core/resources/DataBaseHelper.dart';
+import '../../../core/resources/musica_fondo.dart';
 import '../../LectionTemplate/presentation/LeccionDemo.dart';
 
 class MyMainPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class MyMainPage extends StatefulWidget {
   State<MyMainPage> createState() => _MyMainPageState();
 }
 
-class _MyMainPageState extends State<MyMainPage> {
+class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final Map<int, List<Map<String, dynamic>>> _leccionessPorNivel = {};
   List<Map<String, dynamic>> _lecciones = [];
@@ -49,6 +50,7 @@ class _MyMainPageState extends State<MyMainPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -57,8 +59,12 @@ class _MyMainPageState extends State<MyMainPage> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
+  void didChangeAppLifecycleState(AppLifecycleState state){
+    if(state == AppLifecycleState.resumed){
+      MusicaFondo().continuarMusica();
+    }else{
+      MusicaFondo().pausarMusica();
+    }
   }
 
   @override

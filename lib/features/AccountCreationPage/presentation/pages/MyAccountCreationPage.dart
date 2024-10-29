@@ -24,7 +24,6 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
   Map<String, dynamic> data = {};
 
   void clearFields() {
-    emailController.clear();
     passwordController.clear();
     passwordAuthController.clear();
   }
@@ -135,6 +134,18 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
        DeviceOrientation.portraitUp,
        DeviceOrientation.portraitDown,
      ]);
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    passwordAuthController.dispose();
+    SystemChrome.setPreferredOrientations([
+       DeviceOrientation.landscapeLeft,
+       DeviceOrientation.landscapeRight,
+     ]);
+    super.dispose();
   }
 
   @override

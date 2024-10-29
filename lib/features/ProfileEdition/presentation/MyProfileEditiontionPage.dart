@@ -65,8 +65,6 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
     );
   }
 
-
-
   @override
   void initState() {
     super.initState();

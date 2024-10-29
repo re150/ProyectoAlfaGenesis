@@ -14,7 +14,7 @@ class MyProfileImage extends StatelessWidget {
         width: 260,
         height: 240,
         decoration: BoxDecoration(
-          color: Colors.grey[300],
+          color: Colors.grey[100],
         ),
         child: Stack(
           children: [

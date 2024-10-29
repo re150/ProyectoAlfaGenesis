@@ -7,7 +7,6 @@ import 'package:proyecto/provider/ProfileProvider.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyDropDownMenu.dart';
 
-
 import 'package:proyecto/widgets/MyTextField.dart';
 
 class MyProfileCreationPage extends StatefulWidget {
@@ -21,24 +20,43 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
   final TextEditingController nombreUsuariocontroller = TextEditingController();
   final List<String> _grupos = ["A", "B", "C"];
   final List<String> _grados = ["1", "2", "3"];
-  
+
   String? _gradoSeleccionado;
   String? _grupoSeleccionado;
-  
-void saveData(String name, String grado, String grupo) {
-  final statusData = Provider.of<ProfileProvider>(context, listen: false);
-  int? parsedGrado;
-  try {
-    parsedGrado = int.parse(grado);
-  } catch (e) {
-    print('Error al convertir grado a entero: $e');
-    return;
+
+  void mostrarMensajeError(String mensaje) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error"),
+          content: Text(mensaje),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cerrar"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  statusData.setDataCreate(name, parsedGrado, grupo);
-  print('Name: $name, Grado: $parsedGrado, Grupo: $grupo');
-  Navigator.pushNamed(context, '/profileEdition');
-}
+  void saveData(String name, String grado, String grupo) {
+    final statusData = Provider.of<ProfileProvider>(context, listen: false);
+    int? parsedGrado;
+    try {
+      parsedGrado = int.parse(grado);
+    } catch (e) {
+      mostrarMensajeError('Error al obtener grado: $e');
+      return;
+    }
+
+    statusData.setDataCreate(name, parsedGrado, grupo);
+    Navigator.pushNamed(context, '/profileEdition');
+  }
 
   @override
   void initState() {
@@ -60,7 +78,7 @@ void saveData(String name, String grado, String grupo) {
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height*0.44,
+                    height: MediaQuery.of(context).size.height * 0.44,
                     decoration: const BoxDecoration(
                       borderRadius:
                           BorderRadius.vertical(bottom: Radius.circular(100)),
@@ -76,7 +94,7 @@ void saveData(String name, String grado, String grupo) {
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height*0.56,
+                    height: MediaQuery.of(context).size.height * 0.56,
                     color: Colors.white,
                     child: Padding(
                       padding: const EdgeInsets.all(18.0),
@@ -89,78 +107,67 @@ void saveData(String name, String grado, String grupo) {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-
                           const SizedBox(height: 50),
-
                           const Text(
                             "Nombre de Usuario",
                             style: TextStyle(
                               fontSize: 20,
-                              ),
                             ),
+                          ),
                           MyTextField(
                             controller: nombreUsuariocontroller,
                             hintText: "Nombre de Usuario",
                             obscureText: false,
                           ),
-
                           const SizedBox(height: 20),
-
                           const Text(
                             "Grado",
                             style: TextStyle(
                               fontSize: 20,
-                              ),
                             ),
-
-                         MyDropDownMenu(
-                          value: _gradoSeleccionado, 
-                          items: _grados, 
-                          hintText: "Grado", 
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _gradoSeleccionado = newValue;
-                            });
-                          }
                           ),
-
+                          MyDropDownMenu(
+                              value: _gradoSeleccionado,
+                              items: _grados,
+                              hintText: "Grado",
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _gradoSeleccionado = newValue;
+                                });
+                              }),
                           const SizedBox(height: 20),
-
                           const Text(
                             "Grupo",
                             style: TextStyle(
                               fontSize: 20,
-                              ),
                             ),
-
+                          ),
                           MyDropDownMenu(
-                            value: _grupoSeleccionado, 
-                            items: _grupos, 
-                            hintText: "Grupo", 
-                            onChanged: (String? newValue){
-                              setState(() {
-                                _grupoSeleccionado = newValue;
-                              });
-                            }),
+                              value: _grupoSeleccionado,
+                              items: _grupos,
+                              hintText: "Grupo",
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _grupoSeleccionado = newValue;
+                                });
+                              }),
                           const SizedBox(height: 20),
-
                           Align(
                             alignment: Alignment.center,
                             child: MyButton(
                               text: "Crear Perfil",
-                              onTap: (){                                //Aqui va la funcionalidad de la BD
-                                if(
-                                  _gradoSeleccionado != null 
-                                && _grupoSeleccionado != null 
-                                && nombreUsuariocontroller.text.isNotEmpty){
+                              onTap: () {
+                                //Aqui va la funcionalidad de la BD
+                                if (_gradoSeleccionado != null &&
+                                    _grupoSeleccionado != null &&
+                                    nombreUsuariocontroller.text.isNotEmpty) {
                                   saveData(nombreUsuariocontroller.text,
-                                   _gradoSeleccionado!,
-                                    _grupoSeleccionado!);
+                                      _gradoSeleccionado!, _grupoSeleccionado!);
                                 }
                               },
                               colorB: Colors.black,
                               colorT: Colors.white,
-                              ),
+                            ),
                           )
                         ],
                       ),

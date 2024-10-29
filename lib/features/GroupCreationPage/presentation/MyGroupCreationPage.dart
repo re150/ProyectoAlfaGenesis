@@ -37,6 +37,26 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
   bool loading = false;
   List<dynamic> deserializedProfiles = [];
 
+  void mostrarMensaje(String mensaje){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: const Text("Notice"),
+          content: Text(mensaje),
+          actions: <Widget>[
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cerrar"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _deleteTeam(String id) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final jwtToken = authProvider.jwtToken;
@@ -51,7 +71,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     );
 
     if (response.statusCode == 200) {
-      print('Equipo eliminado');
+      mostrarMensaje('Equipo eliminado');
     } else {
       throw Exception('Error al eliminar el equipo');
     }
@@ -245,7 +265,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     );
 
     if (response.statusCode == 200) {
-      print('Miembro eliminado');
+      mostrarMensaje('Miembro eliminado');
     } else {
       throw Exception('Error al eliminar el miembro');
     }
@@ -302,7 +322,6 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     );
 
     if (response.statusCode == 200) {
-      print('Miembro Añaadido');
     } else {
       throw Exception('Error al Añaadido el miembro');
     }
@@ -502,7 +521,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
   void _loadView(){
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MyGroupCreationPage()),
+        MaterialPageRoute(builder: (context) => const MyGroupCreationPage()),
       );
   }
 
@@ -613,7 +632,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
           final teamProvider = Provider.of<TeamProvider>(context, listen: false); 
           teamProvider.setIdTeam(response.body);
           int index = _grupos.length;
-            if(_grupos.length == 0){
+            if(_grupos.isEmpty){
               index = 0;
             } else {
               index = _grupos.length - 1;
@@ -652,7 +671,6 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
         "grupo": listProfile[i].grupo,
         "teamStatus": listProfile[i].teamStatus
       };
-      print(jsonMap);
     }
     return jsonMap;
   }

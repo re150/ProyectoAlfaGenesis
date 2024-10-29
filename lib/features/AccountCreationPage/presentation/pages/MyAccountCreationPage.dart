@@ -29,24 +29,44 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
     passwordAuthController.clear();
   }
 
+  void mostrarMensajeError(String mensaje) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error"),
+          content: Text(mensaje),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cerrar"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> newAccount(
     String email, String password, String confirmPassword) async {
     final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     final RegExp emailProfesor = RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu\.com$');
     if (!emailRegex.hasMatch(email)) {
-      print('Correo no válido');
+      mostrarMensajeError('Correo no válido');
       clearFields();
       return;
     }
 
     if (password.length < 8) {
-      print('La contraseña debe tener al menos 8 caracteres');
+      mostrarMensajeError('La contraseña debe tener al menos 8 caracteres');
       clearFields();
       return;
     }
 
     if (password != confirmPassword) {
-      print('Las contraseñas no coinciden');
+      mostrarMensajeError('Las contraseñas no coinciden');
       clearFields();
       return;
     }
@@ -90,19 +110,19 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
              }
 
           } else {
-            print(
+            mostrarMensajeError(
                 'Error: La respuesta del servidor no contiene los datos esperados');
             clearFields();
           }
         } else {
-          print('Error al iniciar sesión: ${loginResponse.statusCode}');
+          mostrarMensajeError('Error al iniciar sesión: ${loginResponse.statusCode}');
           clearFields();
         }
       } else {
-        print('Error al crear el usuario: ${response.statusCode}');
+        mostrarMensajeError('Error al crear el usuario: ${response.statusCode}');
       }
     } catch (e) {
-      print('Ocurrió un error: $e');
+      mostrarMensajeError('Ocurrió un error: $e');
       clearFields();
     }
   }

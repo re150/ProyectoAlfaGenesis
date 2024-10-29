@@ -35,4 +35,8 @@ public class TeamsController {
     public ResponseEntity<?> addMember (@RequestBody String request){
         return ResponseEntity.ok(authService.addMember(request));
     }
+    @PatchMapping("/PunctuationTeam")
+    public ResponseEntity<?> punctuationTeam (@RequestBody String request){
+        return  ResponseEntity.ok(authService.updateStarsTeam(request));
+    }
 }

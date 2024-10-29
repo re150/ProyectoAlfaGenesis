@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:proyecto/provider/TeamProvider.dart';
-import 'package:sqflite/sqflite.dart';
 import 'config/theme/ThemeData.dart';
 import 'core/resources/DataBaseHelper.dart';
-import 'core/resources/musica_fondo.dart';
 import 'features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
 import 'features/GroupCreationPage/presentation/MyGroupCreationPage.dart';
 import 'features/LectionTemplate/presentation/LeccionDemo.dart';

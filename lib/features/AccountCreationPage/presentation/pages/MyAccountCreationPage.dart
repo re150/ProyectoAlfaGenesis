@@ -29,7 +29,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
   }
 
   Future<void> newAccount(
-      String email, String password, String confirmPassword) async {
+    String email, String password, String confirmPassword) async {
     final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     final RegExp emailProfesor = RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu\.com$');
     if (!emailRegex.hasMatch(email)) {

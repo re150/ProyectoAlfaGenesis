@@ -7,6 +7,7 @@ class Alumno {
   final int stars;
   final String grupo;
   bool teamStatus;
+  late String teanName;
 
   Alumno({
     required this.id,
@@ -20,7 +21,8 @@ class Alumno {
   });
 
   void setTeamStatus(bool status) => teamStatus = status;
-  
+  void setTeamName(String name) => teanName = name;
+
 
   // Método para crear una instancia de Alumno desde un mapa
   factory Alumno.fromMap(Map<String, dynamic> map) {

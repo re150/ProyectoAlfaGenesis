@@ -20,5 +20,12 @@ public class AccountController {
     public  ResponseEntity<?> showProfile(@PathVariable String email) throws JsonProcessingException {
         return ResponseEntity.ok(authService.showProfiles(email));
     }
-
+    @PatchMapping("/Punctuation")
+    public ResponseEntity<?> punctuation (@RequestBody String request){
+        return  ResponseEntity.ok(authService.updateStars(request));
+    }
+    @GetMapping("/GetPunctuation/{id}/{name}")
+    public ResponseEntity<?> getPunctuation(@PathVariable String id, @PathVariable String name) {
+        return  ResponseEntity.ok(authService.getStars(id, name));
+    }
 }

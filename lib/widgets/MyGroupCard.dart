@@ -12,7 +12,7 @@ class MyGroupCard extends StatefulWidget {
   final bool isSelected;
   final List<Alumno> lista;
   final String nombreGrupo;
-
+  final String id;
   ///Este widget se encarga de mostrar un grupo de alumnos en una tarjeta de manera ordenada y agradable a la vista
   ///
   ///## Importante:
@@ -32,6 +32,7 @@ class MyGroupCard extends StatefulWidget {
     required this.onDeleteAlumno,
     required this.onSelect,
     required this.nombreGrupo,
+    required this.id,
   });
 
   @override
@@ -162,47 +163,3 @@ class _MyGroupCardState extends State<MyGroupCard> {
   }
 }
 
-/*
- Future<void> creatTeam(List<String> listProfile, List<String> listId, String nameTeam) async{
-  final authProvider = Provider.of<AuthProvider>(context, listen: false);
-  final jwtToken = authProvider.jwtToken;
-
-  final response = await http.post(
-    Uri.parse('http://$ipAdress:$port/next/alfa/teams/CreateTeam'),
-    headers: <String, String>{
-      'Authorization': 'Bearer $jwtToken'
-    },
-    body:
-        jsonEncode(creatJson(nameTeam, listProfile, listId)),
-    );
-      
-      if (response.statusCode == 200) {
-        final teamProvider = Provider.of<TeamProvider>(context, listen: false); 
-        teamProvider.setIdTeam(response.body);
-        Navigator.pushNamed(context, '/MainPage');
-      } else {
-        throw Exception('Error al crear equipo');
-      }
-}
-
-
-Map<String, dynamic> creatJson(String nameTeam, List<String> listProfile, List<String> listId) {
-    Map<String, dynamic> jsonMap = {
-      "nameTeam": nameTeam,
-      "NomMembers": listProfile.length,
-    };
-
-    for (int i = 0; i < listProfile.length; i++) {
-      jsonMap["member${i + 1}"] = {
-        "id": listId[i],
-        "name": listProfile[i],
-      };
-    }
-     print(jsonMap);
-    return jsonMap;
-  }
-
-
-
-
- */

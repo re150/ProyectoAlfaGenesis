@@ -31,7 +31,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
   Future<void> newAccount(
       String email, String password, String confirmPassword) async {
     final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-    final RegExp emailProfesor = RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu$'); 
+    final RegExp emailProfesor = RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu\.com$');
     if (!emailRegex.hasMatch(email)) {
       print('Correo no válido');
       clearFields();
@@ -76,7 +76,6 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
 
         if (loginResponse.statusCode == 200) {
           final responseBody = jsonDecode(loginResponse.body);
-          //print(responseBody);
           if (responseBody.containsKey('idToken')) {
             data = responseBody;
             data['email'] = email;

@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> login(String email, String password) async {
     final emailRegex =  RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-    final emailProfesor = RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu$'); 
+    final RegExp emailProfesor = RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu\.com$');
 
     if (!emailRegex.hasMatch(email)) {
       print('Correo no válido');

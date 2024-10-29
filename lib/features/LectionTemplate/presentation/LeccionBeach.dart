@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'package:proyecto/provider/ProfileProvider.dart';
+import 'package:proyecto/provider/TeamProvider.dart';
 import '../../../core/resources/checador_respuestas.dart';
 import '../../../widgets/MyBeachImage.dart';
 import '../../../widgets/MyLectionBanner.dart';
@@ -52,15 +53,27 @@ class _LeccionBeachState extends State<LeccionBeach>
     final jwtToken = authProvider.jwtToken;
     final id = dataProvider.id;
     final name = dataProvider.name;
-      
-      
+    final temaProvider = Provider.of<TeamProvider>(context, listen: false);
+    String url = "";
+    if(temaProvider.idTeam == null){
+      url = 'http://$ipAdress:$port/next/alfa/Punctuation';
+    } else {
+      url = 'http://$ipAdress:$port/next/alfa/teams/PunctuationTeam';
+    }
     final response = await http.patch(
-      Uri.parse('http://$ipAdress:$port/next/alfa/Punctuation'),
+      Uri.parse(url),
         headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
         body: jsonEncode({
-          "id": id,
-          "name": name,
-          "stars": 1,
+              temaProvider.idTeam == null
+          ? {
+              "id": id,
+              "name": name,
+              "stars": 1,
+            }
+          : {
+              "id": temaProvider.idTeam,
+              "stars": 1,
+            }
         }),
     );
       if (response.statusCode == 200) {

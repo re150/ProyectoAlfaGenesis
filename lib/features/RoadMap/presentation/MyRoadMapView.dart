@@ -166,7 +166,7 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
             GestureDetector(
               onTap:() => Navigator.pushNamed(context, '/profileEdition'),
               child: CircleAvatar(
-                backgroundImage: AssetImage(imagenurl),
+                backgroundImage: AssetImage(imagenurl == "" ? "assets/cat.png" : imagenurl),
                 maxRadius: 25,
                 minRadius: 25,
               ),

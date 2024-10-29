@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'dart:convert';
 import 'package:proyecto/provider/ProfileProvider.dart';
-
 import '../../../../core/resources/musica_fondo.dart';
 
 class MyAccountCreationPage extends StatefulWidget {

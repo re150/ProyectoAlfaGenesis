@@ -41,7 +41,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
     'Rana.png',
     'Reno.png',
     'Zorro.png',
-    'Zorro2.jpg',
+    'Zorro2.png',
   ];
   String selectedImage = 'Gato.png';
 

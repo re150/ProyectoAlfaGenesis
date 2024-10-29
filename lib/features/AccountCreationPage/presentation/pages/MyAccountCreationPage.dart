@@ -30,8 +30,8 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
 
   Future<void> newAccount(
       String email, String password, String confirmPassword) async {
-    final emailRegex =
-        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final RegExp emailProfesor = RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu$'); 
     if (!emailRegex.hasMatch(email)) {
       print('Correo no válido');
       clearFields();
@@ -81,10 +81,14 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
             data = responseBody;
             data['email'] = email;
             final authProvider =
-                Provider.of<AuthProvider>(context, listen: false);
+            Provider.of<AuthProvider>(context, listen: false);
             authProvider.setJwtToken(data['idToken'], data['email']);
-            // print('Token: ${authProvider.jwtToken}');
-            Navigator.pushNamed(context, '/profileCreation');
+            if (!emailProfesor.hasMatch(email)) {
+                Navigator.pushNamed(context, '/profileCreation');
+              } else {
+                Navigator.pushNamed(context, '/GroupCreationPage');
+             }
+
           } else {
             print(
                 'Error: La respuesta del servidor no contiene los datos esperados');

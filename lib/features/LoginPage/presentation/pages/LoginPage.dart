@@ -25,8 +25,9 @@ class _LoginPageState extends State<LoginPage> {
   Map<String, dynamic> data = {};
 
   Future<void> login(String email, String password) async {
-    final emailRegex =
-        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex =  RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailProfesor = RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu$'); 
+
     if (!emailRegex.hasMatch(email)) {
       print('Correo no válido');
       return;
@@ -54,7 +55,11 @@ class _LoginPageState extends State<LoginPage> {
         data['email'] = email;
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         authProvider.setJwtToken(data['idToken'], data['email']);
-        Navigator.pushNamed(context, '/profileSelection');
+        if(emailProfesor.hasMatch(email)) {
+          Navigator.pushNamed(context, '/GroupCreationPage');
+        } else {
+          Navigator.pushNamed(context, '/profileSelection');
+        }
       } else {
         print('Error');
       }
@@ -147,13 +152,6 @@ class _LoginPageState extends State<LoginPage> {
                               colorT: Colors.white,
                               onTap: () {
                                 login(emailController.text, passwordController.text);
-                                /*if(emailController.text == "admin" && passwordController.text.isEmpty){
-                                  Navigator.pushNamed(context, '/MainPage');
-                                }*/
-                                //login(emailController.text, passwordController.text);
-                                if(emailController.text == "admin" && passwordController.text.isEmpty){
-                                  Navigator.pushNamed(context, '/roadMap');
-                                }
                               },
                             ),
                           ),

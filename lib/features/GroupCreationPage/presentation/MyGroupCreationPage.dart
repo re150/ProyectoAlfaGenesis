@@ -128,7 +128,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
               _indexIndicado = _grupos.indexWhere((element) => element!.nombreGrupo == id);
               _seleccionarGrupo(_indexIndicado + 1);
               Provider.of<TeamProvider>(context, listen: false).setIdTeam(teamOnDB[id]!);
-                Navigator.pushNamed(context, '/leccion');
+                Navigator.pushNamed(context, '/roadMap');
             });
         }else{
           for(var team in _grupos){

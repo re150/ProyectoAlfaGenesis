@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:provider/provider.dart';
+import 'package:proyecto/core/resources/constants.dart';
+import 'package:proyecto/provider/AuthProvider.dart';
+import 'package:proyecto/provider/ProfileProvider.dart';
 import '../../../core/resources/checador_respuestas.dart';
 import '../../../widgets/MyBeachImage.dart';
 import '../../../widgets/MyLectionBanner.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LeccionBeach extends StatefulWidget {
   final List<Map<String, dynamic>> materiales;
@@ -38,11 +44,40 @@ class _LeccionBeachState extends State<LeccionBeach>
   bool respondio = false;
   List<String> imagenes = [];
 
+
+  Future<void> _updatePuntaje() async {
+       
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final jwtToken = authProvider.jwtToken;
+    final id = dataProvider.id;
+    final name = dataProvider.name;
+      
+      
+    final response = await http.patch(
+      Uri.parse('http://$ipAdress:$port/next/alfa/Punctuation'),
+        headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
+        body: jsonEncode({
+          "id": id,
+          "name": name,
+          "stars": 1,
+        }),
+    );
+      if (response.statusCode == 200) {
+      
+    } else {
+      throw Exception('Error al actualizar las estrellas');
+    }
+  
+  }
+
+
   void _checarRespuesta(String res) async {
     setState(() {
       respondio = true;
     });
     bool esCorrecto = res == respuestaCorrecta;
+    esCorrecto ? _updatePuntaje() : null;
     sonidos[4].play(
         AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
 
@@ -51,6 +86,7 @@ class _LeccionBeachState extends State<LeccionBeach>
     await checar.checarRespuesta(context, esCorrecto);
     widget.onNext();
   }
+
 
   void _procesarMateriales() {
     setState(() {

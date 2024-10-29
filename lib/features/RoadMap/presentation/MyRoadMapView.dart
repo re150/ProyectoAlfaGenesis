@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/DataBaseHelper.dart';
+import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/features/MainPage/presentation/MyMainPage.dart';
+import 'package:proyecto/provider/AuthProvider.dart';
+import 'package:proyecto/provider/ProfileProvider.dart';
 import '../../../widgets/MyRoadMapButton.dart';
 import '../../../widgets/MyStarButton.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MyRoadMapView extends StatefulWidget {
   const MyRoadMapView({super.key});
@@ -17,8 +23,28 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
   List<Map<String, dynamic>> _niveles = [];
   bool dataLoaded = false;
   List<String> imagenes = ["crab.png", "Bricks.png", "OceanBG.jpg", "pez3.jpg", "SkyBG.webp", "WallBricks.jpg", "crab.png"];
-  int puntajeTotal = 100; //PUNTAJE TOTAL DEL USUARIO EXTRAIDO DE LA DB
+  int puntajeTotal = 0; //PUNTAJE TOTAL DEL USUARIO EXTRAIDO DE LA DB
+  
 
+  Future<void> _loadPuntaje() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final jwtToken = authProvider.jwtToken;
+    final id = dataProvider.id;
+    final name = dataProvider.name;
+      
+    final response = await http.get(
+      Uri.parse('http://$ipAdress:$port/next/alfa/GetPunctuation/$id/$name'),
+      headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
+    );
+      if (response.statusCode == 200) {
+      setState(() {
+        puntajeTotal = int.parse(response.body);
+      });
+    } else {
+      throw Exception('Error al cargar las estrellas');
+    }
+  }
 
   void _onPressed(int index) {
     Navigator.push(
@@ -44,6 +70,7 @@ class _MyRoadMapViewState extends State<MyRoadMapView> {
   void initState() {
     super.initState();
     _loadNiveles();
+    _loadPuntaje();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,

@@ -19,13 +19,22 @@ class MyRoadMapView extends StatefulWidget {
   State<MyRoadMapView> createState() => _MyRoadMapViewState();
 }
 
-class _MyRoadMapViewState extends State<MyRoadMapView> with WidgetsBindingObserver {
+class _MyRoadMapViewState extends State<MyRoadMapView>
+    with WidgetsBindingObserver {
   late int puntaje;
   List<Map<String, dynamic>> _niveles = [];
   bool dataLoaded = false;
-  List<String> imagenes = ["crab.png", "Bricks.png", "OceanBG.jpg", "pez3.jpg", "SkyBG.webp", "WallBricks.jpg", "crab.png"];
+  List<String> imagenes = [
+    "crab.png",
+    "Bricks.png",
+    "OceanBG.jpg",
+    "pez3.jpg",
+    "SkyBG.webp",
+    "WallBricks.jpg",
+    "crab.png"
+  ];
   int puntajeTotal = 0; //PUNTAJE TOTAL DEL USUARIO EXTRAIDO DE LA DB
-  
+  String imagenurl = "";
 
   Future<void> _loadPuntaje() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -33,51 +42,52 @@ class _MyRoadMapViewState extends State<MyRoadMapView> with WidgetsBindingObserv
     final jwtToken = authProvider.jwtToken;
     final id = dataProvider.id;
     final name = dataProvider.name;
-      
+
     final response = await http.get(
       Uri.parse('http://$ipAdress:$port/next/alfa/GetPunctuation/$id/$name'),
       headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
     );
-      if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       setState(() {
         puntajeTotal = int.parse(response.body);
+        imagenurl = dataProvider.imgUrl;
       });
     } else {
       throw Exception('Error al cargar las estrellas');
     }
   }
 
-  void _onPop(){
+  void _onPop() {
     showDialog(
-      context: context, 
-      builder: (BuildContext context){
-        return AlertDialog(
-          title: const Text('¿Desea salir?'),
-          actions: [
-            TextButton(
-              onPressed: (){
-                Navigator.pop(context);
-              },
-              child: const Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: (){
-                MusicaFondo().detenerMusica();
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-              child: const Text('Salir'),
-            ),
-          ],
-        );
-      });
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('¿Desea salir?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () {
+                  MusicaFondo().detenerMusica();
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: const Text('Salir'),
+              ),
+            ],
+          );
+        });
   }
 
   void _onPressed(int index) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>   MyMainPage(
+        builder: (context) => MyMainPage(
           nivel: _niveles[index],
         ),
       ),
@@ -116,10 +126,10 @@ class _MyRoadMapViewState extends State<MyRoadMapView> with WidgetsBindingObserv
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state){
-    if(state == AppLifecycleState.resumed){
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
       MusicaFondo().continuarMusica();
-    }else if(state == AppLifecycleState.paused){
+    } else if (state == AppLifecycleState.paused) {
       MusicaFondo().pausarMusica();
     }
   }
@@ -145,20 +155,16 @@ class _MyRoadMapViewState extends State<MyRoadMapView> with WidgetsBindingObserv
             icon: const Icon(Icons.arrow_back),
             color: Colors.red,
             iconSize: 50,
-            onPressed: ()=> _onPop(),
+            onPressed: () => _onPop(),
           ),
           actions: [
-                 const MyStar(correcto: true), 
-
-          Text(
-            'x$puntajeTotal',
-            style: const TextStyle(fontSize: 20),
-          ),
-
-
-
+            const MyStar(correcto: true),
+            Text(
+              'x$puntajeTotal',
+              style: const TextStyle(fontSize: 20),
+            ),
             IconButton(
-              icon: const Icon(Icons.manage_accounts),
+              icon: ImageIcon(AssetImage(imagenurl)),
               color: Colors.blue,
               iconSize: 50,
               onPressed: () {
@@ -235,10 +241,14 @@ class _MyRoadMapViewState extends State<MyRoadMapView> with WidgetsBindingObserv
                           bool lock = index > 0;
                           return MyRoadmapButton(
                             isLocked: lock,
-                            onPressed:() => _onPressed(horizontalIndex),
-                            titulo: lock ? "BLOQUEADO" : _niveles[horizontalIndex]['nombre'],
+                            onPressed: () => _onPressed(horizontalIndex),
+                            titulo: lock
+                                ? "BLOQUEADO"
+                                : _niveles[horizontalIndex]['nombre'],
                             puntaje: 5,
-                            imagen: lock? "assets/cat.png" : "assets/${imagenes[horizontalIndex%imagenes.length]}",
+                            imagen: lock
+                                ? "assets/cat.png"
+                                : "assets/${imagenes[horizontalIndex % imagenes.length]}",
                           );
                         },
                       ),

@@ -26,17 +26,37 @@ class _LoginPageState extends State<LoginPage> {
 
   Map<String, dynamic> data = {};
 
+  void mostrarMensajeError(String mensaje){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: const Text("Error"),
+          content: Text(mensaje),
+          actions: <Widget>[
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cerrar"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> login(String email, String password) async {
     final emailRegex =  RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     final RegExp emailProfesor = RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu\.com$');
 
     if (!emailRegex.hasMatch(email)) {
-      print('Correo no válido');
+      mostrarMensajeError('Correo no válido');
       return;
     }
 
     if (password.length < 8) {
-      print('La contraseña debe tener al menos 8 caracteres');
+      mostrarMensajeError('La contraseña debe tener al menos 8 caracteres');
       return;
     }
 
@@ -63,10 +83,10 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushNamed(context, '/profileSelection');
         }
       } else {
-        print('Error');
+        mostrarMensajeError('Error');
       }
     } catch (e) {
-      print(e);
+      mostrarMensajeError(e.toString());
     }
   }
 

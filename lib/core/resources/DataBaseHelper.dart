@@ -86,15 +86,16 @@ class DatabaseHelper {
     _database = null;
   }
 
+  Future<List<Map<String, dynamic>>> getLecciones() async {
+    final db = await database;
+    return await db.query('Lecciones');
+  }
+  
   Future<List<Map<String, dynamic>>> getNiveles() async {
     final db = await database;
     return await db.query('Nivel');
   }
 
-  Future<List<Map<String, dynamic>>> getLecciones(int idNivel) async {
-    final db = await database;
-    return await db.query('Lecciones');
-  }
 
   Future<List<Map<String, dynamic>>> getEtapa(int idLeccion) async {
     final db = await database;

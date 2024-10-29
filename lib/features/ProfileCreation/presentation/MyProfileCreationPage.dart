@@ -68,6 +68,18 @@ class _MyProfileCreationPageState extends State<MyProfileCreationPage> {
   }
 
   @override
+  void dispose() {
+    nombreUsuariocontroller.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(

@@ -163,14 +163,7 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
               'x$puntajeTotal',
               style: const TextStyle(fontSize: 20),
             ),
-            IconButton(
-              icon: ImageIcon(AssetImage(imagenurl)),
-              color: Colors.blue,
-              iconSize: 50,
-              onPressed: () {
-                Navigator.pushNamed(context, '/profileEdition');
-              },
-            ),
+            GestureDetector()
           ],
         ),
         body: Column(

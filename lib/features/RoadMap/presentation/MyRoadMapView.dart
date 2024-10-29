@@ -158,11 +158,14 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
             onPressed: () => _onPop(),
           ),
           actions: [
+            
             const MyStar(correcto: true),
+
             Text(
               'x$puntajeTotal',
               style: const TextStyle(fontSize: 20),
             ),
+
             GestureDetector(
               onTap:() => Navigator.pushNamed(context, '/profileEdition'),
               child: CircleAvatar(
@@ -170,7 +173,9 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
                 maxRadius: 25,
                 minRadius: 25,
               ),
-            )
+            ),
+
+            const SizedBox(width: 20),
           ],
         ),
         body: Column(

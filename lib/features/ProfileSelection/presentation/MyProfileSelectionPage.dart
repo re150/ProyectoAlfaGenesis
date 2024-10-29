@@ -68,7 +68,7 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
        int stars ,bool teamStatus, int level) async {
     final profileVariables = Provider.of<ProfileProvider>(context, listen: false);      
     profileVariables.setData( name, grado, grupo, imgUrl, id, teamStatus, stars, level);
-    Navigator.pushNamed(context, '/MainPage');  
+    Navigator.pushNamed(context, '/roadMap');  
   }
 
   @override

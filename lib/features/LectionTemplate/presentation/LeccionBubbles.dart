@@ -1,8 +1,14 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/checador_respuestas.dart';
+import 'package:proyecto/core/resources/constants.dart';
+import 'package:proyecto/provider/AuthProvider.dart';
+import 'package:proyecto/provider/ProfileProvider.dart';
 import '../../../widgets/MyBubble.dart';
 import '../../../widgets/MyLectionBanner.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 /// Esta vista se encarga de la leccion correspondiente a la de burbujas
 ///
@@ -42,6 +48,32 @@ class _LeccionBubblesState extends State<LeccionBubbles>
   List<bool> popped = [false, false, false, false, false];
   bool pop = false;
 
+  Future<void> _updatePuntaje() async {
+       
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final jwtToken = authProvider.jwtToken;
+    final id = dataProvider.id;
+    final name = dataProvider.name;
+      
+      
+    final response = await http.patch(
+      Uri.parse('http://$ipAdress:$port/next/alfa/Punctuation'),
+        headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
+        body: jsonEncode({
+          "id": id,
+          "name": name,
+          "stars": 1,
+        }),
+    );
+      if (response.statusCode == 200) {
+      
+    } else {
+      throw Exception('Error al actualizar las estrellas');
+    }
+  
+  }
+
   void _checarRespuesta(String letra, int index) async {
     boton.play(AssetSource("BubblePop.mp3"));
     bool esCorrecto = false;
@@ -52,6 +84,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
     if (letra == respuesta) {
       res.play(AssetSource("successLesson.mp3"));
       esCorrecto = true;
+      _updatePuntaje();
     } else {
       res.play(AssetSource("wrong-choice.mp3"));
     }

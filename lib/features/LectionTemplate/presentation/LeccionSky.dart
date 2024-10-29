@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:provider/provider.dart';
+import 'package:proyecto/core/resources/constants.dart';
+import 'package:proyecto/provider/AuthProvider.dart';
+import 'package:proyecto/provider/ProfileProvider.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyLectionBanner.dart';
 import 'package:proyecto/widgets/MySkyBlock.dart';
-
 import '../../../core/resources/checador_respuestas.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class LeccionSky extends StatefulWidget {
   final List<Map<String, dynamic>> materiales;
@@ -55,6 +61,32 @@ class _LeccionSkyState extends State<LeccionSky> with WidgetsBindingObserver {
     });
   }
 
+  Future<void> _updatePuntaje() async {
+       
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final jwtToken = authProvider.jwtToken;
+    final id = dataProvider.id;
+    final name = dataProvider.name;
+      
+      
+    final response = await http.patch(
+      Uri.parse('http://$ipAdress:$port/next/alfa/Punctuation'),
+        headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
+        body: jsonEncode({
+          "id": id,
+          "name": name,
+          "stars": 1,
+        }),
+    );
+      if (response.statusCode == 200) {
+      
+    } else {
+      throw Exception('Error al actualizar las estrellas');
+    }
+  
+  }
+
   void _checarRespuesta(String palabra, String imagen) async {
     String? res = respuesta[palabra];
     bool esCorrecto = res == imagen;
@@ -63,6 +95,7 @@ class _LeccionSkyState extends State<LeccionSky> with WidgetsBindingObserver {
           ? AssetSource("successLesson.mp3")
           : AssetSource("wrong-choice.mp3"),
     );
+    esCorrecto ? _updatePuntaje() : null;
 
     bgMusic.stop();
     final checar = Checador();

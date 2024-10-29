@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:proyecto/core/resources/checador_respuestas.dart';
+import 'package:proyecto/core/resources/constants.dart';
+import 'package:proyecto/provider/AuthProvider.dart';
+import 'package:proyecto/provider/ProfileProvider.dart';
 import 'package:proyecto/widgets/MyBrick.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:proyecto/widgets/MyLectionBanner.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class LeccionBricks extends StatefulWidget {
   final List<Map<String, dynamic>> materiales;
@@ -41,6 +48,7 @@ class _LeccionBricksState extends State<LeccionBricks>
   Set<String> draggingPalabras = {};
   bool isDragging = false;
 
+
   void _procesarMateriales() {
     setState(() {
       palabras = widget.materiales
@@ -73,6 +81,32 @@ class _LeccionBricksState extends State<LeccionBricks>
     bgMusic.play(AssetSource("Blocks.mp3"));
   }
 
+   Future<void> _updatePuntaje() async {
+       
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final jwtToken = authProvider.jwtToken;
+    final id = dataProvider.id;
+    final name = dataProvider.name;
+      
+      
+    final response = await http.patch(
+      Uri.parse('http://$ipAdress:$port/next/alfa/Punctuation'),
+        headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
+        body: jsonEncode({
+          "id": id,
+          "name": name,
+          "stars": 1,
+        }),
+    );
+      if (response.statusCode == 200) {
+      
+    } else {
+      throw Exception('Error al actualizar las estrellas');
+    }
+  
+  }
+
   void _checarRespuesta() async {
     if (draggedOrder.length != correctOrder.length ||
         draggedOrder.contains(null)) return;
@@ -87,6 +121,7 @@ class _LeccionBricksState extends State<LeccionBricks>
 
     boton.play(
         AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
+        esCorrecto ? _updatePuntaje() : null;
     final checar = Checador();
     bgMusic.stop();
     await checar.checarRespuesta(context, esCorrecto);

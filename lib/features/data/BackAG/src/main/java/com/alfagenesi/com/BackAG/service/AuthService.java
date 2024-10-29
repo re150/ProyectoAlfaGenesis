@@ -38,6 +38,7 @@ public class AuthService {
     private static final String COLLECTION_PROFILE = "profile";
     private static final String COLLECTION_MEMBERS = "members";
     private static final String NUM_PROFILE = "noProfile";
+    private static final String NUM_STARS = "stars";
     private static final String COLLECTION_TEAMS = "teams";
     private static final String COLLECTION_TEAMNAME = "nameTeam";
     private static final String COLLECTION_TEAMNOM = "nomMembers";
@@ -514,5 +515,68 @@ public class AuthService {
             e.printStackTrace();
         }
         return "Member deleted";
+    }
+    public String updateStars (String dataUser){
+        Firestore db = FirestoreClient.getFirestore();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String id = "";
+        String name = "";
+        int stars = 0;
+        int actualStars = 0;
+
+        try{
+            JsonNode node = objectMapper.readTree(dataUser);
+            JsonNode iduser = node.get("id");
+            id = (iduser != null) ? iduser.asText() : null;
+
+            JsonNode nameUser = node.get("name");
+            name = (nameUser != null) ? nameUser.asText() : null;
+
+            JsonNode userStars = node.get("stars");
+            stars = (userStars != null) ?userStars.asInt() : 0;
+
+            if(id != null && name != null){
+                ApiFuture<QuerySnapshot> futureProfile = db.collection(COLLECTION_NAME)
+                        .document(id)
+                        .collection(COLLECTION_PROFILE)
+                        .whereEqualTo("name", name)
+                        .get();
+
+
+                List<QueryDocumentSnapshot> profileDocs = futureProfile.get().getDocuments();
+                QueryDocumentSnapshot profileDoc = profileDocs.get(0);
+                actualStars = Math.toIntExact(profileDoc.getLong(NUM_STARS));
+                actualStars += stars;
+                DocumentReference profileRef = profileDoc.getReference();
+                ApiFuture<WriteResult> updateProfile = profileRef.update("stars",actualStars);
+                updateProfile.get();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "El nuemro de estrellas se actualizo";
+    }
+    public int getStars (String id, String name){
+        Firestore db = FirestoreClient.getFirestore();
+        String idUser = id;
+        String nameUser = name;
+        int actualStars = 0;
+
+        try{
+            if(id != null && name != null){
+                ApiFuture<QuerySnapshot> futureProfile = db.collection(COLLECTION_NAME)
+                        .document(idUser)
+                        .collection(COLLECTION_PROFILE)
+                        .whereEqualTo("name", nameUser)
+                        .get();
+                List<QueryDocumentSnapshot> profileDocs = futureProfile.get().getDocuments();
+                QueryDocumentSnapshot profileDoc = profileDocs.get(0);
+                actualStars = Math.toIntExact(profileDoc.getLong(NUM_STARS));
+                return  actualStars;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return actualStars;
     }
 }

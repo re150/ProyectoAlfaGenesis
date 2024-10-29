@@ -163,7 +163,14 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
               'x$puntajeTotal',
               style: const TextStyle(fontSize: 20),
             ),
-            GestureDetector()
+            GestureDetector(
+              onTap:() => Navigator.pushNamed(context, '/profileEdition'),
+              child: CircleAvatar(
+                backgroundImage: AssetImage(imagenurl == "" ? "assets/cat.png" : imagenurl),
+                maxRadius: 25,
+                minRadius: 25,
+              ),
+            )
           ],
         ),
         body: Column(

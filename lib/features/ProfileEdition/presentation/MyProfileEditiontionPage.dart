@@ -44,6 +44,29 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
     'Zorro2.jpg',
   ];
   String selectedImage = 'Gato.png';
+
+  void mostrarMensajeError(String mensaje) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error"),
+          content: Text(mensaje),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cerrar"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
   @override
   void initState() {
     super.initState();
@@ -82,10 +105,10 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
     if (response.statusCode == 200) {
       Navigator.pushNamed(context, '/profileSelection');
     } else {
-      print('Error en la creación del perfil. Código de estado: ${response.statusCode}');
+      mostrarMensajeError('Error en la creación del perfil. Código de estado: ${response.statusCode}');
     }
   } catch (e) {
-    print('Ocurrió un error durante la solicitud: $e');
+    mostrarMensajeError('Ocurrió un error durante la solicitud: $e');
   }
   dataProfile.clearData();
 }

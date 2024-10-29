@@ -19,24 +19,31 @@ class MyProfileEditionPage extends StatefulWidget {
 class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
   final TextEditingController nombreController = TextEditingController();
   final List<String> imagePaths = [
-    'assets/1.jpg',
-    'assets/AlfaGenesisWB2.webp',
-    'assets/altavoz.png',
-    'assets/bee-kid.png',
-    'assets/bg.jpg',
-    'assets/Bricks.png',
-    'assets/bubble.png',
-    'assets/cat.png',
-    'assets/click-gesture_63576.png',
-    'assets/logo.png',
-    'assets/logoo.png',
-    'assets/OceanBG.jpg',
-    'assets/pez3.jpg',
-    'assets/swipe up.png',
-    'assets/swipe.png',
-    'assets/WallBricks.jpg',
+    'Abeja.png',
+    'Abeja2.png',
+    'Caracol.png',
+    'Cerdo.png',
+    'Dinosaurio.png',
+    'Elefante.png',
+    'Gato.png',
+    'Gato2.png',
+    'Gato3.png',
+    'Jirafa.png',
+    'Marmota.png',
+    'Oso2.png',
+    'Osos.png',
+    'Oveja.png',
+    'Oveja2.png',
+    'Perro.png',
+    'Perro2.png',
+    'Pinguino.png',
+    'Pug.png',
+    'Rana.png',
+    'Reno.png',
+    'Zorro.png',
+    'Zorro2.jpg',
   ];
-  String selectedImage = 'assets/cat.png';
+  String selectedImage = 'Gato.png';
   @override
   void initState() {
     super.initState();
@@ -113,7 +120,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             image: DecorationImage(
-                              image: AssetImage(selectedImage),
+                              image: AssetImage("assets/ProfilePictures/$selectedImage"),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -132,7 +139,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                 Expanded(
                   flex: 1,
                   child: Container(
-                      color: Colors.grey,
+                      color: Colors.white,
                       child: GridView.builder(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
@@ -147,8 +154,17 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                                   selectedImage = imagePaths[index];
                                 });
                               },
-                              child: Image.asset(imagePaths[index],
-                                  fit: BoxFit.cover),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 3,
+                                      color: selectedImage == imagePaths[index]
+                                          ? Colors.blue
+                                          : Colors.black),
+                                ),
+                                child: Image.asset("assets/ProfilePictures/${imagePaths[index]}",
+                                    fit: BoxFit.cover),
+                              ),
                             );
                           })),
                 ),
@@ -164,7 +180,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                 colorB: Colors.blue,
                 colorT: Colors.white,
                 onTap: () {
-                    newProfile(selectedImage);
+                    newProfile("assets/ProfilePictures/$selectedImage");
                 },
               ),
             ),

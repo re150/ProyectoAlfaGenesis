@@ -199,7 +199,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
         MyGroupCard(
           numeroGrupo: numero,
           lista: const [],
-          onUse: () => _usargrupo(nameTeam, []),
+          onUse: () => _usargrupo(nameTeam, alumnosTeam),
           onDeleteGroup: () => _borrarGrupo(numero),
           isSelected: false,
           onSelect: () => _seleccionarGrupo(numero),

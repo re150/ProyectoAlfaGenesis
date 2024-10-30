@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:proyecto/widgets/MyLevelButton.dart';
 import 'package:proyecto/widgets/MyStarButton.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../../core/resources/DataBaseHelper.dart';
+import '../../../core/resources/constants.dart';
 import '../../../core/resources/musica_fondo.dart';
+import '../../../provider/AuthProvider.dart';
+import '../../../provider/ProfileProvider.dart';
 import '../../LectionTemplate/presentation/LeccionDemo.dart';
+import 'package:http/http.dart' as http;
 
 class MyMainPage extends StatefulWidget {
   final Map<String, dynamic> nivel;
@@ -21,8 +26,38 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
   final Map<int, List<Map<String, dynamic>>> _leccionessPorNivel = {};
   List<Map<String, dynamic>> _lecciones = [];
   bool dataLoaded = false;
-  int puntajeTotal = 100; //PUNTAJE TOTAL DEL USUARIO EXTRAIDO DE LA DB
-  List<String> imagenes = ["cat.png", "Bricks.png", "OceanBG.jpg", "pez3.jpg", "SkyBG.webp", "WallBricks.jpg", "crab.png"];
+  int puntajeTotal = 0; //PUNTAJE TOTAL DEL USUARIO EXTRAIDO DE LA DB
+  String imagenurl = "";
+  List<String> imagenes = [
+    "cat.png",
+    "Bricks.png",
+    "OceanBG.jpg",
+    "pez3.jpg",
+    "SkyBG.webp",
+    "WallBricks.jpg",
+    "crab.png"
+  ];
+
+  Future<void> _loadPuntaje() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final jwtToken = authProvider.jwtToken;
+    final id = dataProvider.id;
+    final name = dataProvider.name;
+
+    final response = await http.get(
+      Uri.parse('http://$ipAdress:$port/next/alfa/GetPunctuation/$id/$name'),
+      headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
+    );
+    if (response.statusCode == 200) {
+      setState(() {
+        puntajeTotal = int.parse(response.body);
+        imagenurl = dataProvider.imgUrl;
+      });
+    } else {
+      throw Exception('Error al cargar las estrellas');
+    }
+  }
 
   Future<void> _loadLecciones() async {
     final Database db = await _dbHelper.database;
@@ -50,21 +85,30 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    _loadPuntaje();
     WidgetsBinding.instance.addObserver(this);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    });
     _loadLecciones();
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state){
-    if(state == AppLifecycleState.resumed){
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
       MusicaFondo().continuarMusica();
-    }else{
+    } else {
       MusicaFondo().pausarMusica();
     }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -107,21 +151,22 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
           },
         ),
         actions: [
-          const MyStar(correcto: true), 
-
+          const MyStar(correcto: true),
           Text(
             'x$puntajeTotal',
             style: const TextStyle(fontSize: 20),
           ),
-
-          IconButton(
-            icon: const Icon(Icons.person),
-            color: Colors.blue,
-            iconSize: 50,
-            onPressed: () {
-              Navigator.pushNamed(context, '/GroupCreationPage');
-            },
+          const SizedBox(width: 20),
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, '/profileEdition'),
+            child: CircleAvatar(
+              backgroundImage:
+                  AssetImage(imagenurl == "" ? "assets/cat.png" : imagenurl),
+              maxRadius: 25,
+              minRadius: 25,
+            ),
           ),
+          const SizedBox(width: 20),
         ],
       ),
       body: _lecciones.isNotEmpty
@@ -162,7 +207,8 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
                                       child: MyLevelButton(
                                         nivel: _lecciones[index]['titulo'],
                                         puntaje: index + 1 <= 5 ? index + 1 : 0,
-                                        imagen: imagenes[index%imagenes.length],
+                                        imagen:
+                                            imagenes[index % imagenes.length],
                                         onTap: () {
                                           Navigator.push(
                                             context,

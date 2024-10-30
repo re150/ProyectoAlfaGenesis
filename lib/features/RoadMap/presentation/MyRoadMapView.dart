@@ -110,18 +110,17 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
     MusicaFondo().playMusica("Music/MainViewBG.mp3");
     _loadNiveles();
     _loadPuntaje();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    });
   }
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -158,23 +157,21 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
             onPressed: () => _onPop(),
           ),
           actions: [
-            
             const MyStar(correcto: true),
-
             Text(
               'x$puntajeTotal',
               style: const TextStyle(fontSize: 20),
             ),
-
+            const SizedBox(width: 20),
             GestureDetector(
-              onTap:() => Navigator.pushNamed(context, '/profileEdition'),
+              onTap: () => Navigator.pushNamed(context, '/profileEdition'),
               child: CircleAvatar(
-                backgroundImage: AssetImage(imagenurl == "" ? "assets/cat.png" : imagenurl),
+                backgroundImage:
+                    AssetImage(imagenurl == "" ? "assets/cat.png" : imagenurl),
                 maxRadius: 25,
                 minRadius: 25,
               ),
             ),
-
             const SizedBox(width: 20),
           ],
         ),

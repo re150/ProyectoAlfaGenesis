@@ -26,16 +26,16 @@ class _LoginPageState extends State<LoginPage> {
 
   Map<String, dynamic> data = {};
 
-  void mostrarMensajeError(String mensaje){
+  void mostrarMensajeError(String mensaje) {
     showDialog(
       context: context,
-      builder: (BuildContext context){
+      builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Error"),
           content: Text(mensaje),
           actions: <Widget>[
             TextButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.of(context).pop();
               },
               child: const Text("Cerrar"),
@@ -47,8 +47,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> login(String email, String password) async {
-    final emailRegex =  RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-    final RegExp emailProfesor = RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu\.com$');
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final RegExp emailProfesor =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu\.com$');
 
     if (!emailRegex.hasMatch(email)) {
       mostrarMensajeError('Correo no válido');
@@ -77,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
         data['email'] = email;
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         authProvider.setJwtToken(data['idToken'], data['email']);
-        if(emailProfesor.hasMatch(email)) {
+        if (emailProfesor.hasMatch(email)) {
           Navigator.pushNamed(context, '/GroupCreationPage');
         } else {
           Navigator.pushNamed(context, '/profileSelection');
@@ -91,100 +93,88 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: ListView(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 2,
-                    decoration: const BoxDecoration(
-                      borderRadius:
-                          BorderRadius.vertical(bottom: Radius.circular(100)),
-                      image: DecorationImage(
-                        image: AssetImage('assets/bg.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+              Container(
+                width: MediaQuery.sizeOf(context).width / 2,
+                height: MediaQuery.sizeOf(context).height,
+                decoration: const BoxDecoration(
+                  borderRadius:
+                      BorderRadius.horizontal(right: Radius.circular(100)),
+                  image: DecorationImage(
+                    image: AssetImage('assets/bg.jpg'),
+                    fit: BoxFit.cover,
                   ),
-                ],
+                ),
               ),
-              Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 2,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: ListView(
-                        children: [
-                          const SizedBox(height: 50),
-                          const Text(
-                            "Iniciar Sesión",
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
+              Container(
+                width: MediaQuery.of(context).size.width / 2,
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 100),
+                        const Text(
+                          "Iniciar Sesión",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(height: 50),
-                          MyTextField(
-                              controller: emailController,
-                              hintText: "Ingresar Correo",
-                              obscureText: false),
-                          const SizedBox(height: 20),
-                          MyTextField(
-                              controller: passwordController,
-                              hintText: "Ingresar Contraseña",
-                              obscureText: true),
-                          const SizedBox(height: 20),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {
+                        ),
+                        const SizedBox(height: 50),
+                        MyTextField(
+                            controller: emailController,
+                            hintText: "Ingresar Correo",
+                            obscureText: false),
+                        const SizedBox(height: 20),
+                        MyTextField(
+                            controller: passwordController,
+                            hintText: "Ingresar Contraseña",
+                            obscureText: true),
+                        const SizedBox(height: 50),
+                        Align(
+                          alignment: Alignment.center,
+                          child: MyButton(
+                            text: "Entrar",
+                            colorB: Colors.black,
+                            colorT: Colors.white,
+                            onTap: () {
+                              if (emailController.text.isEmpty &&
+                                  passwordController.text.isEmpty) {
                                 Navigator.pushNamed(
-                                  context,
-                                  "/profileCreation",
-                                );
-                              },
-                              child: const Text('Olvidé mi contraseña'),
-                            ),
+                                    context, '/roadMap');
+                              }
+                              login(emailController.text,
+                                  passwordController.text);
+                            },
                           ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: MyButton(
-                              text: "Entrar",
-                              colorB: Colors.black,
-                              colorT: Colors.white,
-                              onTap: () {
-                                if(emailController.text.isEmpty && passwordController.text.isEmpty){
-                                  Navigator.pushNamed(context, '/roadMap');
-                                }
-                                login(emailController.text, passwordController.text);
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ],
           ),

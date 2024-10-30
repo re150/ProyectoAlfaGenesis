@@ -111,16 +111,18 @@ class _LeccionDemoState extends State<LeccionDemo> {
   void initState() {
     super.initState();
     MusicaFondo().detenerMusica();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    });
     _setOrientacion();
     _loadData();
   }
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
     _pageController.dispose();
     super.dispose();
   }

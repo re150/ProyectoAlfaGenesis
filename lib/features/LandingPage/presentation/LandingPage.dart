@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 
-import '../../../core/resources/musica_fondo.dart';
-
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
 

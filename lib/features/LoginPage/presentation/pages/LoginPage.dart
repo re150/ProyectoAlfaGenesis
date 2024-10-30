@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:proyecto/core/resources/DataBaseHelper.dart';
 import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyTextField.dart';
@@ -9,9 +8,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:proyecto/provider/AuthProvider.dart';
-import 'package:sqflite/sqflite.dart';
-
-import '../../../../core/resources/musica_fondo.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

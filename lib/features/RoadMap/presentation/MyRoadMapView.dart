@@ -10,7 +10,6 @@ import 'package:proyecto/provider/ProfileProvider.dart';
 import '../../../widgets/MyRoadMapButton.dart';
 import '../../../widgets/MyStarButton.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class MyRoadMapView extends StatefulWidget {
   const MyRoadMapView({super.key});

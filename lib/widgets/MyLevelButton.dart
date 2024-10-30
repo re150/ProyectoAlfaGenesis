@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto/widgets/MyStarButton.dart';
 
 class MyLevelButton extends StatefulWidget {
   final String nivel;

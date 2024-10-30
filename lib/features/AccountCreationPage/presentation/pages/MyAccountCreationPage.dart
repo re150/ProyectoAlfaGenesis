@@ -50,8 +50,10 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
 
   Future<void> newAccount(
       String email, String password, String confirmPassword) async {
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-    final RegExp emailProfesor = RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu\.com$');
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final RegExp emailProfesor =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@jalisco\.edu\.com$');
     if (!emailRegex.hasMatch(email)) {
       mostrarMensajeError('Correo no válido');
       clearFields();
@@ -100,25 +102,26 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
             data = responseBody;
             data['email'] = email;
             final authProvider =
-            Provider.of<AuthProvider>(context, listen: false);
+                Provider.of<AuthProvider>(context, listen: false);
             authProvider.setJwtToken(data['idToken'], data['email']);
             if (!emailProfesor.hasMatch(email)) {
-                Navigator.pushNamed(context, '/profileCreation');
-              } else {
-                Navigator.pushNamed(context, '/GroupCreationPage');
-             }
-
+              Navigator.pushNamed(context, '/profileCreation');
+            } else {
+              Navigator.pushNamed(context, '/GroupCreationPage');
+            }
           } else {
             mostrarMensajeError(
                 'Error: La respuesta del servidor no contiene los datos esperados');
             clearFields();
           }
         } else {
-          mostrarMensajeError('Error al iniciar sesión: ${loginResponse.statusCode}');
+          mostrarMensajeError(
+              'Error al iniciar sesión: ${loginResponse.statusCode}');
           clearFields();
         }
       } else {
-        mostrarMensajeError('Error al crear el usuario: ${response.statusCode}');
+        mostrarMensajeError(
+            'Error al crear el usuario: ${response.statusCode}');
       }
     } catch (e) {
       mostrarMensajeError('Ocurrió un error: $e');
@@ -129,11 +132,13 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
   @override
   void initState() {
     super.initState();
-     MusicaFondo().detenerMusica();
-     SystemChrome.setPreferredOrientations([
-       DeviceOrientation.portraitUp,
-       DeviceOrientation.portraitDown,
-     ]);
+    MusicaFondo().detenerMusica();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    });
   }
 
   @override
@@ -141,10 +146,6 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
     emailController.dispose();
     passwordController.dispose();
     passwordAuthController.dispose();
-    SystemChrome.setPreferredOrientations([
-       DeviceOrientation.landscapeLeft,
-       DeviceOrientation.landscapeRight,
-     ]);
     super.dispose();
   }
 
@@ -152,81 +153,75 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: ListView(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 2,
-                    decoration: const BoxDecoration(
-                      borderRadius:
-                          BorderRadius.vertical(bottom: Radius.circular(100)),
-                      image: DecorationImage(
-                        image: AssetImage('assets/bg.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+              Container(
+                width: MediaQuery.of(context).size.width / 2,
+                height: MediaQuery.of(context).size.height,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.horizontal(right: Radius.circular(100)),
+                  image: DecorationImage(
+                    image: AssetImage('assets/bg.jpg'),
+                    fit: BoxFit.cover,
                   ),
-                ],
+                ),
               ),
-              Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 2,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: ListView(
-                        children: [
-                          const SizedBox(height: 50),
-                          const Text(
-                            "Crear Cuenta",
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
+              Container(
+                width: MediaQuery.of(context).size.width / 2,
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 50),
+                        const Text(
+                          "Crear Cuenta",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(height: 50),
-                          MyTextField(
-                              controller: emailController,
-                              hintText: "Ingresar Correo",
-                              obscureText: false),
-                          const SizedBox(height: 20),
-                          MyTextField(
-                              controller: passwordController,
-                              hintText: "Ingresar Contraseña",
-                              obscureText: true),
-                          const SizedBox(height: 20),
-                          MyTextField(
-                              controller: passwordAuthController,
-                              hintText: "Confirmar Contraseña",
-                              obscureText: true),
-                          const SizedBox(height: 20),
-                          Align(
-                            alignment: Alignment.center,
-                            child: MyButton(
-                              text: "Crear Cuenta",
-                              colorB: Colors.black,
-                              colorT: Colors.white,
-                              onTap: () {
-                                newAccount(
-                                    emailController.text,
-                                    passwordController.text,
-                                    passwordAuthController.text);
-                              },
-                            ),
+                        ),
+                        const SizedBox(height: 50),
+                        MyTextField(
+                            controller: emailController,
+                            hintText: "Ingresar Correo",
+                            obscureText: false),
+                        const SizedBox(height: 20),
+                        MyTextField(
+                            controller: passwordController,
+                            hintText: "Ingresar Contraseña",
+                            obscureText: true),
+                        const SizedBox(height: 20),
+                        MyTextField(
+                            controller: passwordAuthController,
+                            hintText: "Confirmar Contraseña",
+                            obscureText: true),
+                        const SizedBox(height: 20),
+                        Align(
+                          alignment: Alignment.center,
+                          child: MyButton(
+                            text: "Crear Cuenta",
+                            colorB: Colors.black,
+                            colorT: Colors.white,
+                            onTap: () {
+                              newAccount(
+                                  emailController.text,
+                                  passwordController.text,
+                                  passwordAuthController.text);
+                            },
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ],
           ),

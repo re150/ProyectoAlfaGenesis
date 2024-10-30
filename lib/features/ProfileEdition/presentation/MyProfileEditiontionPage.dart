@@ -68,49 +68,57 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    });
+  }
+
+  @override
+  void dispose() {
+    nombreController.dispose();
+    super.dispose();
   }
 
   Future<void> newProfile(String Urlimg) async {
-  final authProvider = Provider.of<AuthProvider>(context, listen: false);
-  final dataProfile = Provider.of<ProfileProvider>(context,listen: false);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final dataProfile = Provider.of<ProfileProvider>(context, listen: false);
 
-  final jwtToken = authProvider.jwtToken;
-  final email = authProvider.email;
+    final jwtToken = authProvider.jwtToken;
+    final email = authProvider.email;
 
-  try {
-    final response = await http.post(
-      Uri.parse('http://$ipAdress:$port/next/alfa/NewProfile'),
-      headers: <String, String>{
-        'Authorization': 'Bearer $jwtToken',
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode({
-        "name": dataProfile.name,
-        "level": 1,
-        "grado": dataProfile.grado,
-        "grupo": dataProfile.grupo,
-        "imgUrl": Urlimg,
-        "email": email,
-        "stars": 0,
-        "teamStatus" : false
-      }),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('http://$ipAdress:$port/next/alfa/NewProfile'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $jwtToken',
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          "name": dataProfile.name,
+          "level": 1,
+          "grado": dataProfile.grado,
+          "grupo": dataProfile.grupo,
+          "imgUrl": Urlimg,
+          "email": email,
+          "stars": 0,
+          "teamStatus": false
+        }),
+      );
 
-    if (response.statusCode == 200) {
-      Navigator.pushNamed(context, '/profileSelection');
-    } else {
-      mostrarMensajeError('Error en la creación del perfil. Código de estado: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        Navigator.pushNamed(context, '/profileSelection');
+      } else {
+        mostrarMensajeError(
+            'Error en la creación del perfil. Código de estado: ${response.statusCode}');
+      }
+    } catch (e) {
+      mostrarMensajeError('Ocurrió un error durante la solicitud: $e');
     }
-  } catch (e) {
-    mostrarMensajeError('Ocurrió un error durante la solicitud: $e');
+    dataProfile.clearData();
   }
-  dataProfile.clearData();
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +149,8 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             image: DecorationImage(
-                              image: AssetImage("assets/ProfilePictures/$selectedImage"),
+                              image: AssetImage(
+                                  "assets/ProfilePictures/$selectedImage"),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -152,8 +161,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                           child: MyTextField(
                               controller: nombreController,
                               hintText: "Escribe tu nombre",
-                              obscureText: false)
-                              ),
+                              obscureText: false)),
                     ],
                   ),
                 ),
@@ -183,7 +191,8 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                                           ? Colors.blue
                                           : Colors.black),
                                 ),
-                                child: Image.asset("assets/ProfilePictures/${imagePaths[index]}",
+                                child: Image.asset(
+                                    "assets/ProfilePictures/${imagePaths[index]}",
                                     fit: BoxFit.cover),
                               ),
                             );
@@ -201,7 +210,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                 colorB: Colors.blue,
                 colorT: Colors.white,
                 onTap: () {
-                    newProfile("assets/ProfilePictures/$selectedImage");
+                  newProfile("assets/ProfilePictures/$selectedImage");
                 },
               ),
             ),

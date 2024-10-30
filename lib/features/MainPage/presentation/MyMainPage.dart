@@ -22,7 +22,15 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
   List<Map<String, dynamic>> _lecciones = [];
   bool dataLoaded = false;
   int puntajeTotal = 100; //PUNTAJE TOTAL DEL USUARIO EXTRAIDO DE LA DB
-  List<String> imagenes = ["cat.png", "Bricks.png", "OceanBG.jpg", "pez3.jpg", "SkyBG.webp", "WallBricks.jpg", "crab.png"];
+  List<String> imagenes = [
+    "cat.png",
+    "Bricks.png",
+    "OceanBG.jpg",
+    "pez3.jpg",
+    "SkyBG.webp",
+    "WallBricks.jpg",
+    "crab.png"
+  ];
 
   Future<void> _loadLecciones() async {
     final Database db = await _dbHelper.database;
@@ -51,20 +59,28 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    });
     _loadLecciones();
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state){
-    if(state == AppLifecycleState.resumed){
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
       MusicaFondo().continuarMusica();
-    }else{
+    } else {
       MusicaFondo().pausarMusica();
     }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -107,13 +123,11 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
           },
         ),
         actions: [
-          const MyStar(correcto: true), 
-
+          const MyStar(correcto: true),
           Text(
             'x$puntajeTotal',
             style: const TextStyle(fontSize: 20),
           ),
-
           IconButton(
             icon: const Icon(Icons.person),
             color: Colors.blue,
@@ -162,7 +176,8 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
                                       child: MyLevelButton(
                                         nivel: _lecciones[index]['titulo'],
                                         puntaje: index + 1 <= 5 ? index + 1 : 0,
-                                        imagen: imagenes[index%imagenes.length],
+                                        imagen:
+                                            imagenes[index % imagenes.length],
                                         onTap: () {
                                           Navigator.push(
                                             context,

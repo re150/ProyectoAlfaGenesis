@@ -46,7 +46,7 @@ class _LeccionBeachState extends State<LeccionBeach>
   List<String> imagenes = [];
 
 
-  Future<void> _updatePuntaje() async {
+   Future<void> _updatePuntaje() async {
        
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
@@ -55,27 +55,31 @@ class _LeccionBeachState extends State<LeccionBeach>
     final name = dataProvider.name;
     final temaProvider = Provider.of<TeamProvider>(context, listen: false);
     String url = "";
-    if(temaProvider.idTeam == null){
-      url = 'http://$ipAdress:$port/next/alfa/Punctuation';
+    
+    if(temaProvider.idTeam.isEmpty){
+      url = "/Punctuation";
     } else {
-      url = 'http://$ipAdress:$port/next/alfa/teams/PunctuationTeam';
+      url = "/teams/PunctuationTeam";
     }
+
+    Map<String, dynamic> body;
+      if (temaProvider.idTeam == null) {
+        body = {
+          "id": id,
+          "name": name,
+          "stars": 1,
+        };
+      } else {
+        body = {
+          "id": temaProvider.idTeam,
+          "stars": 1,
+        };
+      }
     final response = await http.patch(
-      Uri.parse(url),
+      Uri.parse('http://$ipAdress:$port/next/alfa'+url),
         headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
-        body: jsonEncode({
-              temaProvider.idTeam == null
-          ? {
-              "id": id,
-              "name": name,
-              "stars": 1,
-            }
-          : {
-              "id": temaProvider.idTeam,
-              "stars": 1,
-            }
-        }),
-    );
+         body: jsonEncode(body)
+        );
       if (response.statusCode == 200) {
       
     } else {
@@ -83,6 +87,7 @@ class _LeccionBeachState extends State<LeccionBeach>
     }
   
   }
+
 
 
   void _checarRespuesta(String res) async {

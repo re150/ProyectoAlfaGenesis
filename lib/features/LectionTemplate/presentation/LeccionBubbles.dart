@@ -5,6 +5,7 @@ import 'package:proyecto/core/resources/checador_respuestas.dart';
 import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'package:proyecto/provider/ProfileProvider.dart';
+import 'package:proyecto/provider/TeamProvider.dart';
 import '../../../widgets/MyBubble.dart';
 import '../../../widgets/MyLectionBanner.dart';
 import 'package:http/http.dart' as http;
@@ -55,17 +56,33 @@ class _LeccionBubblesState extends State<LeccionBubbles>
     final jwtToken = authProvider.jwtToken;
     final id = dataProvider.id;
     final name = dataProvider.name;
-      
-      
-    final response = await http.patch(
-      Uri.parse('http://$ipAdress:$port/next/alfa/Punctuation'),
-        headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
-        body: jsonEncode({
+    final temaProvider = Provider.of<TeamProvider>(context, listen: false);
+    String url = "";
+    
+    if(temaProvider.idTeam.isEmpty){
+      url = "/Punctuation";
+    } else {
+      url = "/teams/PunctuationTeam";
+    }
+
+    Map<String, dynamic> body;
+      if (temaProvider.idTeam == null) {
+        body = {
           "id": id,
           "name": name,
           "stars": 1,
-        }),
-    );
+        };
+      } else {
+        body = {
+          "id": temaProvider.idTeam,
+          "stars": 1,
+        };
+      }
+    final response = await http.patch(
+      Uri.parse('http://$ipAdress:$port/next/alfa'+url),
+        headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
+         body: jsonEncode(body)
+        );
       if (response.statusCode == 200) {
       
     } else {
@@ -84,7 +101,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
     if (letra == respuesta) {
       res.play(AssetSource("successLesson.mp3"));
       esCorrecto = true;
-      _updatePuntaje();
+     _updatePuntaje();
     } else {
       res.play(AssetSource("wrong-choice.mp3"));
     }

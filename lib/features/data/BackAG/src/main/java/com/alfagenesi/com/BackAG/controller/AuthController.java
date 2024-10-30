@@ -26,5 +26,4 @@ public class AuthController {
     public ResponseEntity<?> login (@RequestBody Login request) throws JsonProcessingException {
         return ResponseEntity.ok(authService.login(request));
     }
-
 }

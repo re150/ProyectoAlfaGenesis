@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:proyecto/features/ProfileEdition2/MyProfileEdition2.dart';
 import 'package:proyecto/provider/TeamProvider.dart';
 import 'config/theme/ThemeData.dart';
 import 'core/resources/DataBaseHelper.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         '/profileSelection': (context) => const MyProfileSelectionPage(),
         '/MainPage': (context) => const MyMainPage(), 
         '/GroupCreationPage': (context) => const MyGroupCreationPage(),
+        '/ProfileEdition2' : (context) => const ProfileEdition2(),
       },
       debugShowCheckedModeBanner: false,
     );

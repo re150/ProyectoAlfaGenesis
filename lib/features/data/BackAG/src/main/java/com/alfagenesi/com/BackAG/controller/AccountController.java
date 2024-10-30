@@ -28,4 +28,8 @@ public class AccountController {
     public ResponseEntity<?> getPunctuation(@PathVariable String id, @PathVariable String name) {
         return  ResponseEntity.ok(authService.getStars(id, name));
     }
+    @PatchMapping("/editProfile")
+    public ResponseEntity<?> edit(@RequestBody String request){
+        return ResponseEntity.ok(authService.updateImg(request));
+    }
 }

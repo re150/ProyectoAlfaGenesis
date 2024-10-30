@@ -191,6 +191,44 @@ public class AuthService {
         }
     }
 
+    public String updateImg (String dataUser){
+        Firestore db = FirestoreClient.getFirestore();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String id = "";
+        String name = "";
+        String  url = "";
+
+        try{
+            JsonNode node = objectMapper.readTree(dataUser);
+            JsonNode iduser = node.get("id");
+            id = (iduser != null) ? iduser.asText() : null;
+
+            JsonNode nameUser = node.get("name");
+            name = (nameUser != null) ? nameUser.asText() : null;
+
+            JsonNode userStars = node.get("imgUrl");
+            url = (userStars != null) ?userStars.asText() : null;
+
+            if(id != null && name != null){
+                ApiFuture<QuerySnapshot> futureProfile = db.collection(COLLECTION_NAME)
+                        .document(id)
+                        .collection(COLLECTION_PROFILE)
+                        .whereEqualTo("name", name)
+                        .get();
+
+
+                List<QueryDocumentSnapshot> profileDocs = futureProfile.get().getDocuments();
+                QueryDocumentSnapshot profileDoc = profileDocs.get(0);
+                DocumentReference profileRef = profileDoc.getReference();
+                ApiFuture<WriteResult> updateProfile = profileRef.update("imgUrl",url);
+                updateProfile.get();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "Se actualizó la imagen";
+    }
+
     public String showAllProfile() {
         Firestore db = FirestoreClient.getFirestore();
         Query query = db.collection(COLLECTION_NAME);

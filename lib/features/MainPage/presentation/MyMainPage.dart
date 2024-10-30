@@ -145,7 +145,7 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
           ),
           const SizedBox(width: 20),
           GestureDetector(
-            onTap: () => Navigator.pushNamed(context, '/profileEdition'),
+            onTap: () => Navigator.pushNamed(context, '/ProfileEdition2'),
             child: CircleAvatar(
               backgroundImage:
                   AssetImage(imagenurl == "" ? "assets/cat.png" : imagenurl),

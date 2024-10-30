@@ -51,6 +51,7 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
         loading = false;
       });
     } else {
+      print("Status code: $response.statusCode");
       throw Exception('Error al cargar perfiles');
     }
   }

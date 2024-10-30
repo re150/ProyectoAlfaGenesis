@@ -139,9 +139,9 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
   ///Función para usar el grupo seleccionado que se debe comunicar con el backend.
   ///Para que el grupo seleccionado sea el grupo activo en la aplicación
   ///
-  void _usargrupo(String id) async {
+  void _usargrupo(String id, List<Alumno> listaAlumnosGrupo) async {
     List<Alumno> listMembers = [];
-    if (teamOnDB.isNotEmpty) {
+    if (teamOnDB.isNotEmpty && listaAlumnosGrupo.isNotEmpty) {
       if (teamOnDB.containsKey(id)) {
         setState(() {
           _indexIndicado =
@@ -199,7 +199,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
         MyGroupCard(
           numeroGrupo: numero,
           lista: const [],
-          onUse: () => _usargrupo(nameTeam),
+          onUse: () => _usargrupo(nameTeam, []),
           onDeleteGroup: () => _borrarGrupo(numero),
           isSelected: false,
           onSelect: () => _seleccionarGrupo(numero),
@@ -446,7 +446,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
                         MyGroupCard(
                           numeroGrupo: numero,
                           lista: const [],
-                          onUse: () => _usargrupo(nombreController.text),
+                          onUse: () => _usargrupo(nombreController.text, _grupos[numero - 1]!.lista),
                           onDeleteGroup: () => _borrarGrupo(numero),
                           isSelected: false,
                           onSelect: () => _seleccionarGrupo(numero),
@@ -629,7 +629,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
       _grupos[index] = MyGroupCard(
         lista: listProfile,
         numeroGrupo: _grupos.length,
-        onUse: () => _usargrupo(nameTeam),
+        onUse: () => _usargrupo(nameTeam, listProfile),
         onDeleteGroup: () => _borrarGrupo(_grupos.length),
         isSelected: false,
         onSelect: () => _seleccionarGrupo(_grupos.length),

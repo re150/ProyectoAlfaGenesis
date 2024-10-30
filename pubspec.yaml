@@ -31,11 +31,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  http: ^1.2.1  
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  provider: ^6.1.2
+  audioplayers: ^6.1.0
+  sqflite: ^2.3.3+1
+  path: ^1.9.0
+  asset_fill: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -46,7 +51,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -55,6 +60,61 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - assets/Flutter-Images/
+    - assets/ImagenesLecciones/
+    - assets/Music/
+    - assets/ProfilePictures/
+    - assets/SoundEffects/
+    - assets/SoundEffects/SoundEffects/
+    - assets/audio/
+    - assets/audio/VoiceHelp/
+    - assets/audio/lessons/
+    - assets/audio/lessons/lesson1/
+    - assets/audio/lessons/lesson10/
+    - assets/audio/lessons/lesson11/
+    - assets/audio/lessons/lesson12/
+    - assets/audio/lessons/lesson13/
+    - assets/audio/lessons/lesson14/
+    - assets/audio/lessons/lesson15/
+    - assets/audio/lessons/lesson16/
+    - assets/audio/lessons/lesson17/
+    - assets/audio/lessons/lesson18/
+    - assets/audio/lessons/lesson19/
+    - assets/audio/lessons/lesson2/
+    - assets/audio/lessons/lesson20/
+    - assets/audio/lessons/lesson21/
+    - assets/audio/lessons/lesson22/
+    - assets/audio/lessons/lesson23/
+    - assets/audio/lessons/lesson3/
+    - assets/audio/lessons/lesson4/
+    - assets/audio/lessons/lesson5/
+    - assets/audio/lessons/lesson6/
+    - assets/audio/lessons/lesson7/
+    - assets/audio/lessons/lesson8/
+    - assets/audio/lessons/lesson9/
+    - assets/images/
+    - assets/images/lesson10/
+    - assets/images/lesson11/
+    - assets/images/lesson12/
+    - assets/images/lesson13/
+    - assets/images/lesson14/
+    - assets/images/lesson15/
+    - assets/images/lesson16/
+    - assets/images/lesson17/
+    - assets/images/lesson18/
+    - assets/images/lesson19/
+    - assets/images/lesson2/
+    - assets/images/lesson20/
+    - assets/images/lesson21/
+    - assets/images/lesson22/
+    - assets/images/lesson23/
+    - assets/images/lesson3/
+    - assets/images/lesson4/
+    - assets/images/lesson5/
+    - assets/images/lesson6/
+    - assets/images/lesson7/
+    - assets/images/lesson8/
+    - assets/images/lesson9/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

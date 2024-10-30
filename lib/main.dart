@@ -1,98 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:proyecto/provider/TeamProvider.dart';
+import 'config/theme/ThemeData.dart';
+import 'core/resources/DataBaseHelper.dart';
+import 'features/AccountCreationPage/presentation/pages/MyAccountCreationPage.dart';
+import 'features/GroupCreationPage/presentation/MyGroupCreationPage.dart';
+import 'features/LectionTemplate/presentation/LeccionDemo.dart';
+import 'features/LoginPage/presentation/pages/LoginPage.dart';
+import 'features/LandingPage/presentation/LandingPage.dart';
+import 'features/MainPage/presentation/MyMainPage.dart';
+import 'features/ProfileCreation/presentation/MyProfileCreationPage.dart';
+import 'features/ProfileEdition/presentation/MyProfileEditiontionPage.dart';
+import 'features/ProfileSelection/presentation/MyProfileSelectionPage.dart';
+import 'features/RoadMap/presentation/MyRoadMapView.dart';
+import 'provider/AuthProvider.dart';
+import 'provider/ProfileProvider.dart';
 
 void main() {
-    WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]).then((_) {
-    runApp(const MyApp());
-  });
+    runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => TeamProvider()),
+      ],
+      child:  const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  void _inicializarDB () async {
+    DatabaseHelper dbHelper = DatabaseHelper();
+    //dbHelper.deleteDB();
+    dbHelper.initDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
+    
+    _inicializarDB();
     return MaterialApp(
-      home: Scaffold(
-        body: SafeArea(
-          child: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/bg.jpg'), 
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  const SizedBox(height: 50, width: 50,),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10), 
-                    ),
-                    padding: const EdgeInsets.all(20), 
-                    child: Column(
-                      children: <Widget>[
-                        const Text("Iniciar Sesión",
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        const Text("Nombre de Usuario"),
-                        const TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Tú Nomdre de Usuario',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        const Text("Contraseña"),
-                        const TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Tú Contraseña',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {
-                          },
-                          
-                          style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(200, 50),
-                              backgroundColor: Colors.black,
-                            ),
-                            child: const Text('Entrar',
-                            style: TextStyle(
-                              fontSize: 20,
-                            )),
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                            },
-                            child: const Text('Olvidé mi contraseña'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      theme: theme,
+      initialRoute: '/', 
+      routes: {
+        '/': (context) => const LandingPage(),
+        '/login': (context) => const LoginPage(),
+        '/leccion': (context) => const LeccionDemo(),
+        '/roadMap': (context) => const MyRoadMapView(),
+        '/accountCreation': (context) => const MyAccountCreationPage(),
+        '/profileCreation': (context) => const MyProfileCreationPage(),
+        '/profileEdition': (context) => const MyProfileEditionPage(),
+        '/profileSelection': (context) => const MyProfileSelectionPage(),
+        '/MainPage': (context) => const MyMainPage(), 
+        '/GroupCreationPage': (context) => const MyGroupCreationPage(),
+      },
+      debugShowCheckedModeBanner: false,
     );
   }
 }

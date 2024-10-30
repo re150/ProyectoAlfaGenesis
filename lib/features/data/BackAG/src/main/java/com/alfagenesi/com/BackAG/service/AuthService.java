@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import lombok.RequiredArgsConstructor;
@@ -578,5 +579,48 @@ public class AuthService {
             e.printStackTrace();
         }
         return actualStars;
+    }
+    public String updateStarsTeam (String dataUser){
+        Firestore db = FirestoreClient.getFirestore();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String id = "";
+        int stars = 0;
+        List<String> memberInfoList = new ArrayList<>();
+        try{
+            JsonNode node = objectMapper.readTree(dataUser);
+            JsonNode iduser = node.get("id");
+            id = (iduser != null) ? iduser.asText() : null;
+
+            JsonNode userStars = node.get("stars");
+            stars = (userStars != null) ?userStars.asInt() : 0;
+
+            if(id != null ){
+                ApiFuture<QuerySnapshot> futureProfile = db.collection(COLLECTION_TEAMS)
+                        .document(id)
+                        .collection(COLLECTION_MEMBERS)
+                        .get();
+
+                List<QueryDocumentSnapshot> profileDocs = futureProfile.get().getDocuments();
+
+                for (QueryDocumentSnapshot profileDoc : profileDocs) {
+                    String memberId = profileDoc.getString("id");
+                    String memberName = profileDoc.getString("name");
+
+                    JsonObject memberJson = new JsonObject();
+                    memberJson.addProperty("id", memberId);
+                    memberJson.addProperty("name", memberName);
+                    memberJson.addProperty("stars", stars);
+
+                    memberInfoList.add(memberJson.toString());
+                }
+
+                for(String user: memberInfoList){
+                    updateStars(user);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "El nuemro de estrellas se actualizo";
     }
 }

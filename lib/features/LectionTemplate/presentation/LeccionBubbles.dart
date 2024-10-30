@@ -66,7 +66,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
     }
 
     Map<String, dynamic> body;
-      if (temaProvider.idTeam == null) {
+      if (temaProvider.idTeam.isEmpty) {
         body = {
           "id": id,
           "name": name,
@@ -78,6 +78,7 @@ class _LeccionBubblesState extends State<LeccionBubbles>
           "stars": 1,
         };
       }
+
     final response = await http.patch(
       Uri.parse('http://$ipAdress:$port/next/alfa'+url),
         headers: <String, String>{'Authorization': 'Bearer $jwtToken'},

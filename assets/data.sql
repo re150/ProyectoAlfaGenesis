@@ -136,7 +136,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (5, 'palabra', 'u');
 
 /*Nivel 2*/
-INSERT INTO nivel (nombre) VALUES ('Nivel 2: Sílabas: Sílabas parte 1');
+INSERT INTO nivel (nombre) VALUES ('Nivel 2: Sílabas parte 1');
 
 /*Lección 2*/
 INSERT INTO lecciones (id_nivel, titulo) VALUES (2, 'Lección 2');
@@ -706,7 +706,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (30, 'palabra', 'po');
 
 /*Nivel 3*/
-INSERT INTO nivel (nombre) VALUES ('Nivel 3: Sílabas: Sílabas parte 2');
+INSERT INTO nivel (nombre) VALUES ('Nivel 3: Sílabas parte 2');
 
 /*Lección 7*/
 INSERT INTO lecciones (id_nivel, titulo) VALUES (3, 'Lección 7: Sílabas con R');
@@ -1270,7 +1270,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (55, 'palabra', 'do');
 
 /*Nivel 4*/
-INSERT INTO nivel (nombre) VALUES ('Nivel 4: Sílabas: Sílabas parte 3');
+INSERT INTO nivel (nombre) VALUES ('Nivel 4: Sílabas parte 3');
 
 /*Lección 12*/
 INSERT INTO lecciones (id_nivel, titulo) VALUES (4, 'Lección 12: Sílabas con V');
@@ -1849,7 +1849,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (80, 'palabra', 'ñu');
 
 /*Nivel 5*/
-INSERT INTO nivel (nombre) VALUES ('Nivel 5: Sílabas: Sílabas parte 4');
+INSERT INTO nivel (nombre) VALUES ('Nivel 5: Sílabas parte 4');
 
 /*Lección 17*/
 INSERT INTO lecciones (id_nivel, titulo) VALUES (5, 'Lección 17: Sílabas con G');
@@ -2434,7 +2434,7 @@ INSERT INTO material (id_etapa, tipo_material, valor_material)
 VALUES (105, 'palabra', 'xo');
 
 /*Nivel 6*/
-INSERT INTO nivel (nombre) VALUES ('Nivel 6: Sílabas: Sílabas parte 5');
+INSERT INTO nivel (nombre) VALUES ('Nivel 6: Sílabas parte 5');
 
 /*Lección 22*/
 INSERT INTO lecciones (id_nivel, titulo) VALUES (6, 'Lección 22: Sílabas con K');

@@ -5,7 +5,6 @@ import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'package:proyecto/provider/ProfileProvider.dart';
 import 'package:proyecto/widgets/MyButton.dart';
-import 'package:proyecto/widgets/MyTextField.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -156,12 +155,6 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                           ),
                         ),
                       ),
-                      Expanded(
-                          flex: 1,
-                          child: MyTextField(
-                              controller: nombreController,
-                              hintText: "Escribe tu nombre",
-                              obscureText: false)),
                     ],
                   ),
                 ),

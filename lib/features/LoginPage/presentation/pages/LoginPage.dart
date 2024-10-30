@@ -92,6 +92,10 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void _onPop(){
+    Navigator.pushNamed(context, '/');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -105,78 +109,82 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              Container(
-                width: MediaQuery.sizeOf(context).width / 2,
-                height: MediaQuery.sizeOf(context).height,
-                decoration: const BoxDecoration(
-                  borderRadius:
-                      BorderRadius.horizontal(right: Radius.circular(100)),
-                  image: DecorationImage(
-                    image: AssetImage('assets/bg.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 2,
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 100),
-                        const Text(
-                          "Iniciar Sesión",
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 50),
-                        MyTextField(
-                            controller: emailController,
-                            hintText: "Ingresar Correo",
-                            obscureText: false),
-                        const SizedBox(height: 20),
-                        MyTextField(
-                            controller: passwordController,
-                            hintText: "Ingresar Contraseña",
-                            obscureText: true),
-                        const SizedBox(height: 50),
-                        Align(
-                          alignment: Alignment.center,
-                          child: MyButton(
-                            text: "Entrar",
-                            colorB: Colors.black,
-                            colorT: Colors.white,
-                            onTap: () {
-                              if (emailController.text.isEmpty &&
-                                  passwordController.text.isEmpty) {
-                                Navigator.pushNamed(
-                                    context, '/roadMap');
-                              }
-                              login(emailController.text,
-                                  passwordController.text);
-                            },
-                          ),
-                        ),
-                      ],
+    return PopScope(
+      onPopInvokedWithResult: (a, b) => _onPop(), 
+      canPop: false,
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                Container(
+                  width: MediaQuery.sizeOf(context).width / 2,
+                  height: MediaQuery.sizeOf(context).height,
+                  decoration: const BoxDecoration(
+                    borderRadius:
+                        BorderRadius.horizontal(right: Radius.circular(100)),
+                    image: DecorationImage(
+                      image: AssetImage('assets/bg.jpg'),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 100),
+                          const Text(
+                            "Iniciar Sesión",
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 50),
+                          MyTextField(
+                              controller: emailController,
+                              hintText: "Ingresar Correo",
+                              obscureText: false),
+                          const SizedBox(height: 20),
+                          MyTextField(
+                              controller: passwordController,
+                              hintText: "Ingresar Contraseña",
+                              obscureText: true),
+                          const SizedBox(height: 50),
+                          Align(
+                            alignment: Alignment.center,
+                            child: MyButton(
+                              text: "Entrar",
+                              colorB: Colors.black,
+                              colorT: Colors.white,
+                              onTap: () {
+                                if (emailController.text.isEmpty &&
+                                    passwordController.text.isEmpty) {
+                                  Navigator.pushNamed(
+                                      context, '/roadMap');
+                                }
+                                login(emailController.text,
+                                    passwordController.text);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

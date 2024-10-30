@@ -129,28 +129,7 @@ class _MyLevelButtonState extends State<MyLevelButton>
                                 style: const TextStyle(fontSize: 30),
                               ),
                               const SizedBox(width: 10),
-                              Container(
-                                width: MediaQuery.sizeOf(context).width / 8,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.5),
-                                  border: Border.all(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  children: [
-                                    ...List.generate(
-                                      5,
-                                      (index) {
-                                        return MyStar(
-                                          correcto: index < widget.puntaje,
-                                          size: 22,
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              )
+                             
                             ],
                           ),
                           Container(

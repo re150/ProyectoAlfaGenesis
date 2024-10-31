@@ -74,7 +74,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://$ipAdress:$port/api/signUp'),
+        Uri.parse('$address/api/signUp'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -86,7 +86,7 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
 
       if (response.statusCode == 200) {
         final loginResponse = await http.post(
-          Uri.parse('http://$ipAdress:$port/api/login'),
+          Uri.parse('$address/api/login'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },

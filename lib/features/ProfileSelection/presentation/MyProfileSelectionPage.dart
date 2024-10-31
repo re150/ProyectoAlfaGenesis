@@ -40,7 +40,7 @@ class _MyProfileSelectionPageState extends State<MyProfileSelectionPage> {
     final email = authProvider.email;
 
     final response = await http.get(
-      Uri.parse('http://$ipAdress:$port/next/alfa/showProfile/$email'),
+      Uri.parse('$address/next/alfa/showProfile/$email'),
       headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
     );
 

@@ -1,3 +1,2 @@
 
-const ipAdress = '192.168.1.4';
-const port = '8080';
+const address = 'https://proyectoalfagenesisback.onrender.com';

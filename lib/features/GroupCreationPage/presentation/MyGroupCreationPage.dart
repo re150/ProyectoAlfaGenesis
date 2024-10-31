@@ -61,7 +61,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final jwtToken = authProvider.jwtToken;
     final response = await http.post(
-      Uri.parse('http://$ipAdress:$port/next/alfa/teams/DeleteTeam'),
+      Uri.parse('$address/next/alfa/teams/DeleteTeam'),
       headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
       body: jsonEncode({
         'id': id,
@@ -166,7 +166,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final jwtToken = authProvider.jwtToken;
     final response = await http.get(
-      Uri.parse('http://$ipAdress:$port/next/alfa/teams/showTeams'),
+      Uri.parse('$address/next/alfa/teams/showTeams'),
       headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
     );
 
@@ -252,7 +252,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final jwtToken = authProvider.jwtToken;
     final response = await http.post(
-      Uri.parse('http://$ipAdress:$port/next/alfa/teams/DeleteMember'),
+      Uri.parse('$address/next/alfa/teams/DeleteMember'),
       headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
       body: jsonEncode({
         'id': idTeam,
@@ -301,7 +301,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final jwtToken = authProvider.jwtToken;
     final response = await http.post(
-      Uri.parse('http://$ipAdress:$port/next/alfa/teams/AddMember'),
+      Uri.parse('$address/next/alfa/teams/AddMember'),
       headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
       body: jsonEncode({
         'id': idTeam,
@@ -542,7 +542,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final jwtToken = authProvider.jwtToken;
     final response = await http.get(
-      Uri.parse('http://$ipAdress:$port/next/alfa/teams/ShowProfiles'),
+      Uri.parse('$address/next/alfa/teams/ShowProfiles'),
       headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
     );
 
@@ -612,7 +612,7 @@ class _MyGroupCreationPageState extends State<MyGroupCreationPage> {
     final jwtToken = authProvider.jwtToken;
 
     final response = await http.post(
-      Uri.parse('http://$ipAdress:$port/next/alfa/teams/CreateTeam'),
+      Uri.parse('$address/next/alfa/teams/CreateTeam'),
       headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
       body: jsonEncode(creatJson(nameTeam, listProfile)),
     );

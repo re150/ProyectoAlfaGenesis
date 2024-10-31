@@ -72,6 +72,31 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
       return;
     }
 
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width / 3,
+              height: MediaQuery.of(context).size.height / 4,
+              color: Colors.white,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(width: 16),
+                  Text("Iniciando Sesión..."),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
     try {
       final response = await http.post(
         Uri.parse('$address/api/signUp'),
@@ -104,26 +129,31 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
             final authProvider =
                 Provider.of<AuthProvider>(context, listen: false);
             authProvider.setJwtToken(data['idToken'], data['email']);
+            Navigator.of(context).pop();
             if (!emailProfesor.hasMatch(email)) {
               Navigator.pushNamed(context, '/profileCreation');
             } else {
               Navigator.pushNamed(context, '/GroupCreationPage');
             }
           } else {
+            Navigator.of(context).pop();
             mostrarMensajeError(
                 'Error: La respuesta del servidor no contiene los datos esperados');
             clearFields();
           }
         } else {
+          Navigator.of(context).pop();
           mostrarMensajeError(
               'Error al iniciar sesión: ${loginResponse.statusCode}');
           clearFields();
         }
       } else {
+        Navigator.of(context).pop();
         mostrarMensajeError(
             'Error al crear el usuario: ${response.statusCode}');
       }
     } catch (e) {
+      Navigator.of(context).pop();
       mostrarMensajeError('Ocurrió un error: $e');
       clearFields();
     }
@@ -161,7 +191,8 @@ class _MyAccountCreationPageState extends State<MyAccountCreationPage> {
                 width: MediaQuery.of(context).size.width / 2,
                 height: MediaQuery.of(context).size.height,
                 decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.horizontal(right: Radius.circular(100)),
+                  borderRadius:
+                      BorderRadius.horizontal(right: Radius.circular(100)),
                   image: DecorationImage(
                     image: AssetImage('assets/bg.jpg'),
                     fit: BoxFit.cover,

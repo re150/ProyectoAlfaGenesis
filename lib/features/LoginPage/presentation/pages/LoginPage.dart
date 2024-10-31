@@ -62,9 +62,34 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return  Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width / 3,
+              height: MediaQuery.of(context).size.height / 4,
+              color: Colors.white,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(width: 16),
+                  Text("Iniciando Sesión..."),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
     try {
       final response = await http.post(
-        Uri.parse('http://$ipAdress:$port/api/login'),
+        Uri.parse('$address/api/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -79,20 +104,23 @@ class _LoginPageState extends State<LoginPage> {
         data['email'] = email;
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         authProvider.setJwtToken(data['idToken'], data['email']);
+        Navigator.of(context).pop();
         if (emailProfesor.hasMatch(email)) {
           Navigator.pushNamed(context, '/GroupCreationPage');
         } else {
           Navigator.pushNamed(context, '/profileSelection');
         }
       } else {
+        Navigator.of(context).pop(); 
         mostrarMensajeError('Error');
       }
     } catch (e) {
+      Navigator.of(context).pop(); 
       mostrarMensajeError(e.toString());
     }
   }
 
-  void _onPop(){
+  void _onPop() {
     Navigator.pushNamed(context, '/');
   }
 
@@ -110,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvokedWithResult: (a, b) => _onPop(), 
+      onPopInvokedWithResult: (a, b) => _onPop(),
       canPop: false,
       child: Scaffold(
         body: SafeArea(

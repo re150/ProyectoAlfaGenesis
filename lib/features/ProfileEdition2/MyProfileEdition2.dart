@@ -91,7 +91,7 @@ final TextEditingController nombreController = TextEditingController();
 
     try {
       final response = await http.patch(
-        Uri.parse('http://$ipAdress:$port/next/alfa/editProfile'),
+        Uri.parse('$address/next/alfa/editProfile'),
         headers: <String, String>{
           'Authorization': 'Bearer $jwtToken',
           'Content-Type': 'application/json; charset=UTF-8',

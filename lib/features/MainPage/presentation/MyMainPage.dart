@@ -42,7 +42,7 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
 
     imagenurl = dataProvider.imgUrl; 
     final response = await http.get(
-      Uri.parse('http://$ipAdress:$port/next/alfa/GetPunctuation/$id/$name'),
+      Uri.parse('$address/next/alfa/GetPunctuation/$id/$name'),
       headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
     );
       if (response.statusCode == 200) {

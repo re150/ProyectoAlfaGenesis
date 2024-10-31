@@ -63,7 +63,7 @@ class _LeccionBeachState extends State<LeccionBeach>
     }
 
     Map<String, dynamic> body;
-      if (temaProvider.idTeam == null) {
+      if (temaProvider.idTeam.isEmpty) {
         body = {
           "id": id,
           "name": name,
@@ -76,7 +76,7 @@ class _LeccionBeachState extends State<LeccionBeach>
         };
       }
     final response = await http.patch(
-      Uri.parse('http://$ipAdress:$port/next/alfa'+url),
+      Uri.parse('$address/next/alfa$url'),
         headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
          body: jsonEncode(body)
         );

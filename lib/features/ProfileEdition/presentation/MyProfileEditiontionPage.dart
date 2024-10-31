@@ -90,7 +90,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://$ipAdress:$port/next/alfa/NewProfile'),
+        Uri.parse('$address/next/alfa/NewProfile'),
         headers: <String, String>{
           'Authorization': 'Bearer $jwtToken',
           'Content-Type': 'application/json; charset=UTF-8',

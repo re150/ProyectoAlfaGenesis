@@ -10,6 +10,7 @@ import 'package:sqflite/sqflite.dart';
 import '../../../core/resources/DataBaseHelper.dart';
 import '../../../core/resources/constants.dart';
 import '../../../core/resources/musica_fondo.dart';
+import '../../../main.dart';
 import '../../../provider/AuthProvider.dart';
 import '../../../provider/ProfileProvider.dart';
 import '../../LectionTemplate/presentation/LeccionDemo.dart';
@@ -24,7 +25,7 @@ class MyMainPage extends StatefulWidget {
   State<MyMainPage> createState() => _MyMainPageState();
 }
 
-class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
+class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, RouteAware {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final Map<int, List<Map<String, dynamic>>> _leccionessPorNivel = {};
   List<Map<String, dynamic>> _lecciones = [];
@@ -75,6 +76,20 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver {
     setState(() {
       dataLoaded = true;
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      routeObserver.subscribe(this, route);
+    }
+  }
+
+    @override
+  void didPopNext() {
+    _loadPuntaje();
   }
 
   @override

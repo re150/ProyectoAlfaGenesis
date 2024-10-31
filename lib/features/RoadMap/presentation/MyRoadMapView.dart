@@ -7,6 +7,7 @@ import 'package:proyecto/core/resources/musica_fondo.dart';
 import 'package:proyecto/features/MainPage/presentation/MyMainPage.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'package:proyecto/provider/ProfileProvider.dart';
+import '../../../main.dart';
 import '../../../widgets/MyRoadMapButton.dart';
 import '../../../widgets/MyStarButton.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +21,7 @@ class MyRoadMapView extends StatefulWidget {
 }
 
 class _MyRoadMapViewState extends State<MyRoadMapView>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, RouteAware {
   late int puntaje;
   List<Map<String, dynamic>> _niveles = [];
   bool dataLoaded = false;
@@ -122,6 +123,20 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      routeObserver.subscribe(this, route);
+    }
+  }
+
+    @override
+  void didPopNext() {
+    _loadPuntaje();
   }
 
   @override

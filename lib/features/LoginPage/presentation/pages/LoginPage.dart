@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       } else {
         Navigator.of(context).pop(); 
-        mostrarMensajeError('Error');
+        mostrarMensajeError('Error del backend');
       }
     } catch (e) {
       Navigator.of(context).pop(); 

@@ -17,6 +17,8 @@ import 'features/RoadMap/presentation/MyRoadMapView.dart';
 import 'provider/AuthProvider.dart';
 import 'provider/ProfileProvider.dart';
 
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 void main() {
     runApp(
     MultiProvider(
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
 
   void _inicializarDB () async {
     DatabaseHelper dbHelper = DatabaseHelper();
-    //dbHelper.deleteDB();
+    dbHelper.deleteDB();
     dbHelper.initDatabase();
   }
 
@@ -45,6 +47,7 @@ class MyApp extends StatelessWidget {
     _inicializarDB();
     return MaterialApp(
       theme: theme,
+      navigatorObservers: [routeObserver],
       initialRoute: '/', 
       routes: {
         '/': (context) => const LandingPage(),

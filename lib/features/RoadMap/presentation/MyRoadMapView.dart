@@ -125,7 +125,7 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
     super.dispose();
   }
 
-   @override
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final route = ModalRoute.of(context);
@@ -134,7 +134,7 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
     }
   }
 
-    @override
+  @override
   void didPopNext() {
     _loadPuntaje();
   }
@@ -152,8 +152,16 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
   Widget build(BuildContext context) {
     if (!dataLoaded) {
       return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(child: CircularProgressIndicator()),
+            Center(
+                child: Text(
+              'Cargando...',
+              style: TextStyle(fontSize: 20),
+            )),
+          ],
         ),
       );
     }
@@ -165,11 +173,16 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
           backgroundColor: Colors.blue[300],
           centerTitle: true,
           scrolledUnderElevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: Colors.red,
-            iconSize: 50,
-            onPressed: () => _onPop(),
+          leading: Container(
+            decoration: const BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              color: Colors.white,
+              iconSize: 40,
+              onPressed: _onPop,
+            ),
           ),
           actions: [
             const MyStar(correcto: true),
@@ -227,7 +240,11 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
                               ),
                             ],
                             gradient: const LinearGradient(
-                              colors: [Colors.blue, Colors.green, Colors.yellow],
+                              colors: [
+                                Colors.blue,
+                                Colors.green,
+                                Colors.yellow
+                              ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),

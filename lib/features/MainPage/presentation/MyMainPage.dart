@@ -112,24 +112,36 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
   @override
   Widget build(BuildContext context) {
     if (!dataLoaded) {
-      return const Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      return Scaffold(
+        body: Stack(
           children: [
-            Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.white,
-                color: Colors.blue,
-              ),
-            ),
-            Center(
-              child: Text(
-                'Cargando...',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 30,
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/OceanBG.jpg"),
+                  fit: BoxFit.cover,
                 ),
               ),
+            ),
+           const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                    color: Colors.blue,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    'Cargando...',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -138,15 +150,21 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
     return Scaffold(
       appBar: AppBar(
         title: const Text('Elegir Lección', style: TextStyle(fontSize: 30)),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blue[300],
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          color: Colors.red,
-          iconSize: 50,
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        leading: Container(
+          decoration: const BoxDecoration(
+            color: Colors.red,
+            borderRadius: BorderRadius.all(Radius.circular(10))
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            color: Colors.white,
+            iconSize: 40,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
         actions: [
           const MyStar(correcto: true),
@@ -168,69 +186,78 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
         ],
       ),
       body: _lecciones.isNotEmpty
-          ? Column(
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.black,
-                      ),
-                    ],
+          ? Stack(
+            children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/OceanBG.jpg"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-                Expanded(
-                  flex: 150,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Center(
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  padding: const EdgeInsets.all(20),
-                                  itemCount: _lecciones.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(30.0),
-                                      child: MyLevelButton(
-                                        nivel: _lecciones[index]['titulo'],
-                                        puntaje: index + 1 <= 5 ? index + 1 : 0,
-                                        imagen:
-                                            imagenes[index % imagenes.length],
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => LeccionDemo(
-                                                leccion: _lecciones[index],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
+                Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 150,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Center(
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      padding: const EdgeInsets.all(20),
+                                      itemCount: _lecciones.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(30.0),
+                                          child: MyLevelButton(
+                                            nivel: _lecciones[index]['titulo'],
+                                            puntaje: index + 1 <= 5 ? index + 1 : 0,
+                                            imagen:
+                                                imagenes[index % imagenes.length],
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => LeccionDemo(
+                                                    leccion: _lecciones[index],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
-            )
+          )
           : const Center(
               child: Text('ERROR: No hay lecciones disponibles'),
             ),

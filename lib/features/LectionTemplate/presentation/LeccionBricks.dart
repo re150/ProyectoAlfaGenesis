@@ -12,7 +12,6 @@ import 'package:proyecto/widgets/MyLectionBanner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class LeccionBricks extends StatefulWidget {
   final List<Map<String, dynamic>> materiales;
   final String titulo;
@@ -49,7 +48,6 @@ class _LeccionBricksState extends State<LeccionBricks>
   Set<String> draggingPalabras = {};
   bool isDragging = false;
 
-
   void _procesarMateriales() {
     setState(() {
       palabras = widget.materiales
@@ -83,7 +81,6 @@ class _LeccionBricksState extends State<LeccionBricks>
   }
 
   Future<void> _updatePuntaje() async {
-       
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
     final jwtToken = authProvider.jwtToken;
@@ -91,39 +88,34 @@ class _LeccionBricksState extends State<LeccionBricks>
     final name = dataProvider.name;
     final temaProvider = Provider.of<TeamProvider>(context, listen: false);
     String url = "";
-    
-    if(temaProvider.idTeam.isEmpty){
+
+    if (temaProvider.idTeam.isEmpty) {
       url = "/Punctuation";
     } else {
       url = "/teams/PunctuationTeam";
     }
 
     Map<String, dynamic> body;
-      if (temaProvider.idTeam.isEmpty) {
-        body = {
-          "id": id,
-          "name": name,
-          "stars": 1,
-        };
-      } else {
-        body = {
-          "id": temaProvider.idTeam,
-          "stars": 1,
-        };
-      }
-    final response = await http.patch(
-      Uri.parse('$address/next/alfa'+url),
+    if (temaProvider.idTeam.isEmpty) {
+      body = {
+        "id": id,
+        "name": name,
+        "stars": 1,
+      };
+    } else {
+      body = {
+        "id": temaProvider.idTeam,
+        "stars": 1,
+      };
+    }
+    final response = await http.patch(Uri.parse('$address/next/alfa' + url),
         headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
-         body: jsonEncode(body)
-        );
-      if (response.statusCode == 200) {
-      
+        body: jsonEncode(body));
+    if (response.statusCode == 200) {
     } else {
       throw Exception('Error al actualizar las estrellas');
     }
-  
   }
-
 
   void _checarRespuesta() async {
     if (draggedOrder.length != correctOrder.length ||
@@ -139,7 +131,7 @@ class _LeccionBricksState extends State<LeccionBricks>
 
     boton.play(
         AssetSource(esCorrecto ? "successLesson.mp3" : "wrong-choice.mp3"));
-        esCorrecto ? _updatePuntaje() : null;
+    esCorrecto ? _updatePuntaje() : null;
     final checar = Checador();
     bgMusic.stop();
     await checar.checarRespuesta(context, esCorrecto);
@@ -290,11 +282,20 @@ class _LeccionBricksState extends State<LeccionBricks>
                           },
                         ),
                       ),
-                      MyButton(
-                        text: "Verificar",
-                        colorB: Colors.blue,
-                        colorT: Colors.white,
+                      GestureDetector(
                         onTap: _checarRespuesta,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 6,
+                          height: MediaQuery.of(context).size.height / 4,
+                          decoration:const BoxDecoration(
+                            image: DecorationImage(image: AssetImage("assets/Brick.jpg"), fit: BoxFit.contain),
+                          ),
+                          child: const Icon(
+                            Icons.check,
+                            size: 50,
+                            color: Colors.white,
+                          ),
+                        )
                       ),
                     ],
                   ),

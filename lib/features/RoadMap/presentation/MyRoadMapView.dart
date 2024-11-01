@@ -161,8 +161,8 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
       canPop: false,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Elegir Nivel', style: TextStyle(fontSize: 30)),
-          backgroundColor: Colors.white,
+          title: const Text('Mapa', style: TextStyle(fontSize: 30)),
+          backgroundColor: Colors.blue[300],
           centerTitle: true,
           scrolledUnderElevation: 0,
           leading: IconButton(
@@ -190,89 +190,100 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
             const SizedBox(width: 20),
           ],
         ),
-        body: Column(
+        body: Stack(
           children: [
             Container(
-              width: MediaQuery.sizeOf(context).width * 0.9,
-              height: 3,
-              color: Colors.black,
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: ListView.separated(
-                itemCount: 2,
-                scrollDirection: Axis.vertical,
-                separatorBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 80,
-                      width: MediaQuery.sizeOf(context).width,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 9,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                        gradient: const LinearGradient(
-                          colors: [Colors.blue, Colors.green, Colors.yellow],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Mundo ${index + 1}',
-                          style: const TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: MediaQuery.sizeOf(context).height * 0.5,
-                      width: MediaQuery.sizeOf(context).width * 0.3,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _niveles.length,
-                        separatorBuilder: (context, index) {
-                          return Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              width: 100,
-                              height: 5,
-                              color: Colors.black,
-                            ),
-                          );
-                        },
-                        itemBuilder: (context, horizontalIndex) {
-                          bool lock = index > 0;
-                          return MyRoadmapButton(
-                            isLocked: lock,
-                            onPressed: () => _onPressed(horizontalIndex),
-                            titulo: lock
-                                ? "BLOQUEADO"
-                                : _niveles[horizontalIndex]['nombre'],
-                            puntaje: 5,
-                            imagen: lock
-                                ? "assets/cat.png"
-                                : "assets/${imagenes[horizontalIndex % imagenes.length]}",
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                },
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/BeachBG.jpg"),
+                  fit: BoxFit.cover,
+                ),
               ),
+            ),
+            Column(
+              children: [
+                Container(
+                  width: MediaQuery.sizeOf(context).width,
+                  height: 3,
+                  color: Colors.black,
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: 2,
+                    scrollDirection: Axis.vertical,
+                    separatorBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 80,
+                          width: MediaQuery.sizeOf(context).width,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 9,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                            gradient: const LinearGradient(
+                              colors: [Colors.blue, Colors.green, Colors.yellow],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Mundo ${index + 1}',
+                              style: const TextStyle(
+                                fontSize: 30,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.5,
+                          width: MediaQuery.sizeOf(context).width * 0.3,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _niveles.length,
+                            separatorBuilder: (context, index) {
+                              return Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  width: 100,
+                                  height: 5,
+                                  color: Colors.black,
+                                ),
+                              );
+                            },
+                            itemBuilder: (context, horizontalIndex) {
+                              bool lock = index > 0;
+                              return MyRoadmapButton(
+                                isLocked: lock,
+                                onPressed: () => _onPressed(horizontalIndex),
+                                titulo: lock
+                                    ? "BLOQUEADO"
+                                    : _niveles[horizontalIndex]['nombre'],
+                                puntaje: 5,
+                                imagen: lock
+                                    ? "assets/cat.png"
+                                    : "assets/${imagenes[horizontalIndex % imagenes.length]}",
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         ),

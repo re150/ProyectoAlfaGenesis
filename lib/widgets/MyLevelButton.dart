@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:proyecto/widgets/MyStarButton.dart';
 
@@ -21,8 +22,11 @@ class MyLevelButton extends StatefulWidget {
 class _MyLevelButtonState extends State<MyLevelButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  final click = AudioPlayer();
 
   void _animar() {
+    click.play(AssetSource('SelectButton.mp3'));
+
     if (_controller.isAnimating) {
       if (mounted) {
         _controller.stop();
@@ -129,7 +133,6 @@ class _MyLevelButtonState extends State<MyLevelButton>
                                 style: const TextStyle(fontSize: 30),
                               ),
                               const SizedBox(width: 10),
-                             
                             ],
                           ),
                           Container(

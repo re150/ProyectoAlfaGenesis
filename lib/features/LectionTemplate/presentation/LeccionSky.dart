@@ -5,13 +5,11 @@ import 'package:proyecto/core/resources/constants.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'package:proyecto/provider/ProfileProvider.dart';
 import 'package:proyecto/provider/TeamProvider.dart';
-import 'package:proyecto/widgets/MyButton.dart';
 import 'package:proyecto/widgets/MyLectionBanner.dart';
 import 'package:proyecto/widgets/MySkyBlock.dart';
 import '../../../core/resources/checador_respuestas.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 
 class LeccionSky extends StatefulWidget {
   final List<Map<String, dynamic>> materiales;
@@ -56,14 +54,14 @@ class _LeccionSkyState extends State<LeccionSky> with WidgetsBindingObserver {
   }
 
   void _onTapSkyBlockImagenes(int index) {
+    nube.stop();
     nube.play(AssetSource("SelectButton.mp3"));
     setState(() {
       selectedIndexImagenes = index;
     });
   }
 
-   Future<void> _updatePuntaje() async {
-       
+  Future<void> _updatePuntaje() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
     final jwtToken = authProvider.jwtToken;
@@ -71,39 +69,34 @@ class _LeccionSkyState extends State<LeccionSky> with WidgetsBindingObserver {
     final name = dataProvider.name;
     final temaProvider = Provider.of<TeamProvider>(context, listen: false);
     String url = "";
-    
-    if(temaProvider.idTeam.isEmpty){
+
+    if (temaProvider.idTeam.isEmpty) {
       url = "/Punctuation";
     } else {
       url = "/teams/PunctuationTeam";
     }
 
     Map<String, dynamic> body;
-      if (temaProvider.idTeam.isEmpty) {
-        body = {
-          "id": id,
-          "name": name,
-          "stars": 1,
-        };
-      } else {
-        body = {
-          "id": temaProvider.idTeam,
-          "stars": 1,
-        };
-      }
-    final response = await http.patch(
-      Uri.parse('$address/next/alfa$url'),
+    if (temaProvider.idTeam.isEmpty) {
+      body = {
+        "id": id,
+        "name": name,
+        "stars": 1,
+      };
+    } else {
+      body = {
+        "id": temaProvider.idTeam,
+        "stars": 1,
+      };
+    }
+    final response = await http.patch(Uri.parse('$address/next/alfa$url'),
         headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
-         body: jsonEncode(body)
-        );
-      if (response.statusCode == 200) {
-      
+        body: jsonEncode(body));
+    if (response.statusCode == 200) {
     } else {
       throw Exception('Error al actualizar las estrellas');
     }
-  
   }
-
 
   void _checarRespuesta(String palabra, String imagen) async {
     String? res = respuesta[palabra];
@@ -220,9 +213,36 @@ class _LeccionSkyState extends State<LeccionSky> with WidgetsBindingObserver {
                                   isSelected: selectedIndexPalabras == index,
                                   onTap: () => _onTapSkyBlockPalabras(index),
                                   content: Center(
-                                    child: Text(
-                                      palabras[index],
-                                      style: const TextStyle(fontSize: 20),
+                                    child: Stack(
+                                      children: [
+                                        Text(
+                                          palabras[index],
+                                          style: TextStyle(
+                                            fontSize: 40,
+                                            fontWeight: FontWeight.bold,
+                                            foreground: Paint()
+                                              ..style = PaintingStyle.stroke
+                                              ..strokeWidth = 6
+                                              ..color = Colors.blue,
+                                          ),
+                                        ),
+                                        Text(
+                                          palabras[index],
+                                          style: TextStyle(
+                                            fontSize: 40,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            shadows: [
+                                              Shadow(
+                                                offset: const Offset(2.0, 2.0),
+                                                blurRadius: 3.0,
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -242,14 +262,34 @@ class _LeccionSkyState extends State<LeccionSky> with WidgetsBindingObserver {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              MyButton(
-                                text: "Verificar",
+                              GestureDetector(
                                 onTap: () => _checarRespuesta(
                                     palabras[selectedIndexPalabras!],
                                     imagenes[selectedIndexImagenes!]),
-                                colorB: Colors.blue,
-                                colorT: Colors.white,
-                              ),
+                                child: Container(
+                                  width: MediaQuery.sizeOf(context).width/6,
+                                  height: MediaQuery.sizeOf(context).height/4,
+                                  decoration: BoxDecoration(
+                                    image: const DecorationImage(
+                                      image: AssetImage("assets/nube.webp"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.white.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Icon(
+                                    Icons.check,
+                                    size: 50,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         )

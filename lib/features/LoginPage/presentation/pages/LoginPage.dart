@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return  Dialog(
+        return Dialog(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
@@ -111,11 +111,11 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushNamed(context, '/profileSelection');
         }
       } else {
-        Navigator.of(context).pop(); 
+        Navigator.of(context).pop();
         mostrarMensajeError('Error del backend');
       }
     } catch (e) {
-      Navigator.of(context).pop(); 
+      Navigator.of(context).pop();
       mostrarMensajeError(e.toString());
     }
   }
@@ -194,8 +194,14 @@ class _LoginPageState extends State<LoginPage> {
                             colorB: Colors.black,
                             colorT: Colors.white,
                             onTap: () {
-                              login(emailController.text,
-                                  passwordController.text);
+                              if (emailController.text.isEmpty ||
+                                  passwordController.text.isEmpty) {
+                                Navigator.pushNamed(context, '/roadMap');
+                                return;
+                              } else {
+                                login(emailController.text,
+                                    passwordController.text);
+                              }
                             },
                           ),
                         ),

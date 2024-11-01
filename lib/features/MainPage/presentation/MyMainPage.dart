@@ -8,14 +8,10 @@ import 'package:proyecto/widgets/MyLevelButton.dart';
 import 'package:proyecto/widgets/MyStarButton.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../core/resources/DataBaseHelper.dart';
-import '../../../core/resources/constants.dart';
-import '../../../core/resources/musica_fondo.dart';
 import '../../../main.dart';
-import '../../../provider/AuthProvider.dart';
-import '../../../provider/ProfileProvider.dart';
 import '../../LectionTemplate/presentation/LeccionDemo.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+
 
 class MyMainPage extends StatefulWidget {
   final Map<String, dynamic> nivel;

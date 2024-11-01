@@ -130,9 +130,36 @@ class _LeccionDemoState extends State<LeccionDemo> {
   @override
   Widget build(BuildContext context) {
     if (!dataLoaded) {
-      return const Center(child: CircularProgressIndicator());
+      return Scaffold(
+        body: Container(
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            image: DecorationImage(image: AssetImage("assets/OceanBG.jpg"), fit: BoxFit.cover),
+          ),
+          child: Container(
+            width: MediaQuery.sizeOf(context).width/2,
+            height: MediaQuery.sizeOf(context).height/3,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+                Text(
+                  'Cargando...',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+      );
     }
-
     return PopScope(
       canPop: false,
       child: Scaffold(

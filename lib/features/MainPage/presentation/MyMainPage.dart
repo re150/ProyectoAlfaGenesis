@@ -13,7 +13,6 @@ import '../../../provider/TeamProvider.dart';
 import '../../LectionTemplate/presentation/LeccionDemo.dart';
 import 'package:http/http.dart' as http;
 
-
 class MyMainPage extends StatefulWidget {
   final Map<String, dynamic> nivel;
   const MyMainPage({super.key, this.nivel = const {}});
@@ -22,28 +21,37 @@ class MyMainPage extends StatefulWidget {
   State<MyMainPage> createState() => _MyMainPageState();
 }
 
-class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, RouteAware {
+class _MyMainPageState extends State<MyMainPage>
+    with WidgetsBindingObserver, RouteAware {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final Map<int, List<Map<String, dynamic>>> _leccionessPorNivel = {};
   List<Map<String, dynamic>> _lecciones = [];
   bool dataLoaded = false;
   int puntajeTotal = 0; //PUNTAJE TOTAL DEL USUARIO EXTRAIDO DE LA DB
-  List<String> imagenes = ["cat.png", "Bricks.png", "OceanBG.jpg", "pez3.jpg", "SkyBG.webp", "WallBricks.jpg", "crab.png"];
+  List<String> imagenes = [
+    "cat.png",
+    "Bricks.png",
+    "OceanBG.jpg",
+    "pez3.jpg",
+    "SkyBG.webp",
+    "WallBricks.jpg",
+    "crab.png"
+  ];
   String imagenurl = "";
 
- Future<void> _loadPuntaje() async {
+  Future<void> _loadPuntaje() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
     final jwtToken = authProvider.jwtToken;
     final id = dataProvider.id;
     final name = dataProvider.name;
 
-    imagenurl = dataProvider.imgUrl; 
+    imagenurl = dataProvider.imgUrl;
     final response = await http.get(
       Uri.parse('$address/next/alfa/GetPunctuation/$id/$name'),
       headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
     );
-      if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       setState(() {
         puntajeTotal = int.parse(response.body);
       });
@@ -51,7 +59,7 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
       throw Exception('Error al cargar las estrellas');
     }
   }
-  
+
   Future<void> _loadLecciones() async {
     final Database db = await _dbHelper.database;
     int nivelId = widget.nivel['id'];
@@ -84,7 +92,7 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
     }
   }
 
-    @override
+  @override
   void didPopNext() {
     _loadPuntaje();
   }
@@ -124,7 +132,7 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
                 ),
               ),
             ),
-           const Column(
+            const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Center(
@@ -156,9 +164,8 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
         centerTitle: true,
         leading: Container(
           decoration: const BoxDecoration(
-            color: Colors.red,
-            borderRadius: BorderRadius.all(Radius.circular(10))
-          ),
+              color: Colors.red,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
           child: IconButton(
             icon: const Icon(Icons.arrow_back),
             color: Colors.white,
@@ -169,14 +176,20 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
           ),
         ),
         actions: [
-          const MyStar(correcto: true),
-          Text(
-            'x$puntajeTotal',
-            style: const TextStyle(fontSize: 20),
-          ),
+          teamProvider.idTeam.isEmpty
+              ? const MyStar(correcto: true)
+              : const SizedBox(),
+          teamProvider.idTeam.isEmpty
+              ? Text(
+                  'x$puntajeTotal',
+                  style: const TextStyle(fontSize: 20),
+                )
+              : const SizedBox(),
           const SizedBox(width: 20),
           GestureDetector(
-            onTap: () => teamProvider.idTeam.isEmpty ? Navigator.pushNamed(context, '/ProfileEdition2') : null,
+            onTap: () => teamProvider.idTeam.isEmpty
+                ? Navigator.pushNamed(context, '/ProfileEdition2')
+                : null,
             child: CircleAvatar(
               backgroundImage:
                   AssetImage(imagenurl == "" ? "assets/cat.png" : imagenurl),
@@ -189,7 +202,7 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
       ),
       body: _lecciones.isNotEmpty
           ? Stack(
-            children: [
+              children: [
                 Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -231,14 +244,16 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
                                           padding: const EdgeInsets.all(30.0),
                                           child: MyLevelButton(
                                             nivel: _lecciones[index]['titulo'],
-                                            puntaje: index + 1 <= 5 ? index + 1 : 0,
-                                            imagen:
-                                                imagenes[index % imagenes.length],
+                                            puntaje:
+                                                index + 1 <= 5 ? index + 1 : 0,
+                                            imagen: imagenes[
+                                                index % imagenes.length],
                                             onTap: () {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) => LeccionDemo(
+                                                  builder: (context) =>
+                                                      LeccionDemo(
                                                     leccion: _lecciones[index],
                                                   ),
                                                 ),
@@ -259,7 +274,7 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
                   ],
                 ),
               ],
-          )
+            )
           : const Center(
               child: Text('ERROR: No hay lecciones disponibles'),
             ),

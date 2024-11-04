@@ -188,14 +188,20 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
             ),
           ),
           actions: [
-            const MyStar(correcto: true),
-            Text(
-              'x$puntajeTotal',
-              style: const TextStyle(fontSize: 20),
-            ),
+            teamProvider.idTeam.isEmpty
+                ? const MyStar(correcto: true)
+                : const SizedBox(),
+            teamProvider.idTeam.isEmpty
+                ? Text(
+                    'x$puntajeTotal',
+                    style: const TextStyle(fontSize: 20),
+                  )
+                : const SizedBox(),
             const SizedBox(width: 20),
             GestureDetector(
-              onTap: () => teamProvider.idTeam.isEmpty? Navigator.pushNamed(context, '/ProfileEdition2') : null,
+              onTap: () => teamProvider.idTeam.isEmpty
+                  ? Navigator.pushNamed(context, '/ProfileEdition2')
+                  : null,
               child: CircleAvatar(
                 backgroundImage:
                     AssetImage(imagenurl == "" ? "assets/cat.png" : imagenurl),

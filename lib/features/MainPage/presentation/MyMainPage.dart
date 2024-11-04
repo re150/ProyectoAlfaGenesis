@@ -9,6 +9,7 @@ import 'package:proyecto/widgets/MyStarButton.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../core/resources/DataBaseHelper.dart';
 import '../../../main.dart';
+import '../../../provider/TeamProvider.dart';
 import '../../LectionTemplate/presentation/LeccionDemo.dart';
 import 'package:http/http.dart' as http;
 
@@ -147,6 +148,7 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
         ),
       );
     }
+    TeamProvider teamProvider = Provider.of<TeamProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Elegir Lección', style: TextStyle(fontSize: 30)),
@@ -174,7 +176,7 @@ class _MyMainPageState extends State<MyMainPage> with WidgetsBindingObserver, Ro
           ),
           const SizedBox(width: 20),
           GestureDetector(
-            onTap: () => Navigator.pushNamed(context, '/ProfileEdition2'),
+            onTap: () => teamProvider.idTeam.isEmpty ? Navigator.pushNamed(context, '/ProfileEdition2') : null,
             child: CircleAvatar(
               backgroundImage:
                   AssetImage(imagenurl == "" ? "assets/cat.png" : imagenurl),

@@ -7,6 +7,7 @@ import 'package:proyecto/core/resources/musica_fondo.dart';
 import 'package:proyecto/features/MainPage/presentation/MyMainPage.dart';
 import 'package:proyecto/provider/AuthProvider.dart';
 import 'package:proyecto/provider/ProfileProvider.dart';
+import 'package:proyecto/provider/TeamProvider.dart';
 import '../../../main.dart';
 import '../../../widgets/MyRoadMapButton.dart';
 import '../../../widgets/MyStarButton.dart';
@@ -165,6 +166,8 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
         ),
       );
     }
+    TeamProvider teamProvider = Provider.of<TeamProvider>(context);
+
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -192,7 +195,7 @@ class _MyRoadMapViewState extends State<MyRoadMapView>
             ),
             const SizedBox(width: 20),
             GestureDetector(
-              onTap: () => Navigator.pushNamed(context, '/ProfileEdition2'),
+              onTap: () => teamProvider.idTeam.isEmpty? Navigator.pushNamed(context, '/ProfileEdition2') : null,
               child: CircleAvatar(
                 backgroundImage:
                     AssetImage(imagenurl == "" ? "assets/cat.png" : imagenurl),

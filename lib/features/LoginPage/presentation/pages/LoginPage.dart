@@ -194,14 +194,15 @@ class _LoginPageState extends State<LoginPage> {
                             colorB: Colors.black,
                             colorT: Colors.white,
                             onTap: () {
-                              if (emailController.text.isEmpty ||
-                                  passwordController.text.isEmpty) {
+                              if(emailController.text.isEmpty){
                                 Navigator.pushNamed(context, '/roadMap');
-                                return;
-                              } else {
+                              }
+                              else{
                                 login(emailController.text,
                                     passwordController.text);
                               }
+                                
+                              
                             },
                           ),
                         ),

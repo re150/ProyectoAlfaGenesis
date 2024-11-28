@@ -8,6 +8,7 @@ import 'package:proyecto/widgets/MyButton.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:proyecto/widgets/MyProfileImageButton.dart';
 
 class ProfileEdition2 extends StatefulWidget {
   const ProfileEdition2({super.key});
@@ -17,7 +18,8 @@ class ProfileEdition2 extends StatefulWidget {
 }
 
 class _ProfileEdition2State extends State<ProfileEdition2> {
-final TextEditingController nombreController = TextEditingController();
+  final TextEditingController nombreController = TextEditingController();
+  int puntajeTotal = 50;
   final List<String> imagePaths = [
     'Abeja.png',
     'Abeja2.png',
@@ -45,6 +47,26 @@ final TextEditingController nombreController = TextEditingController();
   ];
   String selectedImage = 'Gato.png';
 
+   Future<void> _loadPuntaje() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final jwtToken = authProvider.jwtToken;
+    final id = dataProvider.id;
+    final name = dataProvider.name;
+
+    final response = await http.get(
+      Uri.parse('$address/next/alfa/GetPunctuation/$id/$name'),
+      headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
+    );
+    if (response.statusCode == 200) {
+      setState(() {
+        puntajeTotal = int.parse(response.body);
+      });
+    } else {
+      throw Exception('Error al cargar las estrellas');
+    }
+  }
+
   void mostrarMensajeError(String mensaje) {
     showDialog(
       context: context,
@@ -68,6 +90,7 @@ final TextEditingController nombreController = TextEditingController();
   @override
   void initState() {
     super.initState();
+    _loadPuntaje();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.landscapeLeft,
@@ -96,11 +119,8 @@ final TextEditingController nombreController = TextEditingController();
           'Authorization': 'Bearer $jwtToken',
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode({
-          "name": dataProfile.name,
-          "imgUrl": Urlimg,
-          "id": dataProfile.id
-        }),
+        body: jsonEncode(
+            {"name": dataProfile.name, "imgUrl": Urlimg, "id": dataProfile.id}),
       );
 
       if (response.statusCode == 200) {
@@ -166,24 +186,16 @@ final TextEditingController nombreController = TextEditingController();
                                   mainAxisSpacing: 4.0),
                           itemCount: imagePaths.length,
                           itemBuilder: (context, index) {
-                            return GestureDetector(
+                            return MyProfileImageButton(
+                              imagepath: imagePaths[index],
+                              isUnlocked: puntajeTotal >= index*10,
+                              isSelected: selectedImage == imagePaths[index],
+                              puntos: index * 10,
                               onTap: () {
                                 setState(() {
-                                  selectedImage = imagePaths[index];
+                                  if(index*10<=puntajeTotal) selectedImage = imagePaths[index];
                                 });
                               },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 3,
-                                      color: selectedImage == imagePaths[index]
-                                          ? Colors.blue
-                                          : Colors.black),
-                                ),
-                                child: Image.asset(
-                                    "assets/ProfilePictures/${imagePaths[index]}",
-                                    fit: BoxFit.cover),
-                              ),
                             );
                           })),
                 ),

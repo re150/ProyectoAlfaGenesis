@@ -8,6 +8,8 @@ import 'package:proyecto/widgets/MyButton.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:proyecto/widgets/MyProfileImageButton.dart';
+
 class MyProfileEditionPage extends StatefulWidget {
   const MyProfileEditionPage({super.key});
 
@@ -17,6 +19,7 @@ class MyProfileEditionPage extends StatefulWidget {
 
 class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
   final TextEditingController nombreController = TextEditingController();
+  int puntajeTotal = 0;
   final List<String> imagePaths = [
     'Abeja.png',
     'Abeja2.png',
@@ -44,6 +47,26 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
   ];
   String selectedImage = 'Gato.png';
 
+   Future<void> _loadPuntaje() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final dataProvider = Provider.of<ProfileProvider>(context, listen: false);
+    final jwtToken = authProvider.jwtToken;
+    final id = dataProvider.id;
+    final name = dataProvider.name;
+
+    final response = await http.get(
+      Uri.parse('$address/next/alfa/GetPunctuation/$id/$name'),
+      headers: <String, String>{'Authorization': 'Bearer $jwtToken'},
+    );
+    if (response.statusCode == 200) {
+      setState(() {
+        puntajeTotal = int.parse(response.body);
+      });
+    } else {
+      throw Exception('Error al cargar las estrellas');
+    }
+  }
+
   void mostrarMensajeError(String mensaje) {
     showDialog(
       context: context,
@@ -67,6 +90,7 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
   @override
   void initState() {
     super.initState();
+    _loadPuntaje();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.landscapeLeft,
@@ -161,35 +185,29 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
                 Expanded(
                   flex: 1,
                   child: Container(
-                      color: Colors.white,
-                      child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: 4.0,
-                                  mainAxisSpacing: 4.0),
-                          itemCount: imagePaths.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedImage = imagePaths[index];
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 3,
-                                      color: selectedImage == imagePaths[index]
-                                          ? Colors.blue
-                                          : Colors.black),
-                                ),
-                                child: Image.asset(
-                                    "assets/ProfilePictures/${imagePaths[index]}",
-                                    fit: BoxFit.cover),
-                              ),
-                            );
-                          })),
+                    color: Colors.white,
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 4.0,
+                              mainAxisSpacing: 4.0),
+                      itemCount: imagePaths.length,
+                      itemBuilder: (context, index) {
+                        return MyProfileImageButton(
+                          imagepath: imagePaths[index],
+                          isUnlocked: puntajeTotal >= index*10,
+                          isSelected: selectedImage == imagePaths[index],
+                          puntos: index * 10,
+                          onTap: () {
+                            setState(() {
+                              selectedImage = imagePaths[index];
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),

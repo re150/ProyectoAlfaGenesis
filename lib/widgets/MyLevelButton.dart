@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:proyecto/widgets/MyStarButton.dart';
 
 class MyLevelButton extends StatefulWidget {
   final String nivel;

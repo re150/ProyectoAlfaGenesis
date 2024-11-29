@@ -21,13 +21,13 @@ class _MyProfileEditionPageState extends State<MyProfileEditionPage> {
   final TextEditingController nombreController = TextEditingController();
   int puntajeTotal = 0;
   final List<String> imagePaths = [
+    'Gato.png',
     'Abeja.png',
     'Abeja2.png',
     'Caracol.png',
     'Cerdo.png',
     'Dinosaurio.png',
     'Elefante.png',
-    'Gato.png',
     'Gato2.png',
     'Gato3.png',
     'Jirafa.png',

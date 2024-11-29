@@ -21,13 +21,13 @@ class _ProfileEdition2State extends State<ProfileEdition2> {
   final TextEditingController nombreController = TextEditingController();
   int puntajeTotal = 50;
   final List<String> imagePaths = [
+    'Gato.png',
     'Abeja.png',
     'Abeja2.png',
     'Caracol.png',
     'Cerdo.png',
     'Dinosaurio.png',
     'Elefante.png',
-    'Gato.png',
     'Gato2.png',
     'Gato3.png',
     'Jirafa.png',
